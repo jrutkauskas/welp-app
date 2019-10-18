@@ -1,4 +1,4 @@
 {
 	"secret_key":"Default Welp Secret Key",
-	"db_uri":"sqlite://welp.db"
+	"db_uri":"sqlite:///welp.db"
 }
