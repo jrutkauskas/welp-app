@@ -9,7 +9,9 @@ import secrets
 import time
 
 from model import db, User
-app = Flask(__name__)
+app = Flask(__name__,
+			static_url_path='', 
+            static_folder='../frontend')
 
 """Start App Config"""
 import json
@@ -22,19 +24,21 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
 
+
 db.init_app(app)
 
 """ Routes """
 @app.route("/")
 def home():
 	session["tst"] = "test"
-	return "Server Works!"
+	#return "Server Works!"
+	return app.send_static_file('index.html')
 
 @app.route("/api/bathrooms")
 def get_all_bathrooms():
 	return "Not implemented, would return bathrooms based on GET params", 404
 
-@app.route("/api/bathroom/<id>", methods=["GET","POST"])
+@app.route("/api/bathrooms/<id>", methods=["GET","POST"])
 def get_or_set_specific_bathroom():
 	""" NEEDS to also do all the ratings averaging AND return whether a user rated a bathroom or not"""
 	return "Not implemented, would return bathroom with id or allow modification", 404
@@ -44,11 +48,11 @@ def get_or_set_specific_bathroom():
 def add_user():
 	return "Not implemented.  Would return user id of new user or errors for why they can't sign up", 404
 
-@app.route("/api/user/<id>")
+@app.route("/api/users/<id>")
 def get_specific_user(id):
 	return f"Not implemented; id is {id}", 404
 
-@app.route("/api/user/<user_id>/ratings/", methods=["GET","POST"])
+@app.route("/api/users/<user_id>/ratings/", methods=["GET","POST"])
 def get_user_bathroom_ratings(user_id):
 	return "Not implemented, would return or set bathroom ratings for a specific user based on GET params", 404
 

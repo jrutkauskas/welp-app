@@ -67,7 +67,7 @@ instance/
 docs/_build/
 
 # SQLLite Databases
-.db
+*.db
 # PyBuilder
 target/
 
