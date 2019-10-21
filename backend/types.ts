@@ -49,7 +49,23 @@ export class BathroomResponse {
 		3 = Other
 	*/
 
-	//TODO FINISH
+	// Pre-calculated averages of ratings to display/use for sorting
+	avg_ratings: {
+		cleanliness: Number | null; // Will be a float 1.0-5.0 inclusive or null if no ratings have been provides
+		privacy: Number | null; // ^^
+		atmosphere: Number | null; // ^^
+		location_accessibility: Number | null; // ^^
+	}
+	avg_overall_rating: Number | null; // calculated as a simple mean of the above ratings (ignoring nulls).  Will be null if there are no ratings
+	// A user's custom ratings will not override this average overall
+
+	// Custom ratings given by users.  Same rules as above.  Should override the display
+	user_ratings: {
+		cleanliness: Number | null;
+		privacy: Number | null;
+		atmosphere: Number | null;
+		location_accessibility: Number | null;
+	}
 }
 
 // Returned from /api/users/<id>
@@ -57,6 +73,8 @@ export class UserResponse {
 	id: Number; //The id of the user
 	username: String; // Max 50 Characters
 }
+
+
 // POSTed to /api/users/<id>/ratings to rate a bathroom where <id> is your current user ID
 // success returns 201 Created
 // failure returns 404 Not Found
@@ -88,5 +106,9 @@ export class AuthenticationRequest {
 // We may need to modify in the future to have API keys, but I was hoping that just using SESSIONs would work well enough
 // So you'll need to make sure you have cookies enabled and working and you handle the cookies you receive from your api.  I think the 
 // way I'm doing it will force sessions to go
+
+
+// For searching for bathrooms:
+// You'll need to use GET params
 
 
