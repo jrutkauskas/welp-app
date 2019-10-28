@@ -8,7 +8,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
 import time
 
-from model import db, User
+from model import db, User, Bathroom, Rating
+from welp import WelpApp
+from tests import WelpTester
+
 app = Flask(__name__,
 			static_url_path='', 
             static_folder='../frontend')
@@ -30,7 +33,7 @@ db.init_app(app)
 """ Routes """
 @app.route("/")
 def home():
-	session["tst"] = "test"
+	session["started"] = True
 	#return "Server Works!"
 	return app.send_static_file('index.html')
 
@@ -77,4 +80,11 @@ def init_db():
 	db.create_all()
 
 	print("Initialized Database.")
+	return
+
+@app.cli.command("test")
+def test_app():
+	"""Runs test commands here"""
+	t = WelpTester(db)
+	t.runTests()
 	return

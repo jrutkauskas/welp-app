@@ -90,7 +90,8 @@ export class RatingRequestResponse {
 	rating: Number | null; //Must be integer 1-5 or null for clearing a rating
 	bathroom_id: Number; //integer of the id of the bathroom being rated
 }
-// GETing /api/users/<id>/ratings?QUERY_PARAMS will return an array of RatingRequestResponses meeting the request parameters
+// CURRENTLY WILL NOT BE IMPLEMENTED SINCE BATHROOMS ALREADY GIVE THE RATINGS:
+// IGNORE: GETing /api/users/<id>/ratings?QUERY_PARAMS will return an array of RatingRequestResponses meeting the request parameters
 
 
 
