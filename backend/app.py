@@ -85,6 +85,15 @@ def init_db():
 @app.cli.command("test")
 def test_app():
 	"""Runs test commands here"""
-	t = WelpTester(db)
+	t = WelpTester()
 	t.runTests()
+	return
+
+@app.cli.command("bootstrapdb")
+def bootstrap_db():
+	"""Fills Database with Sample data (WARNING! THIS CLEARS OUT ALL OTHER DB DATA)"""
+	db.drop_all()
+	db.create_all()
+	t = WelpTester()
+	t.bootstrapDB()
 	return
