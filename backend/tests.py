@@ -1,14 +1,20 @@
 from model import User, Bathroom, Rating
+#from welp import WelpApp
+import unittest
 from app import db
 
-class WelpTester:
-	def __init__(self):
-		return
+
+# to test, run `flask test` in your command line
+class WelpTester(unittest.TestCase):
+	
 	
 	def bootstrapDB(self):
-		#db = self.db
 		#should fill the database with a smattering of test data for the frontend tests, for example.
 		#including a handful of bathrooms, a handful of users, and a handful of ratings
+
+		db.drop_all()
+		db.create_all()
+
 		u1 = User("user1","password")
 
 		b1 = Bathroom()
@@ -40,6 +46,16 @@ class WelpTester:
 		return
 	def runTests(self):
 		#should run all tests
+		unittest.main()
 		return
 
-	# define tests here
+	# define tests here.  This is a sample test.  It has the correct format but is actually a bad test from a design perspective
+	# use this as an example of the format only
+	# see https://docs.python.org/3/library/unittest.html for docs on how to write more test cases
+	def test_user(self):
+		self.bootstrapDB()
+		u = User.query.filter_by(username="user1").first()
+		self.assertEqual(u.username, 'user1')
+
+if __name__ == '__main__':
+    unittest.main()

@@ -10,7 +10,9 @@ import time
 
 from model import db, User, Bathroom, Rating
 from welp import WelpApp
+import tests 
 from tests import WelpTester
+import unittest
 
 app = Flask(__name__,
 			static_url_path='', 
@@ -37,12 +39,12 @@ def home():
 	#return "Server Works!"
 	return app.send_static_file('index.html')
 
-@app.route("/api/bathrooms")
+@app.route("/api/bathrooms", methods=["POST"])
 def get_all_bathrooms():
-	return "Not implemented, would return bathrooms based on GET params", 404
+	return "Not implemented, would return bathrooms based on POSTed params", 404
 
 @app.route("/api/bathrooms/<id>", methods=["GET","POST"])
-def get_or_set_specific_bathroom():
+def get_or_set_specific_bathroom(id):
 	""" NEEDS to also do all the ratings averaging AND return whether a user rated a bathroom or not"""
 	return "Not implemented, would return bathroom with id or allow modification", 404
 
@@ -57,7 +59,7 @@ def get_specific_user(id):
 
 @app.route("/api/users/<user_id>/ratings/", methods=["GET","POST"])
 def get_user_bathroom_ratings(user_id):
-	return "Not implemented, would return or set bathroom ratings for a specific user based on GET params", 404
+	return "Not implemented, would return or set bathroom ratings for a specific user based on POSTed params", 404
 
 @app.route("/api/authenticate", methods=["POST"])
 def authenticate():
@@ -85,8 +87,10 @@ def init_db():
 @app.cli.command("test")
 def test_app():
 	"""Runs test commands here"""
-	t = WelpTester()
-	t.runTests()
+	#t = WelpTester()
+	#t.runTests()
+	suite = unittest.TestLoader().loadTestsFromModule(tests)
+	unittest.TextTestRunner(verbosity=2).run(suite)
 	return
 
 @app.cli.command("bootstrapdb")
