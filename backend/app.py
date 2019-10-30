@@ -10,7 +10,7 @@ import time
 
 from model import db, User, Bathroom, Rating
 from welp import WelpApp
-import tests 
+import tests
 from tests import WelpTester
 import unittest
 
@@ -87,6 +87,7 @@ def init_db():
 @app.cli.command("test")
 def test_app():
 	"""Runs test commands here"""
+	print("testing!")
 	#t = WelpTester()
 	#t.runTests()
 	suite = unittest.TestLoader().loadTestsFromModule(tests)
@@ -101,3 +102,4 @@ def bootstrap_db():
 	t = WelpTester()
 	t.bootstrapDB()
 	return
+

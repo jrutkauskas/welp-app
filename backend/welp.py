@@ -1,5 +1,5 @@
-from model import User, Bathroom, Rating
-from app import db
+from model import db, User, Bathroom, Rating
+#from app import db
 
 class WelpApp:
 	def __init__(self):

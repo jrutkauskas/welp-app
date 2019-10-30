@@ -1,7 +1,7 @@
-from model import User, Bathroom, Rating
+from model import db, User, Bathroom, Rating
 #from welp import WelpApp
 import unittest
-from app import db
+#from app import db
 
 
 # to test, run `flask test` in your command line
