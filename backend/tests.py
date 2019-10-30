@@ -18,14 +18,14 @@ class WelpTester(unittest.TestCase):
 		u1 = User("user1","password")
 
 		b1 = Bathroom()
-		b1.bathroom_name = "Test Bathroom"
-		b1.description = "A sample test bathroom"
+		b1.bathroom_name = "6th Floor Sennott Men's Room"
+		b1.description = "A bathroom for CS champions"
 		b1.time_availability = "M-F 9am-5pm"
 		b1.how_to_find_it = "6th Floor Sennott Sq."
 		b1.notes = "It's gross"
 		b1.latitude = 40.441513
 		b1.longitude =  -79.956492
-		b1.occupancy_type = 0
+		b1.occupancy_type = 1
 		b1.hand_drying_type = 3
 		b1.stall_range_type = 1
 		b1.gender_type = 0
@@ -38,14 +38,19 @@ class WelpTester(unittest.TestCase):
 		privacy.user = u1
 		privacy.bathroom = b1
 
+		#add the new objects to the database
 		db.session.add(u1)
 		db.session.add(b1)
 		db.session.add(cleanliness)
 		db.session.add(privacy)
-		db.session.commit()
+
+		# ADD MORE DATA HERE!
+
+		db.session.commit() # always run this at the end
 		return
+
 	def runTests(self):
-		#should run all tests
+		#this will run all tests automatically as long as the functions start with the name `test_`
 		unittest.main()
 		return
 
@@ -53,9 +58,9 @@ class WelpTester(unittest.TestCase):
 	# use this as an example of the format only
 	# see https://docs.python.org/3/library/unittest.html for docs on how to write more test cases
 	def test_user(self):
-		self.bootstrapDB()
+		self.bootstrapDB() #tests often will require setting up the database in some way to ensure 
 		u = User.query.filter_by(username="user1").first()
-		self.assertEqual(u.username, 'user1')
+		self.assertEqual(u.username, 'user1') #all tests must assert something
 
 if __name__ == '__main__':
     unittest.main()

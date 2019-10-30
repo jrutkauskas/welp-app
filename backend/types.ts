@@ -69,6 +69,7 @@ export class BathroomResponse {
 }
 
 // creating a bathroom; POSTed to /api/bathrooms
+// Also used for updating a bathroom by POSTing to api/bathrooms/<id> (though user_ratings sub-object shouldn't be used for that)
 export class CreateBathroomRequest {
 	bathroom_name: String; // The string of the bathroom's name.  Max 120 characters
 	description: String; // A longer description of the bathroom.  Max 600 characters
