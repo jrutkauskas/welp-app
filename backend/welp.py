@@ -1,13 +1,19 @@
 from model import db, User, Bathroom, Rating
 #from app import db
 
+### NOTES:
+# when I talk about dictionaries of a certain type, that is NOT a python type.  In python, it is a standard dictionary
+# what I mean is that it is a dictionary that follows the specification in the Types.ts file in this folder.
+# this is so there can be a consistent spec between the python backend and the typescript frontend,
+# and these dictionaries are easily serializable.
+
+
+
 class WelpApp:
 	def __init__(self):
 		#also do error checking in here
 		return
 	
-
-
 	# Takes in a BathroomQuery dictionary and User (database) object (for calculating user ratings)
 	# on success, will return the pair (True, <arr>) where arr is an array of BathroomResponse dictionaries (may be an empty array if no bathrooms are found matching those parameters)
 	# on failure, will return the pair (False, msg), where msg describes what the problem is.
@@ -99,4 +105,9 @@ class WelpApp:
 	# on success, returns True
 	# on failure, returns False
 	def perform_ratings_from_dictionary(self, bathroom, user, dict):
+		return
+
+	# takes in a User (database) object, and returns a UserResponse dict on success
+	# on failure, returns None
+	def convert_user_to_dict(self, user):
 		return

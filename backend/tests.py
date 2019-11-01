@@ -57,9 +57,16 @@ class WelpTester(unittest.TestCase):
 	# define tests here.  This is a sample test.  It has the correct format but is actually a bad test from a design perspective
 	# use this as an example of the format only
 	# see https://docs.python.org/3/library/unittest.html for docs on how to write more test cases
-	def test_user(self):
-		self.bootstrapDB() #tests often will require setting up the database in some way to ensure 
-		u = User.query.filter_by(username="user1").first()
+	# the name of the test should line up with the name of the test in the Milestone Documentation
+	# another note on tests: they probably shouldn't be more than 10 lines long
+	# remember, a single unit test should test a single thing (or maybe just a couple) that way, if it fails
+	# you know what was the problem more quickly.
+	# maybe a good idea to give the test name a number in it to link to the tables of tests in the milestone description
+	# also, the tests should have a good name describing what they test because the name of the function is what
+	# gets printed out if the test fails
+	def test_user_0(self):
+		self.bootstrapDB() #tests often will require setting up the database in some way to ensure the data in there is as expected
+		u = User.query.filter_by(username="user1").first() # this test is bad because it actually just tests the database
 		self.assertEqual(u.username, 'user1') #all tests must assert something
 
 if __name__ == '__main__':
