@@ -49,10 +49,10 @@ class WelpTester(unittest.TestCase):
 		db.session.commit() # always run this at the end
 		return
 
-	def runTests(self):
-		#this will run all tests automatically as long as the functions start with the name `test_`
-		unittest.main()
-		return
+	# def runTests(self):
+	# 	#this will run all tests automatically as long as the functions start with the name `test_`
+	# 	unittest.main()
+	# 	return
 
 	# define tests here.  This is a sample test.  It has the correct format but is actually a bad test from a design perspective
 	# use this as an example of the format only

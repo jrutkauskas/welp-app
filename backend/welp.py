@@ -1,4 +1,5 @@
 from model import db, User, Bathroom, Rating
+from werkzeug.security import generate_password_hash, check_password_hash
 #from app import db
 
 ### NOTES:
@@ -49,7 +50,15 @@ class WelpApp:
 	# On failure (e.g., username already exists), will return the pair (False, msg) where msg is a string message 
 	# describing the problem
 	def create_user(self, user):
-		return
+		if not user or not user["username"] or not user["password"]:
+			return False, "invalid AuthenticationRequest sent"
+		exists = User.query.filter_by(username=user["username"]).first()
+		if exists:
+			return False, "user already exists"
+		u = User(user["username"], user["password"])
+		db.session.add(u)
+		db.session.commit()
+		return True, u
 	
 	# id is an integer, should return a User object
 	# Will return None if a user with that ID is not found
@@ -82,7 +91,20 @@ class WelpApp:
 	# on success, returns pair (True, <User>) where User is an actual User object linked to the database of the authenticated user
 	# on failure, returns pair (False, msg) where msg is a message describing the reason the user isn't able to be authenticated.
 	def authenticate_user(self, authentication_request):
-		return
+		if not authentication_request:
+			return (False, "authentication_request is not found")
+		
+		auth = authentication_request
+		if auth["username"] and auth["password"]:
+			u = User.query.filter_by(username=auth["username"]).first()
+			if not u:
+				return False, "user not found"
+			if check_password_hash(u.password, auth["password"]):
+				return True, u
+			else:
+				return False, "password does not match"
+		else:
+			return (False, "username or password must not be empty")
 
 	####### UTILITY METHODS BEGIN HERE #######
 
@@ -91,23 +113,134 @@ class WelpApp:
 	#on success, returns a dictionary representing the bathroom
 	# on failure, (which is unlikely) will return None
 	def convert_bathroom_object_to_dictionary(self, bathroom):
-		return
+		if not bathroom or bathroom.id == None:
+			return None
+		dic = {}
+		dic["id"] = bathroom.id
+		dic["bathroom_name"] = bathroom.bathroom_name
+		dic["description"] = bathroom.description
+		dic["time_availability"] = bathroom.time_availability
+		dic["notes"] = bathroom.notes
+		dic["latitude"] = bathroom.latitude
+		dic["longitude"] = bathroom.longitude
+		dic["occupancy_type"] = bathroom.occupancy_type
+		dic["hand_drying_type"] = bathroom.hand_drying_type
+		dic["stall_range_type"] = bathroom.stall_range_type
+		dic["gender_type"] = bathroom.gender_type
+		
+		# no ratings in here, remember?
 
-	# bathroom is a Bathroom database object, user is a User database object, dict is a partially-completed BathroomResponse dictionary.
+		return dic
+
+	# bathroom is a Bathroom database object, user is a User database object, dic is a partially-completed BathroomResponse dictionary.
 	# this function will calculate the user ratings and add them to the dictionary.
 	# on success, returns the dictionary
 	# on failure, returns None
-	def add_ratings_to_bathroom_dictionary(self, bathroom, user, dict):
+	def add_ratings_to_bathroom_dictionary(self, bathroom, user, dic):
+		if not bathroom or not user or not dic:
+			return None
+		clean = bathroom.get_cleanliness_ratings().all() #.filter_by(user=user)
+		total = 0
+		count = 0
+		for r in clean:
+			count = count + 1
+			total = total + r.rating
+		if count == 0:
+			count = 1
+		average_clean = total / count
+		if total == 0:
+			average_clean = None
+
+		priv = bathroom.get_privacy_ratings().all() #.filter_by(user=user)
+		total = 0
+		count = 0
+		for r in priv:
+			count = count + 1
+			total = total + r.rating
+		if count == 0:
+			count = 1
+		average_priv = total / count
+		if total == 0:
+			average_priv = None
+
+		atm = bathroom.get_atmosphere_ratings().all() #.filter_by(user=user)
+		total = 0
+		count = 0
+		for r in atm:
+			count = count + 1
+			total = total + r.rating
+		if count == 0:
+			count = 1
+		average_atm = total / count
+		if total == 0:
+			average_atm = None
+
+		loc = bathroom.get_location_accessibility_ratings().all() #.filter_by(user=user)
+		total = 0
+		count = 0
+		for r in loc:
+			count = count + 1
+			total = total + r.rating
+		if count == 0:
+			count = 1
+		average_loc = total / count
+		if total == 0:
+			average_loc = None
+
+		dic["avg_ratings"] = {"cleanliness":average_clean, "privacy":average_priv, "atmosphere":average_atm, "location_accessibility":average_loc}
+		
+
+		
+
+		
+
 		return
 
-	# bathroom is a Bathroom database object, user is a User database object, dict is a BathroomCreateResquest dictionary with user ratings in it
+	# bathroom is a Bathroom database object, user is a User database object, dic is a CreateBathroomRequest dictionary with user ratings in it
 	# this function will create and add the needed Rating objects to the database
 	# on success, returns True
 	# on failure, returns False
-	def perform_ratings_from_dictionary(self, bathroom, user, dict):
-		return
+	def perform_ratings_from_dictionary(self, bathroom, user, dic):
+		ratings = dic["user_ratings"]
+
+		if ratings["cleanliness"] is not None:
+			clean = Rating(0, ratings["cleanliness"])
+			clean.user = user
+			clean.bathroom = bathroom
+			db.session.add(clean)
+			db.session.commit()
+		
+		if ratings["privacy"] is not None:
+			priv = Rating(1, ratings["privacy"])
+			priv.user = user
+			priv.bathroom = bathroom
+			db.session.add(priv)
+			db.session.commit()
+		
+		if ratings["atmosphere"] is not None:
+			atm = Rating(2, ratings["atmosphere"])
+			atm.user = user
+			priv.bathroom = bathroom
+			db.session.add(atm)
+			db.session.commit()
+		
+		if ratings["location_accessibility"] is not None:
+			loc = Rating(3, ratings["location_accessibility"])
+			loc.user = user
+			loc.bathroom = bathroom
+			db.session.add(loc)
+			db.session.commit()
+
+
+		return True
 
 	# takes in a User (database) object, and returns a UserResponse dict on success
 	# on failure, returns None
 	def convert_user_to_dict(self, user):
-		return
+		if user is None:
+			return None
+		
+		dic = {}
+		dic["id"] = user.id
+		dic["username"] = user.username
+		return dic
