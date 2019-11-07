@@ -189,12 +189,59 @@ class WelpApp:
 
 		dic["avg_ratings"] = {"cleanliness":average_clean, "privacy":average_priv, "atmosphere":average_atm, "location_accessibility":average_loc}
 		
+		# get overall average
+		numerator = 0
+		denom = 0
+		overall_avg = None
+		if average_clean:
+			numerator = numerator + average_clean
+			denom = denom + 1
+		if average_priv:
+			numerator = numerator + average_priv
+			denom = denom + 1
+		if average_atm:
+			numerator = numerator + average_atm
+			denom = denom + 1
+		if average_loc:
+			numerator = numerator + average_loc
+			denom = denom + 1
+		
+		if denom > 0:
+			overall_avg = numerator / denom
+		
+		dic["avg_overall_rating"] = overall_avg
+		
+		
 
+		# now get user ratings
+
+		clean = bathroom.get_cleanliness_ratings().filter_by(user=user).first() #.filter_by(user=user)
+		uclean = None
+		if clean:
+			uclean = clean.rating
+
+		priv = bathroom.get_privacy_ratings().filter_by(user=user).all() #.filter_by(user=user)
+		upriv = None
+		if priv:
+			upriv = priv.rating
+
+		atm = bathroom.get_atmosphere_ratings().filter_by(user=user).all() #.filter_by(user=user)
+		uatm = None
+		if atm:
+			uatm = atm.rating
+
+		loc = bathroom.get_location_accessibility_ratings().filter_by(user=user).all() #.filter_by(user=user)
+		uloc = None
+		if loc:
+			uloc = loc.rating
+
+		dic["user_ratings"] = {"cleanliness":uclean, "privacy":upriv, "atmosphere":uatm, "location_accessibility":uloc}
+		
 		
 
 		
 
-		return
+		return dic
 
 	# bathroom is a Bathroom database object, user is a User database object, dic is a CreateBathroomRequest dictionary with user ratings in it
 	# this function will create and add the needed Rating objects to the database
