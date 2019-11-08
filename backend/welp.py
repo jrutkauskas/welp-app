@@ -26,8 +26,13 @@ class WelpApp:
 	# On success, will return a pair (True, <bathroom>) where bathroom is a BathroomResponse dictionary
 	# on failure, will return a pair (False, msg) where msg is a message describing the problem
 	def get_bathroom_by_id(self, id, user):
-		#Bathroom.que
-		return
+		if not id or not user:
+			return False, "must send valid id and user"
+		bath = Bathroom.query.filter_by(id=id).first()
+		if not bath:
+			return False, "bathroom with that id not found"
+		
+		return True, bath
 	
 	# Takes in the id (as an integer) of the bathroom to set (Bathroom must already exist), and a CreateBathroomRequest dictionary (with no user ratings in there)
 	# will update the existing bathroom to have all the attributes as the bathroom passed in.  No checking will occur
@@ -291,3 +296,27 @@ class WelpApp:
 		dic["id"] = user.id
 		dic["username"] = user.username
 		return dic
+
+	# takes in a CreateBathroomRequest dictionary and a bathroom (database) object, and copies the data 
+	# from the dictionary to the database object (not including any user ratings, just the simple data)
+	# also does not check changing ids
+	# on success, returns the bathroom (database) object
+	# on failure, returns None
+	def copy_bathroom_dict_to_database_object(self, bathroom, dic):
+		if not bathroom or not dic:
+			return None
+		
+		bathroom.bathroom_name = dic["bathroom_name"]
+		bathroom.description = dic["description"]
+		bathroom.time_availability = dic["time_availability"]
+		bathroom.notes = dic["notes"]
+
+		bathroom.latitude = dic["latitude"]
+		bathroom.longitude = dic["longitude"]
+
+		bathroom.occupancy_type = dic["occupancy_type"]
+		bathroom.hand_drying_type = dic["hand_drying_type"]
+		bathroom.stall_range_type = dic["stall_range_type"]
+		bathroom.gender_type = dic["gender_type"]
+		
+		return bathroom
