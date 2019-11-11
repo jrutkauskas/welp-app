@@ -19,7 +19,37 @@ class WelpApp:
 	# on success, will return the pair (True, <arr>) where arr is an array of BathroomResponse dictionaries (may be an empty array if no bathrooms are found matching those parameters)
 	# on failure, will return the pair (False, msg), where msg describes what the problem is.
 	def get_bathrooms_based_on_params(self, params, user):
-		return
+		if not params or not user:
+			return False, "must send parameters and user"
+		options =  Bathroom.query
+		if params["min_latitude"]:
+			options = options.filter(Bathroom.latitude >=params["min_latitude"])
+		if params["max_latitude"]:
+			options = options.filter(Bathroom.latitude <= params["max_latitude"])
+		if params["min_longitude"]:
+			options = options.filter(Bathroom.longitude >=params["min_longitude"])
+		if params["max_longitude"]:
+			options = options.filter(Bathroom.longitude <= params["max_longitude"])
+		
+		if params["occupancy_type"]:
+			options = options.filter(Bathroom.occupancy_type == params["occupancy_type"])
+		if params["hand_drying_type"]:
+			options = options.filter(Bathroom.hand_drying_type == params["hand_drying_type"])
+		if params["stall_range_type"]:
+			options = options.filter(Bathroom.stall_range_type == params["stall_range_type"])
+		if params["gender_type"]:
+			options = options.filter(Bathroom.gender_type == params["gender_type"])
+		
+		bathrooms = options.all()
+		dic_list = []
+		for b in bathrooms:
+			dic = self.convert_bathroom_object_to_dictionary(b)
+			dic = self.add_ratings_to_bathroom_dictionary(b, user, dic)
+			dic_list.append(dic)
+
+		
+		
+		return True, dic_list
 	
 	# Takes in the id (as an integer) of the bathroom to get (Bathroom must already exist), and a User (database) object
 	# which is required for getting the user's ratings and including them
@@ -39,8 +69,22 @@ class WelpApp:
 	# missing attributes in the dictionary will cause a failure
 	# On success, will return the pair (True, <bathroom>) where bathroom is the Bathroom object connected to the database that represents
 	# the bathroom that was updated (containing its new values)
+	# on failure, returns pair False, msg where msg is a string message explaining what went wrong
 	def set_bathroom_by_id(self, id, bathroom):
-		return
+		if not id or not bathroom:
+			return False, "id or dictionary missing"
+		b = Bathroom.query.filter_by(id=id).first()
+		if not b:
+			return False, "no bathroom with that id found in database"
+		b = self.copy_bathroom_dict_to_database_object(b, bathroom)
+		if not b:
+			return False, "couldn't copy bathroom dictionary to the database object"
+		db.session.commit()
+		dic = self.convert_bathroom_object_to_dictionary(b)
+		#dic = self.add_ratings_to_bathroom_dictionary(b, user, dic)
+		if not dic:
+			return False, "couldn't get the bathroom object back into response dictionary", None
+		return True, dic
 
 	#Takes in a CreateBathroomRequest dictionary and User (database) object, creates a Bathroom database object, and adds it to the database
 	# missing attributes in the dictionary will cause a failure
@@ -48,7 +92,19 @@ class WelpApp:
 	# and bathroom is the newly-created Bathroom (database) object.
 	# On failure, will return the triple (False, msg, None) where msg is a message describing what went wrong.
 	def create_bathroom(self, bathroom, user):
-		return
+		if not bathroom or not user:
+			return False, "Invalid bathroom or user access", None
+		b = Bathroom()
+		b = self.copy_bathroom_dict_to_database_object(b, bathroom)
+		if not self.perform_ratings_from_dictionary(b, user, bathroom):
+			return False, "couldn't perform user ratings", None
+		db.session.add(b)
+		db.session.commit()
+		dic = self.convert_bathroom_object_to_dictionary(b)
+		dic = self.add_ratings_to_bathroom_dictionary(b, user, dic)
+		if not dic:
+			return False, "couldn't get bathroom object back into response dictionary", None
+		return True, dic, b
 	
 	# takes AuthenticationRequest dictionary as a request to create a user
 	# On success, will return the pair (True, <user>) where User is the newly created User object
