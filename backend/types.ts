@@ -172,7 +172,7 @@ export class AuthenticationRequest {
 
 // For searching for bathrooms:
 // You'll need to use this in json
-// POST this to /api/bathrooms, you'll get an array of BathroomResponse objects back (could be empty if no bathrooms meet response)
+// Send this via GET to /api/bathrooms, you'll get an array of BathroomResponse objects back (could be empty if no bathrooms meet response)
 export class BathroomQuery {
 	//rectangle of view-window
 	min_latitude: Number;

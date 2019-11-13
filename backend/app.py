@@ -28,7 +28,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
-
+server = WelpApp()
 
 db.init_app(app)
 
@@ -39,31 +39,100 @@ def home():
 	#return "Server Works!"
 	return app.send_static_file('index.html')
 
-@app.route("/api/bathrooms", methods=["POST"])
-def get_all_bathrooms():
-	return "Not implemented, would return bathrooms based on POSTed params", 404
+@app.route("/api/bathrooms", methods=["GET","POST"])
+def create_a_bathroom():
+	if not "user_id" in session:
+		return "Not logged in!", 400
+	
+	user = server.get_user_by_id(session["user_id"])
+	data = request.get_json()
+	if request.method == "POST":
+		result, bathroom = server.create_bathroom(data, user)
+		if not result:
+			return bathroom, 400
+		return json.dumps(bathroom)
+	else:
+		result, bathrooms = server.get_bathrooms_based_on_params(data,user)
+		if not result:
+			return bathrooms, 400
+		return json.dumps(bathrooms)
+	#return "Not implemented, would return bathrooms based on POSTed params", 404
 
 @app.route("/api/bathrooms/<id>", methods=["GET","POST"])
 def get_or_set_specific_bathroom(id):
-	""" NEEDS to also do all the ratings averaging AND return whether a user rated a bathroom or not"""
-	return "Not implemented, would return bathroom with id or allow modification", 404
+	if not "user_id" in session:
+		return "Not logged in!", 400
+	
+	user = server.get_user_by_id(session["user_id"])
+	if request.method == "GET":
+		result, bathroom = server.get_bathroom_by_id(id, user)
+		if not result:
+			return bathroom, 400
+		return json.dumps(bathroom)
+	else:
+		data = request.get_json()
+		result, bathroom = server.set_bathroom_by_id(id, data)
+		if not result:
+			return bathroom, 400
+		return json.dumps(bathroom)
+
+	
+
+	#""" NEEDS to also do all the ratings averaging AND return whether a user rated a bathroom or not"""
+	#return "Not implemented, would return bathroom with id or allow modification", 404
 
 
-@app.route("/api/users", methods=["POST"])
-def add_user():
-	return "Not implemented.  Would return user id of new user or errors for why they can't sign up", 404
 
 @app.route("/api/users/<id>")
 def get_specific_user(id):
 	return f"Not implemented; id is {id}", 404
 
-@app.route("/api/users/<user_id>/ratings/", methods=["GET","POST"])
-def get_user_bathroom_ratings(user_id):
-	return "Not implemented, would return or set bathroom ratings for a specific user based on POSTed params", 404
+@app.route("/api/users/<user_id>/ratings/", methods=["POST"])
+def set_user_bathroom_ratings(user_id):
+	if not "user_id" in session:
+		return "Not logged in!", 400
+	
+	user = server.get_user_by_id(session["user_id"])
+	data = request.get_json()
+
+	result, ret = server.set_user_bathroom_rating(user, data)
+	if not result:
+		return ret, 400
+	
+
+	return "rating updated successfully"
+
+@app.route("/api/users", methods=["POST"])
+def add_user():
+	if "user_id" in session:
+		return "Already logged in", 400
+	data = request.get_json()
+	result, ret = server.create_user(data)
+	if not result:
+		return ret, 400
+	
+	session["user_id"] = ret.id
+	
+	res = server.convert_user_to_dict(ret)
+	return json.dumps(res)
+	#return "Not implemented.  Would return user id of new user or errors for why they can't sign up", 404
 
 @app.route("/api/authenticate", methods=["POST"])
 def authenticate():
-	return "Not implemented, should be passed username and password and will return whether authenticated", 404
+	if "user_id" in session:
+		return "Already logged in", 400
+	data = request.get_json()
+	if not "username" in data or not "password" in data:
+		return "must send username and password", 400
+	result, ret = server.authenticate_user(data)
+	if not result:
+		return ret, 400
+	
+	# save user in session
+	session["user_id"] = ret.id
+	
+	res = server.convert_user_to_dict(ret)
+	return json.dumps(res)
 
 
 

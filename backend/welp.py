@@ -61,8 +61,9 @@ class WelpApp:
 		bath = Bathroom.query.filter_by(id=id).first()
 		if not bath:
 			return False, "bathroom with that id not found"
-		
-		return True, bath
+		dic = self.convert_bathroom_object_to_dictionary(bath)
+		dic = self.add_ratings_to_bathroom_dictionary(bath, user, dic)
+		return True, dic
 	
 	# Takes in the id (as an integer) of the bathroom to set (Bathroom must already exist), and a CreateBathroomRequest dictionary (with no user ratings in there)
 	# will update the existing bathroom to have all the attributes as the bathroom passed in.  No checking will occur
@@ -133,20 +134,22 @@ class WelpApp:
 	# rating is a RatingRequestResponse from types.ts as a dictionary
 	# returns a pair (result <boolean>, msg <string>) where result is true with success, false with failure, and msg is a string describing the error
 	def set_user_bathroom_rating(self, user, rating):
-		r = Rating(rating["rating_type"], rating["rating"])
-		r.user = user
+		
 		b = Bathroom.query.filter_by(id=rating["bathroom_id"]).first()
 		if not b:
 			return (False, "bathroom with id %d not found" % rating["bathroom_id"])
-		r.bathroom = b
+		
 		# need to check if rating already exists
-		existing_rating = Rating.query.filter_by(user_id=user.id).filter_by(bathroom_id=b.id).filter_by(rating_type=rating["rating_type"]).first()
+		existing_rating = Rating.query.filter_by(user_id=user.id).filter_by(bathroom_id=b.id).filter_by(rating_type=int(rating["rating_type"])).first()
 		if existing_rating:
 			existing_rating.rating = rating["rating"]
 		else:
+			r = Rating(rating["rating_type"], rating["rating"])
+			r.user = user
+			r.bathroom = b
 			db.session.add(r)
 		db.session.commit()
-		return
+		return True, ""
 	
 	#takes AuthenticationRequest dictionary as a request to authenticate a user
 	# on success, returns pair (True, <User>) where User is an actual User object linked to the database of the authenticated user
@@ -204,8 +207,9 @@ class WelpApp:
 		total = 0
 		count = 0
 		for r in clean:
-			count = count + 1
-			total = total + r.rating
+			if r.rating:
+				count = count + 1
+				total = total + r.rating
 		if count == 0:
 			count = 1
 		average_clean = total / count
@@ -216,8 +220,9 @@ class WelpApp:
 		total = 0
 		count = 0
 		for r in priv:
-			count = count + 1
-			total = total + r.rating
+			if r.rating:
+				count = count + 1
+				total = total + r.rating
 		if count == 0:
 			count = 1
 		average_priv = total / count
@@ -228,8 +233,9 @@ class WelpApp:
 		total = 0
 		count = 0
 		for r in atm:
-			count = count + 1
-			total = total + r.rating
+			if r.rating:
+				count = count + 1
+				total = total + r.rating
 		if count == 0:
 			count = 1
 		average_atm = total / count
@@ -240,8 +246,9 @@ class WelpApp:
 		total = 0
 		count = 0
 		for r in loc:
-			count = count + 1
-			total = total + r.rating
+			if r.rating:
+				count = count + 1
+				total = total + r.rating
 		if count == 0:
 			count = 1
 		average_loc = total / count
@@ -281,17 +288,17 @@ class WelpApp:
 		if clean:
 			uclean = clean.rating
 
-		priv = bathroom.get_privacy_ratings().filter_by(user=user).all() #.filter_by(user=user)
+		priv = bathroom.get_privacy_ratings().filter_by(user=user).first() #.filter_by(user=user)
 		upriv = None
 		if priv:
 			upriv = priv.rating
 
-		atm = bathroom.get_atmosphere_ratings().filter_by(user=user).all() #.filter_by(user=user)
+		atm = bathroom.get_atmosphere_ratings().filter_by(user=user).first() #.filter_by(user=user)
 		uatm = None
 		if atm:
 			uatm = atm.rating
 
-		loc = bathroom.get_location_accessibility_ratings().filter_by(user=user).all() #.filter_by(user=user)
+		loc = bathroom.get_location_accessibility_ratings().filter_by(user=user).first() #.filter_by(user=user)
 		uloc = None
 		if loc:
 			uloc = loc.rating
