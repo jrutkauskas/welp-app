@@ -19,8 +19,8 @@ class WelpApp:
 	# on success, will return the pair (True, <arr>) where arr is an array of BathroomResponse dictionaries (may be an empty array if no bathrooms are found matching those parameters)
 	# on failure, will return the pair (False, msg), where msg describes what the problem is.
 	def get_bathrooms_based_on_params(self, params, user):
-		if not params or not user:
-			return False, "must send parameters and user"
+		if not params:
+			return False, "must send parameters"
 		options =  Bathroom.query
 		if params["min_latitude"]:
 			options = options.filter(Bathroom.latitude >=params["min_latitude"])
@@ -56,8 +56,8 @@ class WelpApp:
 	# On success, will return a pair (True, <bathroom>) where bathroom is a BathroomResponse dictionary
 	# on failure, will return a pair (False, msg) where msg is a message describing the problem
 	def get_bathroom_by_id(self, id, user):
-		if not id or not user:
-			return False, "must send valid id and user"
+		if not id:
+			return False, "must send valid id"
 		bath = Bathroom.query.filter_by(id=id).first()
 		if not bath:
 			return False, "bathroom with that id not found"
@@ -201,7 +201,7 @@ class WelpApp:
 	# on success, returns the dictionary
 	# on failure, returns None
 	def add_ratings_to_bathroom_dictionary(self, bathroom, user, dic):
-		if not bathroom or not user or not dic:
+		if not bathroom or not dic:
 			return None
 		clean = bathroom.get_cleanliness_ratings().all() #.filter_by(user=user)
 		total = 0
@@ -282,29 +282,29 @@ class WelpApp:
 		
 
 		# now get user ratings
+		if user:
+			clean = bathroom.get_cleanliness_ratings().filter_by(user=user).first() #.filter_by(user=user)
+			uclean = None
+			if clean:
+				uclean = clean.rating
 
-		clean = bathroom.get_cleanliness_ratings().filter_by(user=user).first() #.filter_by(user=user)
-		uclean = None
-		if clean:
-			uclean = clean.rating
+			priv = bathroom.get_privacy_ratings().filter_by(user=user).first() #.filter_by(user=user)
+			upriv = None
+			if priv:
+				upriv = priv.rating
 
-		priv = bathroom.get_privacy_ratings().filter_by(user=user).first() #.filter_by(user=user)
-		upriv = None
-		if priv:
-			upriv = priv.rating
+			atm = bathroom.get_atmosphere_ratings().filter_by(user=user).first() #.filter_by(user=user)
+			uatm = None
+			if atm:
+				uatm = atm.rating
 
-		atm = bathroom.get_atmosphere_ratings().filter_by(user=user).first() #.filter_by(user=user)
-		uatm = None
-		if atm:
-			uatm = atm.rating
+			loc = bathroom.get_location_accessibility_ratings().filter_by(user=user).first() #.filter_by(user=user)
+			uloc = None
+			if loc:
+				uloc = loc.rating
 
-		loc = bathroom.get_location_accessibility_ratings().filter_by(user=user).first() #.filter_by(user=user)
-		uloc = None
-		if loc:
-			uloc = loc.rating
-
-		dic["user_ratings"] = {"cleanliness":uclean, "privacy":upriv, "atmosphere":uatm, "location_accessibility":uloc}
-		
+			dic["user_ratings"] = {"cleanliness":uclean, "privacy":upriv, "atmosphere":uatm, "location_accessibility":uloc}
+			
 		
 
 		

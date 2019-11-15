@@ -41,10 +41,13 @@ def home():
 
 @app.route("/api/bathrooms", methods=["GET","POST"])
 def create_a_bathroom():
-	if not "user_id" in session:
+	user = None
+	if not "user_id" in session and request.method == "POST":
 		return "Not logged in!", 400
+
+	if "user_id" in session:
+		user = server.get_user_by_id(session["user_id"])
 	
-	user = server.get_user_by_id(session["user_id"])
 	data = request.get_json()
 	if request.method == "POST":
 		result, bathroom = server.create_bathroom(data, user)
@@ -60,10 +63,13 @@ def create_a_bathroom():
 
 @app.route("/api/bathrooms/<id>", methods=["GET","POST"])
 def get_or_set_specific_bathroom(id):
-	if not "user_id" in session:
+	user = None
+	if not "user_id" in session and request.method == "POST":
 		return "Not logged in!", 400
 	
-	user = server.get_user_by_id(session["user_id"])
+	if "user_id" in session:
+		user = server.get_user_by_id(session["user_id"])
+	
 	if request.method == "GET":
 		result, bathroom = server.get_bathroom_by_id(id, user)
 		if not result:
