@@ -1,8 +1,375 @@
-
+<!DOCTYPE html>
 <html>
 <head>
-<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+  <!-- LeafletJS CSS dependencies-->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="./scripts/lib/L.Control.Locate.min.css" />
+
+  <!-- LeafletJS dependencies-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+			 integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+			 crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+		 integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+		 crossorigin=""></script>
+
+
+</head>
 <body>
-	This is where the main Vue file will be.  The server will host it.
+  <div v-cloak id="app">
+    <v-app>
+        <v-container>
+				<v-app-bar app color="indigo" dark>
+
+						<v-toolbar-title>Welp</v-toolbar-title>
+						<v-spacer></v-spacer>
+			
+						<v-dialog v-model="loginDialog" persistent max-width="600px">
+							<template v-slot:activator="{ on }">
+								<v-btn v-if="!loggedIn" dark v-on="on">Login</v-btn>
+							</template>
+							<v-card>
+								<v-card-title>
+									<span class="headline">Login</span>
+									<v-spacer></v-spacer>
+									<v-btn color="red" text @click="loginDialog = false"><v-icon>mdi-close</v-icon></v-btn>
+								</v-card-title>
+								<v-card-text>
+									<v-container>
+										<v-row>
+											<v-col cols="12" sm="6" >
+												<v-card class="pa-2" outlined >
+													<span>Login</span>
+		
+													<v-text-field label="Username*" required></v-text-field>
+													<v-text-field label="Password*" type="password" required></v-text-field>
+												</v-card>
+											</v-col>
+											<v-col cols="12" sm="6">
+												<v-card class="pa-2" outlined>
+													<span>Register</span>
+		
+													<v-text-field label="Username*" required></v-text-field>
+													<v-text-field label="Password*" type="password" required></v-text-field>
+													<v-text-field label="Password again*" type="password" required></v-text-field>
+												</v-card>
+											</v-col>
+										</v-row>
+			
+										<small>*indicates required field</small>
+									</v-container>
+			
+								</v-card-text>
+								<v-card-actions>
+									<v-row style="text-align:center">
+										<v-col cols="12" sm="6">
+											<v-btn color="blue darken-1" text @click="loginDialog = false" class="justify-center" on-click:="login()">Login</v-btn>
+										</v-col>
+										<v-col cols="12" sm="6">
+											<v-btn color="blue darken-1" text @click="loginDialog = false" class="justify-center">Register</v-btn>
+										</v-col>
+									</v-row>
+								</v-card-actions>
+							</v-card>
+						</v-dialog>
+			
+						<v-btn icon color="black">
+							<v-icon>fa-question-circle</v-icon>
+						</v-btn>
+					</v-app-bar>
+			
+				<v-content>
+					<v-container class="fill-height" fluid>
+						<v-row justify="center">
+							<v-col cols="12" sm="8" class="text-center">
+							
+								<div id="map" class="pa-2" style="width: 100%;height: 400px;" v-show="!loginDialog && !bathroomDialog"></div>
+
+								<v-btn  class="mt-4 white--text" color="indigo" v-if="!loggedIn" @click="addBathroom">
+									Add a Bathroom
+								</v-btn>
+							</v-col>
+							<v-col cols="12" sm="4" style="width: 100%;height: 100%;">
+								<v-toolbar>
+									<v-toolbar-title>Bathrooms</v-toolbar-title>
+									<v-spacer></v-spacer>
+									<v-menu v-model="filterPopup" :close-on-content-click="false" bottom left>
+										<template v-slot:activator="{ on }">
+											<v-btn icon v-on="on">
+												<v-icon>mdi-filter</v-icon>
+											</v-btn>
+										</template>
+							
+										<v-card class="pa-2">
+											<span class="title"> Filter Bathrooms</span>
+
+											<v-select
+												:items="['Single Occupancy', 'Multiple Occupancy', 'Other']"
+												label="Occupancy Type"
+												model="bathroomViewed.occupancy_type"
+											></v-select>
+															
+											<v-select
+												:items="['One Stall / Single Occupancy', '2-3 Stalls', '4-7 Stalls', '8+ Stalls']"
+												label="Number of Stalls"
+												model="bathroomViewed.stall_range_type"
+											></v-select>
+															
+											<v-select
+												:items="['Men', 'Women', 'Other']"
+												label="Gender Designation"
+												model="bathroomViewed.gender_type"
+											></v-select>
+															
+											<v-select
+												:items="['Paper Towels', 'Electric Hand Dryer', 'Electric Hand Dryer AND Paper Towels',
+												'None available', 'Other']"
+												label="Hand Drying"
+												model="bathroomViewed.hand_drying_type"
+											></v-select>
+
+											<v-btn @click="loadBathrooms">
+												Filter
+											</v-btn>
+										</v-card>
+									</v-menu>
+								</v-toolbar>
+								<template>
+									<v-card class="mx-auto" max-width="400" tile>
+										<v-dialog v-model="bathroomDialog" scrollable  persistent max-width="500px">
+											<template v-slot:activator="{ on }">
+												<v-list-item  v-for="bathroom in bathroomsToDisplay" two-line
+												@click="displayBathroomFromList(bathroom)" v-on="on" v-bind:key="bathroom.id"
+												>
+													<v-list-item-content>
+														<v-list-item-title>{{bathroom.bathroom_name}}</v-list-item-title>
+														<v-list-item-subtitle>
+																<v-rating 
+																half-increments
+																readonly dense
+																v-model="bathroom.avg_overall_rating">
+																</v-rating>
+																
+														</v-list-item-subtitle>
+													</v-list-item-content>
+												</v-list-item>
+											</template>
+											<v-card v-if="bathroomViewed !== null">
+												<v-card-title>
+													<span class="headline">{{bathroomViewed.bathroom_name}}</span>
+													<v-spacer></v-spacer>
+													<v-rating 
+													half-increments
+													readonly dense
+													v-model="bathroomViewed.avg_overall_rating">
+													</v-rating>
+													
+													
+													<v-btn color="red" text @click="exitBathroom"><v-icon>mdi-close</v-icon></v-btn>
+												</v-card-title>
+												<v-card-text>
+													<v-container>
+				
+														<div v-if="editingBathroom && bathroomEdited !== null">
+				
+															<v-text-field
+															v-model="bathroomEdited.bathroom_name"
+															label="Bathroom Title"
+															>
+															</v-text-field>
+				
+															<v-textarea v-model="bathroomEdited.description">
+																<template v-slot:label>
+																	<div>
+																		How do I get there?
+																	</div>
+																</template>
+															</v-textarea>
+				
+															<v-textarea v-model="bathroomEdited.time_availability">
+																<template v-slot:label>
+																	<div>
+																		At what times can I use it?
+																	</div>
+																</template>
+															</v-textarea>
+				
+															<v-select
+																	:items="['Single Occupancy', 'Multiple Occupancy', 'Other']"
+																label="Occupancy Type"
+																model="bathroomEdited.occupancy_type"
+															></v-select>
+															
+															<v-select
+																	:items="['One Stall / Single Occupancy', '2-3 Stalls', '4-7 Stalls', '8+ Stalls']"
+																label="Number of Stalls"
+																model="bathroomEdited.stall_range_type"
+															></v-select>
+															
+															<v-select
+																	:items="['Men', 'Women', 'Other']"
+																label="Gender Designation"
+																model="bathroomEdited.gender_type"
+															></v-select>
+															
+															<v-select
+																	:items="['Paper Towels', 'Electric Hand Dryer', 'Electric Hand Dryer AND Paper Towels',
+																	'None available', 'Other']"
+																label="Hand Drying"
+																model="bathroomEdited.hand_drying_type"
+															></v-select>
+															
+															<v-textarea v-model="bathroomEdited.notes">
+																<template v-slot:label>
+																	<div>
+																		Additional Notes
+																	</div>
+																</template>
+															</v-textarea>
+
+															<v-layout justify-center>
+																<v-card-actions>
+																	<v-btn  @click="saveBathroom">Save Bathroom</v-btn>
+																</v-card-actions>
+															</v-layout>
+									
+														</div>
+														<div v-else-if="bathroomViewed !== null">
+															<v-row>
+																<span>{{bathroomViewed.description}}</span>
+															</v-row>
+															<v-row>
+																<v-col cols="12" sm="6" >
+																	<span class="title">Cleanliness: 
+																			<v-rating v-if="loggedIn"
+																			half-increments
+																			medium dense
+																			@click="rateBathroom('cleanliness')"
+																			v-model="cleanlinessToDisplay">
+																			</v-rating>
+																			<v-rating v-else
+																			half-increments
+																			readonly medium dense
+																			v-model="bathroomViewed.avg_ratings.cleanliness">
+																			</v-rating>
+																	</span>
+																</v-col>
+																<v-col cols="12" sm="6">
+																	<span class="title">Privacy: 
+																			<v-rating v-if="loggedIn"
+																			half-increments
+																			medium dense
+																			@click="rateBathroom('privacy')"
+																			v-model="privacyToDisplay">
+																			</v-rating>
+																			<v-rating 
+																			half-increments
+																			readonly medium dense
+																			v-model="bathroomViewed.avg_ratings.privacy">
+																			</v-rating>
+																	</span>
+																</v-col>
+															</v-row>
+															<v-row>
+																<v-col cols="12" sm="6" >
+																	<span class="title">Atmosphere: 
+																			<v-rating v-if="loggedIn"
+																			half-increments
+																			medium dense
+																			@click="rateBathroom('atmosphere')"
+																			v-model="atmosphereToDisplay">
+																			</v-rating>
+																			<v-rating 
+																			half-increments
+																			readonly medium dense
+																			v-model="bathroomViewed.avg_ratings.atmosphere">
+																			</v-rating>
+																	</span>
+																</v-col>
+																<v-col cols="12" sm="6">
+																	<span class="title">Accessibility: 
+																			<v-rating v-if="loggedIn"
+																			half-increments
+																			medium dense
+																			@click="rateBathroom('accessibility')"
+																			v-model="accessibilityToDisplay">
+																			</v-rating>
+																			<v-rating 
+																			half-increments
+																			readonly medium dense
+																			v-model="bathroomViewed.avg_ratings.accessibility">
+																			</v-rating>
+																	</span>
+																</v-col>
+															</v-row>
+															<v-row v-if="bathroomViewed.time_availability != null">
+																<span class="title">When is this bathroom available for use?</span>
+																<span class="subtitle-2">{{bathroomViewed.time_availability}}</span>
+															</v-row>
+															<v-row v-if="genderCaption !== ''">
+																<span class="title">Is this bathroom for a certain gender?</span>
+																<span class="subtitle-2">{{genderCaption}}</span>
+															</v-row>
+															<v-row v-if="occupancyCaption !== ''">
+																<span class="title">Is this a single-occupancy bathroom?</span>
+																<span class="subtitle-2">{{occupancyCaption}}</span>
+															</v-row>
+															<v-row v-if="stallNumberCaption !== '' && occupancyCaption !== 'Single occupancy'">
+																<span class="title" >How many stalls does this bathroom have?</span>
+																<span class="subtitle-2">{{stallNumberCaption}}</span>
+															</v-row>
+															<v-row v-if="handDryingCaption !== ''">
+																<span class="title">What kind of hand-drying does this bathroom have?</span>
+																<span class="subtitle-2">{{handDryingCaption}}</span>
+															</v-row>
+															<v-row v-if="bathroomViewed.notes !== null">
+																<span class="title">Additional Notes:</span>
+																<span class="subtitle-2">{{bathroomViewed.notes}}</span>
+															</v-row>
+
+															<v-layout justify-center>
+																<v-card-actions>
+																	<v-btn  v-if="!loggedIn" @click="editBathroom">Edit Bathroom</v-btn>
+																</v-card-actions>
+															</v-layout>
+
+														</div>
+													</v-container>
+												</v-card-text>
+											</v-card>
+										</v-dialog>
+									</v-card>
+								</template>
+							</v-col>
+						</v-row>
+				</v-content>
+        </v-container>
+    </v-app>
+  </div>
+  
+
+
+  <!-- Vue/Vuetify dependencies -->
+  <script src="../scripts/lib/vue.js"></script>
+  <script src="../scripts/lib/vuetify.js"></script>
+
+  <!-- Leaflet/Locate Control dependencies-->
+  <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet-src.js"></script>
+  <script src="../scripts/lib/L.Control.Locate.js" ></script>
+
+  <!-- Axios dependency -->
+  <script src="../scripts/lib/axios.min.js"></script>
+
+
+
+
+  <script> var exports = {}; </script>
+  <script src='../scripts/app.js'></script>
 </body>
 </html>
