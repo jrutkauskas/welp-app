@@ -3,17 +3,30 @@ new Vue({
     el: '#app',
     vuetify: new Vuetify(),
     data: () => ({
+      logInUsername: "",
+      logInPass: "",
+      registerUsername: "",
+      registerPass: "",
+      registerPassAgain: "",
+
+      loggedIn: false,
+      userID: -1,
+
       loginDialog: false,
       bathroomDialog: false,
       filterPopup: false,
-      editingBathroom: false,
+
+      pinOnMap: false, 
+      pin: null, //This is the pin that the user uses to select the area of the new bathroom. 
+
       map: null,
+      layerGroup : null,
       xCoordinate: 40.444, //Initially set the map's center on the Cathedral of Learning.
       yCoordinate: -79.953,
-      userID: -1,
-      loggedIn: false,
+
       bathroomViewed: null,
-      bathroomsToDisplay: null,
+      bathroomsToDisplay: [],
+
 
       editingBathroom: false,
       bathroomEdited: null,
@@ -140,11 +153,11 @@ new Vue({
             sr_type = 0;
 
           //In case this was a search from the user filter, make sure to close that popup.
-          this.filterPopup = false,
+          this.filterPopup = false;
           
 
           //Make the POST call to the backend.
-           axios.post('/api/bathrooms/' + this.userID, {
+           axios.get('/api/bathrooms', {
                 min_latitude: min_lat,
                 max_latitude: max_lat,
                 min_longitude: min_lon,
@@ -158,91 +171,218 @@ new Vue({
            .then(response => {
                 //Convert JSON to object array.
                 var bathArray = JSON.parse(response);
+
                 //Sort this array by average rating, descending.
                 bathArray.sort((a, b) => (a.avg_overall_rating > b.avg_overall_rating) ? -1 : 1);
 
-                //Set this as our new bathrooms to display.
-                this.bathroomsToDisplay = bathArray;
+                this.bathroomsToDisplay = [];
+
+                for(obj of bathArray) {
+                  this.bathroomsToDisplay.push(obj);
+                }
+
+                //Clear all the old markers.
+                this.layerGroup.clearLayers();
 
                 //Then add markers on the map for each bathroom. 
-                for(bathroom in this.bathroomsToDisplay) {
-                    L.marker([bathroom.longitude, bathroom.latitude]).addTo(this.map);
+                for(bathroom of this.bathroomsToDisplay) {
+                  L.marker([bathroom.longitude, bathroom.latitude], {title: bathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
+                    //If possible, open dialog directly.
+                  });
                 }
             })
            .catch(e => {
               console.log("Failed to load bathrooms from server.");
            })
-           
-              //Test bathroom for test purposes.
-             //this.bathroomsToDisplay = [{bathroom_name: "Test bathroom", longitude: 40.441, latitude: -79.952,
-             //avg_overall_rating: 4.5, avg_ratings: {cleanliness: 3, privacy: 4.5, accessibility: 4, atmosphere: 2.5} }];
-
-           //Then add markers on the map for each bathroom found. 
-           for(bathroom of this.bathroomsToDisplay) {
-              L.marker([bathroom.longitude, bathroom.latitude]).addTo(this.map).on('click', function(e) {
-                this.bathroomViewed = bathroom;
-              });
-           }
+          
+           //Test bathrooms
+          // var bathArray = [{bathroom_name: "no", longitude: 40.445, latitude: -79.957, avg_overall_rating: 3,
+          //   user_ratings: {
+          //     cleanliness: null,
+          //     privacy: null,
+          //     atmosphere: null,
+          //     location_accessibility: null,
+          //   },
+          //   avg_ratings: {
+          //     cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+          //     privacy: null, 
+          //     atmosphere: null,
+          //     location_accessibility: null, 
+          //   }
+          // }, {bathroom_name: "2", id: 1, longitude: 40.449, latitude: -79.951, avg_overall_rating: 5,
+          //   user_ratings: {
+          //     cleanliness: null,
+          //     privacy: null,
+          //     atmosphere: null,
+          //     location_accessibility: null,
+          //   },
+          //   avg_ratings: {
+          //     cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+          //     privacy: null, 
+          //     atmosphere: null,
+          //     location_accessibility: null, 
+          //   }
+          // }, {bathroom_name: "3", longitude: 40.447, latitude: -79.963, avg_overall_rating: 4.5,
+          //   user_ratings: {
+          //     cleanliness: null,
+          //     privacy: null,
+          //     atmosphere: null,
+          //     location_accessibility: null,
+          //   },
+          //   avg_ratings: {
+          //     cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+          //     privacy: null, 
+          //     atmosphere: null,
+          //     location_accessibility: null, 
+          //   }
+          // }];
 
           
       },
       displayBathroomFromList : function(bathroom) {
+
+        this.bathroomViewed = bathroom;
+
+        //If this is a logged in user, determine which cleanliness, privacy, etc ratings to display-
+        //their own or the average for all users.
         if(this.loggedIn)
           this.setRatingsToDisplay();
 
-        this.bathroomViewed = bathroom;
+        //Make sure that the pin used for adding a new bathroom is removed from the map. 
+        if(this.pin !== null) {
+          this.pin.remove();
+          this.pin = null;
+          this.pinOnMap = false;
+        }
+
         this.bathroomDialog = true;
       },
-      attemptLogin : function(user, pass) {
 
-        //Make request to backend via POST. 
-        axios.post('/api/authenticate', {
-          params: {
-            username: user,
-            password: pass
-          }
-        })
-        .then(function (response) {
-          var json = JSON.parse(response);
+      login : function() {
+        if(this.logInUsername === "" || this.logInPass === "")
+          this.loginCaption = "Make sure you enter both a username and password.";
+        else {
+          //Make request to backend via POST. 
+          axios.post('/api/authenticate', {
+            params: {
+              username: this.logInUsername,
+              password: this.logInPass
+            }
+          })
+          .then(function (response) {
+            var json = JSON.parse(response);
 
-          this.loggedIn = true;
-          this.loginDialog = false;
-          this.userID =json.id;
-        })
-        .catch(function (error) {
-          console.log(error);
+            this.loggedIn = true;
+            this.loginCaption = "";
+            this.logInUsername = "";
+            this.registerUsername = "";
+            this.logInPass = "";
+            this.registerPass = "";
+            this.registerPassAgain = "";
 
-          //Show error message on screen.
+            this.loginDialog = false;
+            this.userID = json.id;
+            return;
+          })
+          .catch(function (error) {
+            console.log(error);
+            
 
-        });
+          });
 
-
+          this.loginCaption = "Login Failed- Check your password and try again";
+        }
+      
       },
 
-      addBathroom : function(bathroomToSave) {
+      dropPin : function() {
         //Let user add pin to map.
+
+        this.pin = L.marker(this.map.getCenter(),{
+          draggable: true
+        }).addTo(this.map);
+        
+        this.pinOnMap = true;
       },
 
-      registerUser : function(user, pass) {
-        axios.post('/api/users', {
-          params: {
-            username: user,
-            password: pass
-          }
-        })
-        .then(function (response) {
-          var json = JSON.parse(response);
+      addBathroom : function() {
+        
+        this.pinOnMap = false;
 
-          this.loggedIn = true;
-          this.loginDialog = false;
-          this.userID =json.id;
-        })
-        .catch(function (error) {
-          console.log(error);
+        //Save pin's coordinates to new bathroom obj. 
+        if(this.pin !== null)
+          var latlon = this.pin.getLatLng();
+
+        var newBathroom = {
+
+          bathroom_name: "",
+          description: "",
+          time_availability: "",
+          notes: "",
+
+          latitude: latlon.lat,
+          longitude: latlon.lng,
+
+	        occupancy_type: null,
+          hand_drying_type: null,
+          stall_range_type: null,
+          gender_type: null,
+
+          // Custom ratings given by users.  (If they rate them whle creating a new bathroom).  Don't use this if you're updating a bathroom
+          user_ratings: {
+            cleanliness: null,
+            privacy: null,
+            atmosphere: null,
+            location_accessibility: null,
+          }
+        };
+
+        this.bathroomEdited = newBathroom;
+
+        //Remove pin from map. 
+        this.pin.remove();
+        this.pin = null;
+
+        this.editingBathroom = true;
+        this.bathroomDialog = true;
+      },
+
+      registerUser : function(user, pass, passAgain) {
+        if(this.registerUsername === "" || this.registerPass === "")
+          this.loginCaption = "Make sure you enter both a username and password.";
+        else if(this.registerPass !== this.registerPassAgain)
+          this.loginCaption = "Make sure your passwords match.";
+        else {
+          axios.post('/api/users', {
+            params: {
+              username: this.registerUsername,
+              password: this.registerPass
+            }
+          })
+          .then(function (response) {
+            var json = JSON.parse(response);
+  
+            this.loggedIn = true;
+            this.loginCaption = "";
+            this.logInUsername = "";
+            this.registerUsername = "";
+            this.logInPass = "";
+            this.registerPass = "";
+            this.registerPassAgain = "";
+            this.loginDialog = false;
+            this.userID = json.id;
+            return;
+          })
+          .catch(function (error) {
+            console.log(error);
+
+  
+          });
 
           //Show error message on screen.
-
-        });
+          this.loginCaption = "User registration failed";
+        }
+        
       },
 
       editBathroom : function() {
@@ -397,6 +537,11 @@ new Vue({
         }
       },
     },
+    created: function () {
+      //Vue's list component likes to be edgy and uses the length of the array in data to determine the max #
+      //items to display in a list, so this is a way of getting around that for the moment.
+      this.bathroomsToDisplay = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+    },
     mounted: function () {
 
       var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';	
@@ -423,6 +568,8 @@ new Vue({
 
       // add location control so the user can lock on to their own location. 
       L.control.locate().addTo(this.map);
+
+      this.layerGroup = L.layerGroup().addTo(this.map);
 
       this.loadBathrooms(0, 0 ,0 , 0, null, null, null, null);
 
