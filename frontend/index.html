@@ -102,7 +102,7 @@
 								</div>
 
 							</v-col>
-							<v-col cols="12" sm="4" style="width: 100%;height: 100%;">
+							<v-col cols="12" sm="4" style="width: 100%;">
 								<v-toolbar>
 									<v-toolbar-title>Bathrooms</v-toolbar-title>
 									<v-spacer></v-spacer>
@@ -113,25 +113,28 @@
 											</v-btn>
 										</template>
 							
-										<v-card class="pa-2">
+										<v-card class="pa-2" max-width="200px">
 											<span class="title"> Filter Bathrooms</span>
 
 											<v-select
 												:items="['Single Occupancy', 'Multiple Occupancy', 'Other']"
 												label="Occupancy Type"
 												model="bathroomViewed.occupancy_type"
+												clearable
 											></v-select>
 															
 											<v-select
 												:items="['One Stall / Single Occupancy', '2-3 Stalls', '4-7 Stalls', '8+ Stalls']"
 												label="Number of Stalls"
 												model="bathroomViewed.stall_range_type"
+												clearable
 											></v-select>
 															
 											<v-select
 												:items="['Men', 'Women', 'Other']"
 												label="Gender Designation"
 												model="bathroomViewed.gender_type"
+												clearable
 											></v-select>
 															
 											<v-select
@@ -139,6 +142,7 @@
 												'None available', 'Other']"
 												label="Hand Drying"
 												model="bathroomViewed.hand_drying_type"
+												clearable
 											></v-select>
 
 											<v-btn @click="loadBathrooms">
@@ -148,24 +152,26 @@
 									</v-menu>
 								</v-toolbar>
 								<template>
-									<v-card class="mx-auto" max-width="400" tile>
+									<v-card class="mx-auto" max-width="400"  tile>
 										<v-dialog v-model="bathroomDialog" scrollable  persistent max-width="500px">
 											<template v-slot:activator="{ on }">
-												<v-list-item  v-for="bathroom in bathroomsToDisplay" two-line
-												@click="displayBathroomFromList(bathroom)" v-on="on"
-												>
-													<v-list-item-content>
-														<v-list-item-title>{{bathroom.bathroom_name}}</v-list-item-title>
-														<v-list-item-subtitle>
-																<v-rating 
-																half-increments
-																readonly dense
-																v-model="bathroom.avg_overall_rating">
-																</v-rating>
-																
-														</v-list-item-subtitle>
-													</v-list-item-content>
-												</v-list-item>
+												<v-list two-line  style="overflow-y: auto; height:70vh">
+														<v-list-item  v-for="bathroom in bathroomsToDisplay" two-line
+														@click="displayBathroomFromList(bathroom)" v-on="on"
+														>
+															<v-list-item-content>
+																<v-list-item-title>{{bathroom.bathroom_name}}</v-list-item-title>
+																<v-list-item-subtitle>
+																		<v-rating 
+																		half-increments
+																		readonly dense
+																		v-model="bathroom.avg_overall_rating">
+																		</v-rating>
+																		
+																</v-list-item-subtitle>
+															</v-list-item-content>
+														</v-list-item>
+												</v-list>
 											</template>
 											<v-card >
 												<v-card-title v-if="bathroomViewed !== null">

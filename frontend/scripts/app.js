@@ -161,83 +161,150 @@ new Vue({
           
 
           //Make the POST call to the backend.
-           axios.get('/api/bathrooms', {
-                min_latitude: min_lat,
-                max_latitude: max_lat,
-                min_longitude: min_lon,
-                max_longitude: max_lon,
+          //  axios.post('/api/getbathrooms', {
+          //       min_latitude: min_lat,
+          //       max_latitude: max_lat,
+          //       min_longitude: min_lon,
+          //       max_longitude: max_lon,
             
-                occupancy_type: o_type,
-                hand_drying_type: hd_type,
-                stall_range_type: sr_type,
-                gender_type: g_type,
-           })
-           .then(response => {
-                //Convert JSON to object array.
-                var bathArray = JSON.parse(response);
+          //       occupancy_type: o_type,
+          //       hand_drying_type: hd_type,
+          //       stall_range_type: sr_type,
+          //       gender_type: g_type,
+          //  })
+          //  .then(response => {
+          //       //Convert JSON to object array.
+          //       var bathArray = JSON.parse(response);
 
-                //Sort this array by average rating, descending.
-                bathArray.sort((a, b) => (a.avg_overall_rating > b.avg_overall_rating) ? -1 : 1);
+          //       //Sort this array by average rating, descending.
+          //       bathArray.sort((a, b) => (a.avg_overall_rating > b.avg_overall_rating) ? -1 : 1);
 
-                for(obj of bathArray) {
-                  this.bathroomsToDisplay.push(obj);
-                }
+          //       for(obj of bathArray) {
+          //         this.bathroomsToDisplay.push(obj);
+          //       }
 
-                //Clear all the old markers.
-                this.layerGroup.clearLayers();
+          //       //Clear all the old markers.
+          //       this.layerGroup.clearLayers();
 
-                //Then add markers on the map for each bathroom. 
-                for(bathroom of this.bathroomsToDisplay) {
-                  L.marker([bathroom.longitude, bathroom.latitude], {title: bathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
-                    //If possible, open dialog directly.
-                  });
-                }
-            })
-           .catch(e => {
-              console.log("Failed to load bathrooms from server.");
-           })
+          //       //Then add markers on the map for each bathroom. 
+          //       for(bathroom of this.bathroomsToDisplay) {
+          //         L.marker([bathroom.longitude, bathroom.latitude], {title: bathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
+          //           //If possible, open dialog directly.
+          //         });
+          //       }
+          //   })
+          //  .catch(e => {
+          //     console.log("Failed to load bathrooms from server.");
+          //  })
           
            //Test bathrooms
-          // var bathArray = [{bathroom_name: "no", longitude: 40.445, latitude: -79.957, avg_overall_rating: 3,
-          //   user_ratings: {
-          //     cleanliness: null,
-          //     privacy: null,
-          //     atmosphere: null,
-          //     location_accessibility: null,
-          //   },
-          //   avg_ratings: {
-          //     cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
-          //     privacy: null, 
-          //     atmosphere: null,
-          //     location_accessibility: null, 
-          //   }
-          // }, {bathroom_name: "2", id: 1, longitude: 40.449, latitude: -79.951, avg_overall_rating: 5,
-          //   user_ratings: {
-          //     cleanliness: null,
-          //     privacy: null,
-          //     atmosphere: null,
-          //     location_accessibility: null,
-          //   },
-          //   avg_ratings: {
-          //     cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
-          //     privacy: null, 
-          //     atmosphere: null,
-          //     location_accessibility: null, 
-          //   }
-          // }, {bathroom_name: "3", longitude: 40.447, latitude: -79.963, avg_overall_rating: 4.5,
-          //   user_ratings: {
-          //     cleanliness: null,
-          //     privacy: null,
-          //     atmosphere: null,
-          //     location_accessibility: null,
-          //   },
-          //   avg_ratings: {
-          //     cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
-          //     privacy: null, 
-          //     atmosphere: null,
-          //     location_accessibility: null, 
-          //   }
-          // }];
+          var bathArray = [{bathroom_name: "no", longitude: 40.445, latitude: -79.957, avg_overall_rating: 3,
+            user_ratings: {
+              cleanliness: null,
+              privacy: null,
+              atmosphere: null,
+              location_accessibility: null,
+            },
+            avg_ratings: {
+              cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+              privacy: null, 
+              atmosphere: null,
+              location_accessibility: null, 
+            }
+          }, {bathroom_name: "2", id: 1, longitude: 40.449, latitude: -79.951, avg_overall_rating: 5,
+            user_ratings: {
+              cleanliness: null,
+              privacy: null,
+              atmosphere: null,
+              location_accessibility: null,
+            },
+            avg_ratings: {
+              cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+              privacy: null, 
+              atmosphere: null,
+              location_accessibility: null, 
+            }
+          }, {bathroom_name: "3", longitude: 40.447, latitude: -79.963, avg_overall_rating: 4.5,
+            user_ratings: {
+              cleanliness: null,
+              privacy: null,
+              atmosphere: null,
+              location_accessibility: null,
+            },
+            avg_ratings: {
+              cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+              privacy: null, 
+              atmosphere: null,
+              location_accessibility: null, 
+            }
+          }, {bathroom_name: "8", longitude: 40.447, latitude: -79.963, avg_overall_rating: 4.5,
+          user_ratings: {
+            cleanliness: null,
+            privacy: null,
+            atmosphere: null,
+            location_accessibility: null,
+          },
+          avg_ratings: {
+            cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+            privacy: null, 
+            atmosphere: null,
+            location_accessibility: null, 
+          }
+        }, {bathroom_name: "7", longitude: 40.447, latitude: -79.963, avg_overall_rating: 4.5,
+        user_ratings: {
+          cleanliness: null,
+          privacy: null,
+          atmosphere: null,
+          location_accessibility: null,
+        },
+        avg_ratings: {
+          cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+          privacy: null, 
+          atmosphere: null,
+          location_accessibility: null, 
+        }
+      }, {bathroom_name: "28,000,000", longitude: 40.447, latitude: -79.963, avg_overall_rating: 4.5,
+          user_ratings: {
+            cleanliness: null,
+            privacy: null,
+            atmosphere: null,
+            location_accessibility: null,
+          },
+          avg_ratings: {
+            cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+            privacy: null, 
+            atmosphere: null,
+            location_accessibility: null, 
+          }
+        }, {bathroom_name: "helloooo", longitude: 40.447, latitude: -79.963, avg_overall_rating: 4.5,
+        user_ratings: {
+          cleanliness: null,
+          privacy: null,
+          atmosphere: null,
+          location_accessibility: null,
+        },
+        avg_ratings: {
+          cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+          privacy: null, 
+          atmosphere: null,
+          location_accessibility: null, 
+        }
+
+          }];
+
+          for(obj of bathArray) {
+            this.bathroomsToDisplay.push(obj);
+          }
+
+          //Clear all the old markers.
+          this.layerGroup.clearLayers();
+
+          //Then add markers on the map for each bathroom. 
+          for(bathroom of this.bathroomsToDisplay) {
+            L.marker([bathroom.longitude, bathroom.latitude], {title: bathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
+              //If possible, open dialog directly.
+            });
+          }
 
           
       },
@@ -266,10 +333,10 @@ new Vue({
         else {
           //Make request to backend via POST. 
           axios.post('/api/authenticate', {
-            params: {
-              username: this.logInUsername,
-              password: this.logInPass
-            }
+
+            username: this.logInUsername,
+            password: this.logInPass
+
           })
           .then(function (response) {
             var json = JSON.parse(response);
@@ -362,10 +429,9 @@ new Vue({
         //Try to register this user.
         else {
           axios.post('/api/users', {
-            params: {
-              username: this.registerUsername,
-              password: this.registerPass
-            }
+
+            username: this.registerUsername,
+            password: this.registerPass
           })
           .then(function (response) {
             var json = JSON.parse(response);
@@ -458,7 +524,6 @@ new Vue({
         else {
           //Send the newly-created bathroom to the backend.
           axios.post('api/bathrooms', {
-            id: this.bathroomEdited.id,
             bathroom_name: this.bathroomEdited.bathroom_name,
             description: this.bathroomEdited.description,
             time_availability: this.bathroomEdited,
@@ -483,7 +548,7 @@ new Vue({
 
             var newlyCreatedBathroom = JSON.parse(response);
 
-            //Add the returned bathroom to the local list.
+            //Add the newly created bathroom to the local list.
             this.bathroomsToDisplay.push(newlyCreatedBathroom);
 
             //Update the displayed bathroom for when we return to the 'view bathroom' view.
