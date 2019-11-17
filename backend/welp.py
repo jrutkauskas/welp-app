@@ -316,38 +316,40 @@ class WelpApp:
 	# on success, returns True
 	# on failure, returns False
 	def perform_ratings_from_dictionary(self, bathroom, user, dic):
-		ratings = dic["user_ratings"]
+		if "user_ratings" in dic:
+			ratings = dic["user_ratings"]
 
-		if ratings["cleanliness"] is not None:
-			clean = Rating(0, ratings["cleanliness"])
-			clean.user = user
-			clean.bathroom = bathroom
-			db.session.add(clean)
-			db.session.commit()
-		
-		if ratings["privacy"] is not None:
-			priv = Rating(1, ratings["privacy"])
-			priv.user = user
-			priv.bathroom = bathroom
-			db.session.add(priv)
-			db.session.commit()
-		
-		if ratings["atmosphere"] is not None:
-			atm = Rating(2, ratings["atmosphere"])
-			atm.user = user
-			priv.bathroom = bathroom
-			db.session.add(atm)
-			db.session.commit()
-		
-		if ratings["location_accessibility"] is not None:
-			loc = Rating(3, ratings["location_accessibility"])
-			loc.user = user
-			loc.bathroom = bathroom
-			db.session.add(loc)
-			db.session.commit()
+			if ratings["cleanliness"] is not None:
+				clean = Rating(0, ratings["cleanliness"])
+				clean.user = user
+				clean.bathroom = bathroom
+				db.session.add(clean)
+				db.session.commit()
+			
+			if ratings["privacy"] is not None:
+				priv = Rating(1, ratings["privacy"])
+				priv.user = user
+				priv.bathroom = bathroom
+				db.session.add(priv)
+				db.session.commit()
+			
+			if ratings["atmosphere"] is not None:
+				atm = Rating(2, ratings["atmosphere"])
+				atm.user = user
+				priv.bathroom = bathroom
+				db.session.add(atm)
+				db.session.commit()
+			
+			if ratings["location_accessibility"] is not None:
+				loc = Rating(3, ratings["location_accessibility"])
+				loc.user = user
+				loc.bathroom = bathroom
+				db.session.add(loc)
+				db.session.commit()
 
 
 		return True
+
 
 	# takes in a User (database) object, and returns a UserResponse dict on success
 	# on failure, returns None

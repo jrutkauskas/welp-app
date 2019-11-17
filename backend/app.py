@@ -50,7 +50,7 @@ def create_a_bathroom():
 	
 	data = request.get_json()
 	if request.method == "POST":
-		result, bathroom = server.create_bathroom(data, user)
+		result, bathroom, db_obj= server.create_bathroom(data, user)
 		if not result:
 			return bathroom, 400
 		return json.dumps(bathroom)
