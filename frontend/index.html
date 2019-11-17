@@ -42,22 +42,23 @@
 								</v-card-title>
 								<v-card-text>
 									<v-container>
+										<span class="red--text subtitle-1 font-weight-bold">{{loginCaption}}</span>
 										<v-row>
 											<v-col cols="12" sm="6" >
 												<v-card class="pa-2" outlined >
 													<span>Login</span>
 		
-													<v-text-field label="Username*" required></v-text-field>
-													<v-text-field label="Password*" type="password" required></v-text-field>
+													<v-text-field label="Username*" :maxlength="50" v-model="logInUsername" required></v-text-field>
+													<v-text-field label="Password*" :maxlength="200" v-model="logInPass" type="password" required></v-text-field>
 												</v-card>
 											</v-col>
 											<v-col cols="12" sm="6">
 												<v-card class="pa-2" outlined>
 													<span>Register</span>
 		
-													<v-text-field label="Username*" required></v-text-field>
-													<v-text-field label="Password*" type="password" required></v-text-field>
-													<v-text-field label="Password again*" type="password" required></v-text-field>
+													<v-text-field label="Username*" :maxlength="50" v-model="registerUsername" required></v-text-field>
+													<v-text-field label="Password*" :maxlength="200" v-model="registerPass" type="password" required></v-text-field>
+													<v-text-field label="Password again*" :maxlength="200" v-model="registerPassAgain" type="password" required></v-text-field>
 												</v-card>
 											</v-col>
 										</v-row>
@@ -69,10 +70,10 @@
 								<v-card-actions>
 									<v-row style="text-align:center">
 										<v-col cols="12" sm="6">
-											<v-btn color="blue darken-1" text @click="loginDialog = false" class="justify-center" on-click:="login()">Login</v-btn>
+											<v-btn color="blue darken-1" text @click="login()" class="justify-center">Login</v-btn>
 										</v-col>
 										<v-col cols="12" sm="6">
-											<v-btn color="blue darken-1" text @click="loginDialog = false" class="justify-center">Register</v-btn>
+											<v-btn color="blue darken-1" text @click="registerUser()" class="justify-center">Register</v-btn>
 										</v-col>
 									</v-row>
 								</v-card-actions>
@@ -91,9 +92,15 @@
 							
 								<div id="map" class="pa-2" style="width: 100%;height: 400px;" v-show="!loginDialog && !bathroomDialog"></div>
 
-								<v-btn  class="mt-4 white--text" color="indigo" v-if="!loggedIn" @click="addBathroom">
-									Add a Bathroom
-								</v-btn>
+								<div v-if="loggedIn">
+									<v-btn v-if="!pinOnMap"  class="mt-4 white--text" color="indigo" @click="dropPin">
+										Add a Bathroom
+									</v-btn>
+									<v-btn v-else class="mt-4 white--text" color="indigo" @click="addBathroom">
+										Enter Details
+									</v-btn>
+								</div>
+
 							</v-col>
 							<v-col cols="12" sm="4" style="width: 100%;height: 100%;">
 								<v-toolbar>
@@ -145,7 +152,7 @@
 										<v-dialog v-model="bathroomDialog" scrollable  persistent max-width="500px">
 											<template v-slot:activator="{ on }">
 												<v-list-item  v-for="bathroom in bathroomsToDisplay" two-line
-												@click="displayBathroomFromList(bathroom)" v-on="on" v-bind:key="bathroom.id"
+												@click="displayBathroomFromList(bathroom)" v-on="on"
 												>
 													<v-list-item-content>
 														<v-list-item-title>{{bathroom.bathroom_name}}</v-list-item-title>
@@ -160,8 +167,8 @@
 													</v-list-item-content>
 												</v-list-item>
 											</template>
-											<v-card v-if="bathroomViewed !== null">
-												<v-card-title>
+											<v-card >
+												<v-card-title v-if="bathroomViewed !== null">
 													<span class="headline">{{bathroomViewed.bathroom_name}}</span>
 													<v-spacer></v-spacer>
 													<v-rating 
@@ -173,18 +180,18 @@
 													
 													<v-btn color="red" text @click="exitBathroom"><v-icon>mdi-close</v-icon></v-btn>
 												</v-card-title>
-												<v-card-text>
+												<v-card-text v-if="bathroomViewed !== null">
 													<v-container>
 				
 														<div v-if="editingBathroom && bathroomEdited !== null">
 				
 															<v-text-field
 															v-model="bathroomEdited.bathroom_name"
-															label="Bathroom Title"
+															label="Bathroom Title" :maxlength="120"
 															>
 															</v-text-field>
 				
-															<v-textarea v-model="bathroomEdited.description">
+															<v-textarea v-model="bathroomEdited.description" :maxlength="600">
 																<template v-slot:label>
 																	<div>
 																		How do I get there?
@@ -192,7 +199,7 @@
 																</template>
 															</v-textarea>
 				
-															<v-textarea v-model="bathroomEdited.time_availability">
+															<v-textarea v-model="bathroomEdited.time_availability" :maxlength="300">
 																<template v-slot:label>
 																	<div>
 																		At what times can I use it?
@@ -207,7 +214,7 @@
 															></v-select>
 															
 															<v-select
-																	:items="['One Stall / Single Occupancy', '2-3 Stalls', '4-7 Stalls', '8+ Stalls']"
+																:items="['One Stall / Single Occupancy', '2-3 Stalls', '4-7 Stalls', '8+ Stalls']"
 																label="Number of Stalls"
 																model="bathroomEdited.stall_range_type"
 															></v-select>
@@ -225,7 +232,7 @@
 																model="bathroomEdited.hand_drying_type"
 															></v-select>
 															
-															<v-textarea v-model="bathroomEdited.notes">
+															<v-textarea v-model="bathroomEdited.notes" :maxlength="600">
 																<template v-slot:label>
 																	<div>
 																		Additional Notes
@@ -335,7 +342,7 @@
 
 															<v-layout justify-center>
 																<v-card-actions>
-																	<v-btn  v-if="!loggedIn" @click="editBathroom">Edit Bathroom</v-btn>
+																	<v-btn  v-if="loggedIn" @click="editBathroom">Edit Bathroom</v-btn>
 																</v-card-actions>
 															</v-layout>
 
