@@ -39,27 +39,34 @@ def home():
 	#return "Server Works!"
 	return app.send_static_file('index.html')
 
-@app.route("/api/bathrooms", methods=["GET","POST"])
+@app.route("/api/bathrooms", methods=["POST"])
 def create_a_bathroom():
 	user = None
-	if not "user_id" in session and request.method == "POST":
+	if not "user_id" in session:
 		return "Not logged in!", 400
 
 	if "user_id" in session:
 		user = server.get_user_by_id(session["user_id"])
 	
 	data = request.get_json()
-	if request.method == "POST":
-		result, bathroom = server.create_bathroom(data, user)
-		if not result:
-			return bathroom, 400
-		return json.dumps(bathroom)
-	else:
-		result, bathrooms = server.get_bathrooms_based_on_params(data,user)
-		if not result:
-			return bathrooms, 400
-		return json.dumps(bathrooms)
+	result, bathroom, db_obj= server.create_bathroom(data, user)
+	if not result:
+		return bathroom, 400
+	return json.dumps(bathroom)
+	
 	#return "Not implemented, would return bathrooms based on POSTed params", 404
+
+@app.route("/api/getbathrooms", methods=["POST"])
+def find_bathroom():
+	user = None
+	if "user_id" in session:
+		user = server.get_user_by_id(session["user_id"])
+	
+	data = request.get_json()
+	result, bathrooms = server.get_bathrooms_based_on_params(data,user)
+	if not result:
+		return bathrooms, 400
+	return json.dumps(bathrooms)
 
 @app.route("/api/bathrooms/<id>", methods=["GET","POST"])
 def get_or_set_specific_bathroom(id):
