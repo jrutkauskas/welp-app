@@ -48,17 +48,17 @@
 												<v-card class="pa-2" outlined >
 													<span>Login</span>
 		
-													<v-text-field label="Username*"  v-model="logInUsername" required></v-text-field>
-													<v-text-field label="Password*" v-model="logInPass" type="password" required></v-text-field>
+													<v-text-field label="Username*" :maxlength="50" v-model="logInUsername" required></v-text-field>
+													<v-text-field label="Password*" :maxlength="200" v-model="logInPass" type="password" required></v-text-field>
 												</v-card>
 											</v-col>
 											<v-col cols="12" sm="6">
 												<v-card class="pa-2" outlined>
 													<span>Register</span>
 		
-													<v-text-field label="Username*" v-model="registerUsername" required></v-text-field>
-													<v-text-field label="Password*" v-model="registerPass" type="password" required></v-text-field>
-													<v-text-field label="Password again*" v-model="registerPassAgain" type="password" required></v-text-field>
+													<v-text-field label="Username*" :maxlength="50" v-model="registerUsername" required></v-text-field>
+													<v-text-field label="Password*" :maxlength="200" v-model="registerPass" type="password" required></v-text-field>
+													<v-text-field label="Password again*" :maxlength="200" v-model="registerPassAgain" type="password" required></v-text-field>
 												</v-card>
 											</v-col>
 										</v-row>
@@ -187,11 +187,11 @@
 				
 															<v-text-field
 															v-model="bathroomEdited.bathroom_name"
-															label="Bathroom Title"
+															label="Bathroom Title" :maxlength="120"
 															>
 															</v-text-field>
 				
-															<v-textarea v-model="bathroomEdited.description">
+															<v-textarea v-model="bathroomEdited.description" :maxlength="600">
 																<template v-slot:label>
 																	<div>
 																		How do I get there?
@@ -199,7 +199,7 @@
 																</template>
 															</v-textarea>
 				
-															<v-textarea v-model="bathroomEdited.time_availability">
+															<v-textarea v-model="bathroomEdited.time_availability" :maxlength="300">
 																<template v-slot:label>
 																	<div>
 																		At what times can I use it?
@@ -214,7 +214,7 @@
 															></v-select>
 															
 															<v-select
-																	:items="['One Stall / Single Occupancy', '2-3 Stalls', '4-7 Stalls', '8+ Stalls']"
+																:items="['One Stall / Single Occupancy', '2-3 Stalls', '4-7 Stalls', '8+ Stalls']"
 																label="Number of Stalls"
 																model="bathroomEdited.stall_range_type"
 															></v-select>
@@ -232,7 +232,7 @@
 																model="bathroomEdited.hand_drying_type"
 															></v-select>
 															
-															<v-textarea v-model="bathroomEdited.notes">
+															<v-textarea v-model="bathroomEdited.notes" :maxlength="600">
 																<template v-slot:label>
 																	<div>
 																		Additional Notes

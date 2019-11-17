@@ -134,6 +134,7 @@ new Vue({
             o_type = this.convertOccupancy(this.bathroomViewed.occupancy_type);
             sr_type = this.convertStallRange(this.bathroomViewed.stall_range_type);
             g_type = this.convertGender(this.bathroomViewed.gender_type);
+          //If this is the initial load, then all of the search criteria should be null.
           } else {
             hd_type = null;
             o_type = null;
@@ -154,6 +155,9 @@ new Vue({
 
           //In case this was a search from the user filter, make sure to close that popup.
           this.filterPopup = false;
+
+          //Clear the list of bathrooms before repopulating it.
+          this.bathroomsToDisplay = [];
           
 
           //Make the POST call to the backend.
@@ -174,8 +178,6 @@ new Vue({
 
                 //Sort this array by average rating, descending.
                 bathArray.sort((a, b) => (a.avg_overall_rating > b.avg_overall_rating) ? -1 : 1);
-
-                this.bathroomsToDisplay = [];
 
                 for(obj of bathArray) {
                   this.bathroomsToDisplay.push(obj);
@@ -315,6 +317,7 @@ new Vue({
 
         var newBathroom = {
 
+          id: -1,
           bathroom_name: "",
           description: "",
           time_availability: "",
@@ -348,10 +351,15 @@ new Vue({
       },
 
       registerUser : function(user, pass, passAgain) {
+
+        //Ensure the user has entered both a username and password.
         if(this.registerUsername === "" || this.registerPass === "")
           this.loginCaption = "Make sure you enter both a username and password.";
+        //Ensure the user has entered matching passwords.
         else if(this.registerPass !== this.registerPassAgain)
           this.loginCaption = "Make sure your passwords match.";
+
+        //Try to register this user.
         else {
           axios.post('/api/users', {
             params: {
@@ -361,14 +369,16 @@ new Vue({
           })
           .then(function (response) {
             var json = JSON.parse(response);
-  
-            this.loggedIn = true;
+
+            //Clear out all the login/registration info.
             this.loginCaption = "";
             this.logInUsername = "";
             this.registerUsername = "";
             this.logInPass = "";
             this.registerPass = "";
             this.registerPassAgain = "";
+
+            this.loggedIn = true;
             this.loginDialog = false;
             this.userID = json.id;
             return;
@@ -385,11 +395,13 @@ new Vue({
         
       },
 
+      //Switch the view bathroom dialog to the edit bathroom dialog.
       editBathroom : function() {
         this.bathroomEdited = this.bathroomViewed;
         this.editingBathroom = true;
       },
 
+      //Exit the edit or view bathroom dialogs.
       exitBathroom: function() {
         this.editingBathroom = false;
         this.bathroomDialog = false;
@@ -404,32 +416,86 @@ new Vue({
         this.bathroomEdited.stall_range_type = this.convertStallRange(this.bathroomEdited.stall_range_type);
         this.bathroomEdited.gender_type = this.convertGender(this.bathroomEdited.gender_type);
 
-        //Send the edited bathroom to the backend.
-        axios.post('api/bathrooms/' + this.userID, {
-          id: this.bathroomEdited.id,
-	        bathroom_name: this.bathroomEdited.bathroom_name,
-	        description: this.bathroomEdited.description,
-	        time_availability: this.bathroomEdited,
-	        notes: this.bathroomEdited.notes,
+        //If we're editing an existing bathroom....
+        if(this.bathroomEdited.id !== -1) {
+          //Send the edited bathroom to the backend.
+          axios.post('api/bathrooms/' + this.bathroomEdited.id, {
+            id: this.bathroomEdited.id,
+            bathroom_name: this.bathroomEdited.bathroom_name,
+            description: this.bathroomEdited.description,
+            time_availability: this.bathroomEdited,
+            notes: this.bathroomEdited.notes,
 
-          latitude: this.bathroomEdited.latitude,
-          longitude: this.bathroomEdited.longitude,
+            latitude: this.bathroomEdited.latitude,
+            longitude: this.bathroomEdited.longitude,
 
-          occupancy_type: this.bathroomEdited.occupancy_type,
-          hand_drying_type: this.bathroomEdited.hand_drying_type,
-          stall_range_type: this.bathroomEdited.stall_range_type,
-          gender_type: this.bathroomEdited.gender_type
-        })
-        .then(response => {
+            occupancy_type: this.bathroomEdited.occupancy_type,
+            hand_drying_type: this.bathroomEdited.hand_drying_type,
+            stall_range_type: this.bathroomEdited.stall_range_type,
+            gender_type: this.bathroomEdited.gender_type
+          })
+          .then(response => {
 
-            //Update the displayed bathroom. 
+            //Update the displayed bathroom for when we return to the 'view bathroom' view.
             this.bathroomViewed = this.bathroomEdited;
-
             this.editingBathroom = false;
-        })
-        .catch(e => {
-              this.errors.push(e)
-        });
+
+            
+            //Find the bathroom as it's stored locally and update its ratings. 
+            for(let i = 0; i < this.bathroomsToDisplay.length; i++) {
+              if(this.bathroomsToDisplay[i].id === this.bathroomEdited.id) {
+                this.bathroomsToDisplay.$set(i, this.bathroomEdited);
+                break;
+              }
+            }
+
+          })
+          .catch(e => {
+            this.errors.push(e)
+          });
+        }
+        //If we're creating a new bathroom...
+        else {
+          //Send the newly-created bathroom to the backend.
+          axios.post('api/bathrooms', {
+            id: this.bathroomEdited.id,
+            bathroom_name: this.bathroomEdited.bathroom_name,
+            description: this.bathroomEdited.description,
+            time_availability: this.bathroomEdited,
+            notes: this.bathroomEdited.notes,
+
+            latitude: this.bathroomEdited.latitude,
+            longitude: this.bathroomEdited.longitude,
+
+            occupancy_type: this.bathroomEdited.occupancy_type,
+            hand_drying_type: this.bathroomEdited.hand_drying_type,
+            stall_range_type: this.bathroomEdited.stall_range_type,
+            gender_type: this.bathroomEdited.gender_type,
+
+            user_ratings: {
+              cleanliness: null,
+              privacy: null,
+              atmosphere: null,
+              location_accessibility: null,
+            }
+          })
+          .then(response => {
+
+            var newlyCreatedBathroom = JSON.parse(response);
+
+            //Add the returned bathroom to the local list.
+            this.bathroomsToDisplay.push(newlyCreatedBathroom);
+
+            //Update the displayed bathroom for when we return to the 'view bathroom' view.
+            this.bathroomViewed = newlyCreatedBathroom;
+            this.editingBathroom = false;
+
+          })
+          .catch(e => {
+            this.errors.push(e)
+          });
+        }
+        
       },
 
       rateBathroom : function(featureRated) {
@@ -465,14 +531,20 @@ new Vue({
             rating_type: feature,
         
             rating: value,
-            bathroom_id : this.bathroomToDisplay.id,
+            bathroom_id : this.bathroomViewed.id,
 
           })
           .then(response => {
-              //Do nothing.
+              //Find the bathroom as it's stored locally and update its ratings. 
+              for(let i = 0; i < this.bathroomsToDisplay.length; i++) {
+                if(this.bathroomsToDisplay[i].id === this.bathroomViewed.id) {
+                  this.bathroomsToDisplay.$set(i, this.bathroomViewed);
+                  break;
+                }
+              }
           })
           .catch(e => {
-                this.errors.push(e)
+            this.errors.push(e)
           });
         
       },
@@ -540,7 +612,8 @@ new Vue({
     created: function () {
       //Vue's list component likes to be edgy and uses the length of the array in data to determine the max #
       //items to display in a list, so this is a way of getting around that for the moment.
-      this.bathroomsToDisplay = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+      this.bathroomsToDisplay = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
     },
     mounted: function () {
 
@@ -562,7 +635,7 @@ new Vue({
       this.map = new L.Map('map', {
           layers: [mapbox],
           center: [this.xCoordinate, this.yCoordinate],
-          zoom: 17,
+          zoom: 16,
           zoomControl: true
       });
 
