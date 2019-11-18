@@ -27,6 +27,11 @@ new Vue({
       bathroomViewed: null,
       bathroomsToDisplay: [],
 
+      filterOccupancy: null,
+      filterGender: null, 
+      filterStallRange: null,
+      filterHandDrying: null,
+
 
       editingBathroom: false,
       bathroomEdited: null,
@@ -128,19 +133,12 @@ new Vue({
       loadBathrooms : function() {
           var min_lat, max_lat, min_lon, max_lon, o_type, hd_type, sr_type, g_type;
 
-          //Convert strings for each search criteria back into numbers.
-          if(this.bathroomViewed !== null) {
-            hd_type = this.convertHandDrying(this.bathroomViewed.hand_drying_type);
-            o_type = this.convertOccupancy(this.bathroomViewed.occupancy_type);
-            sr_type = this.convertStallRange(this.bathroomViewed.stall_range_type);
-            g_type = this.convertGender(this.bathroomViewed.gender_type);
-          //If this is the initial load, then all of the search criteria should be null.
-          } else {
-            hd_type = null;
-            o_type = null;
-            sr_type = null;
-            g_type = null;
-          }
+ 
+          hd_type = this.convertHandDrying(this.filterHandDrying);
+          o_type = this.convertOccupancy(this.filterOccupancy);
+          sr_type = this.convertStallRange(this.filterStallRange);
+          g_type = this.convertGender(this.filterGender);
+
 
           //Get min and max for latitude and longitude.
           min_lat = this.map.getBounds().getSouth();
@@ -174,7 +172,7 @@ new Vue({
            })
            .then(response => {
                 //Convert JSON to object array.
-                var bathArray = JSON.parse(response);
+                var bathArray = response.data;
 
                 //Sort this array by average rating, descending.
                 bathArray.sort((a, b) => (a.avg_overall_rating > b.avg_overall_rating) ? -1 : 1);
@@ -189,7 +187,7 @@ new Vue({
                 //Then add markers on the map for each bathroom. 
                 for(bathroom of this.bathroomsToDisplay) {
                   L.marker([bathroom.longitude, bathroom.latitude], {title: bathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
-                    //If possible, open dialog directly.
+                    displayBathroomFromMap(this.getLatLng().lng, this.getLatLng().lat);
                   });
                 }
             })
@@ -206,7 +204,7 @@ new Vue({
           //     location_accessibility: null,
           //   },
           //   avg_ratings: {
-          //     cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+          //     cleanliness: null, 
           //     privacy: null, 
           //     atmosphere: null,
           //     location_accessibility: null, 
@@ -219,17 +217,33 @@ new Vue({
           //     location_accessibility: null,
           //   },
           //   avg_ratings: {
-          //     cleanliness: null, // Will be a float 1.0-5.0 inclusive or null if no ratings have been provided
+          //     cleanliness: null, 
           //     privacy: null, 
           //     atmosphere: null,
           //     location_accessibility: null, 
           //   }
           // }];
-
-          
-
           
       },
+      displayBathroomFromMap : function(latitude, longitude) {
+        let bathroom = null;
+        let i = 0;
+
+        //Find bathroom to display from its coordinates.
+        while(this.bathroomsToDisplay[i] !== undefined) {
+          console.log(this.bathroomsToDisplay[i].latitude + ", " + this.bathroomsToDisplay[i].longitude);
+          if(this.bathroomsToDisplay[i].latitude === latitude && this.bathroomsToDisplay[i].longitude === longitude) {
+            bathroom = this.bathroomsToDisplay[i];
+            break;
+          }
+          i++;
+        }
+
+        //Display that bathroom.
+        if(bathroom !== null)
+          this.displayBathroomFromList(bathroom);
+      },
+
       displayBathroomFromList : function(bathroom) {
 
         this.bathroomViewed = bathroom;
@@ -261,7 +275,7 @@ new Vue({
 
           })
           .then(function (response) {
-            var json = JSON.parse(response);
+            var json = response.data;
 
             this.loggedIn = true;
             this.loginCaption = "";
@@ -356,7 +370,7 @@ new Vue({
             password: this.registerPass
           })
           .then(function (response) {
-            var json = JSON.parse(response);
+            var json = response.data
 
             //Clear out all the login/registration info.
             this.loginCaption = "";
@@ -468,10 +482,15 @@ new Vue({
           })
           .then(response => {
 
-            var newlyCreatedBathroom = JSON.parse(response);
+            var newlyCreatedBathroom = response.data;
 
             //Add the newly created bathroom to the local list.
             this.bathroomsToDisplay.push(newlyCreatedBathroom);
+
+            //Add the newly created bathroom to the map. 
+            L.marker([newlyCreatedBathroom.longitude, newlyCreatedBathroom.latitude], {title: newlyCreatedBathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
+              //If possible, open dialog directly.
+            });
 
             //Update the displayed bathroom for when we return to the 'view bathroom' view.
             this.bathroomViewed = newlyCreatedBathroom;
@@ -537,7 +556,7 @@ new Vue({
       },
 
       convertHandDrying : function(hd_string) {
-        switch(this.bathroomViewed.hand_drying_type) {
+        switch(hd_string) {
           case "Paper Towels":
             return 0;
           case "Electric Hand Dryer":
@@ -601,6 +620,9 @@ new Vue({
       //items to display in a list, so this is a way of getting around that for the moment.
       this.bathroomsToDisplay = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
       {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+
+      window.loadBathrooms = this.loadBathrooms;
+      window.displayBathroomFromMap = this.displayBathroomFromMap;
     },
     mounted: function () {
 
@@ -633,5 +655,14 @@ new Vue({
 
       this.loadBathrooms(0, 0 ,0 , 0, null, null, null, null);
 
+      //Whenever the map moves, reload the bathrooms. 
+      this.map.on('moveend', function(e) {
+        loadBathrooms();
+      });
+
+      //Whenever the map's zoom changes, reload the bathrooms. 
+      this.map.on('resize', function(e) {
+        loadBathrooms();
+      });
     }
 })

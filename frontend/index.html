@@ -119,21 +119,21 @@
 											<v-select
 												:items="['Single Occupancy', 'Multiple Occupancy', 'Other']"
 												label="Occupancy Type"
-												model="bathroomViewed.occupancy_type"
+												model="filterOccupancy"
 												clearable
 											></v-select>
 															
 											<v-select
 												:items="['One Stall / Single Occupancy', '2-3 Stalls', '4-7 Stalls', '8+ Stalls']"
 												label="Number of Stalls"
-												model="bathroomViewed.stall_range_type"
+												model="filterStallRange"
 												clearable
 											></v-select>
 															
 											<v-select
 												:items="['Men', 'Women', 'Other']"
 												label="Gender Designation"
-												model="bathroomViewed.gender_type"
+												model="filterGender"
 												clearable
 											></v-select>
 															
@@ -141,7 +141,7 @@
 												:items="['Paper Towels', 'Electric Hand Dryer', 'Electric Hand Dryer AND Paper Towels',
 												'None available', 'Other']"
 												label="Hand Drying"
-												model="bathroomViewed.hand_drying_type"
+												model="filterHandDrying"
 												clearable
 											></v-select>
 
