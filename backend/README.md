@@ -4,6 +4,9 @@
 
 Install python and pip however you usually install software on your computer
 
+First, run `pip install pyOpenSSL==17.5.0`
+
+
 Then, to install all the libraries needed for this, run `pip install -r requirements.txt` from this `backend` folder.
 
 This should install all the libraries needed.  If you get an error saying some module wasn't installed... you can just run `pip install <that module>` to install whatever is missing.
