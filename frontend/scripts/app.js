@@ -290,9 +290,15 @@ new Vue({
             return;
           })
           .catch(function (error) {
-            console.log(error);
-            
+            console.log(error.response);
 
+            if(error.response) {
+              console.log(error.response.data);
+              console.log(error.response.status);
+            }
+            else
+              console.log(error);
+          
           });
 
           this.loginCaption = "Login Failed- Check your password and try again";
@@ -365,7 +371,6 @@ new Vue({
         //Try to register this user.
         else {
           axios.post('/api/users', {
-
             username: this.registerUsername,
             password: this.registerPass
           })
@@ -386,9 +391,12 @@ new Vue({
             return;
           })
           .catch(function (error) {
-            console.log(error);
+            console.log(error.response);
 
-  
+            if(error.response) {
+              console.log(error.response.data);
+              console.log(error.response.status);
+            }
           });
 
           //Show error message on screen.

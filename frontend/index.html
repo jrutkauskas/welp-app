@@ -175,16 +175,23 @@
 											</template>
 											<v-card >
 												<v-card-title v-if="bathroomViewed !== null">
-													<span class="headline">{{bathroomViewed.bathroom_name}}</span>
-													<v-spacer></v-spacer>
-													<v-rating 
-													half-increments
-													readonly dense
-													v-model="bathroomViewed.avg_overall_rating">
-													</v-rating>
+													
+													<v-row>
+														<span class="headline">{{bathroomViewed.bathroom_name}}</span>
+														<v-spacer></v-spacer>
+														<v-btn color="red" text @click="exitBathroom"><v-icon>mdi-close</v-icon></v-btn>
+													</v-row>
+
+													<v-row>
+														<span class="title">Average Rating: </span>
+														<v-rating 
+														half-increments
+														readonly dense
+														v-model="bathroomViewed.avg_overall_rating">
+														</v-rating>
+													</v-row>
 													
 													
-													<v-btn color="red" text @click="exitBathroom"><v-icon>mdi-close</v-icon></v-btn>
 												</v-card-title>
 												<v-card-text v-if="bathroomViewed !== null">
 													<v-container>
@@ -254,9 +261,9 @@
 									
 														</div>
 														<div v-else-if="bathroomViewed !== null">
-															<v-row>
-																<span>{{bathroomViewed.description}}</span>
-															</v-row>
+
+															<p class="subtitle-1 black--text">{{bathroomViewed.description}}</p>
+
 															<v-row>
 																<v-col cols="12" sm="6" >
 																	<span class="title">Cleanliness: 
@@ -321,30 +328,30 @@
 																	</span>
 																</v-col>
 															</v-row>
-															<v-row v-if="bathroomViewed.time_availability != null">
-																<span class="title">When is this bathroom available for use?</span>
-																<span class="subtitle-2">{{bathroomViewed.time_availability}}</span>
-															</v-row>
-															<v-row v-if="genderCaption !== ''">
-																<span class="title">Is this bathroom for a certain gender?</span>
-																<span class="subtitle-2">{{genderCaption}}</span>
-															</v-row>
-															<v-row v-if="occupancyCaption !== ''">
-																<span class="title">Is this a single-occupancy bathroom?</span>
-																<span class="subtitle-2">{{occupancyCaption}}</span>
-															</v-row>
-															<v-row v-if="stallNumberCaption !== '' && occupancyCaption !== 'Single occupancy'">
-																<span class="title" >How many stalls does this bathroom have?</span>
-																<span class="subtitle-2">{{stallNumberCaption}}</span>
-															</v-row>
-															<v-row v-if="handDryingCaption !== ''">
-																<span class="title">What kind of hand-drying does this bathroom have?</span>
-																<span class="subtitle-2">{{handDryingCaption}}</span>
-															</v-row>
-															<v-row v-if="bathroomViewed.notes !== null">
-																<span class="title">Additional Notes:</span>
-																<span class="subtitle-2">{{bathroomViewed.notes}}</span>
-															</v-row>
+															<div v-if="bathroomViewed.time_availability != null">
+																<p class="title">When is this bathroom available for use?</p>
+																<p class="subtitle-1 black--text">{{bathroomViewed.time_availability}}</p>
+															</div>
+															<div v-if="genderCaption !== ''">
+																<p class="title">Is this bathroom for a certain gender?</p>
+																<p class="subtitle-1 black--text">{{genderCaption}}</p>
+															</div>
+															<div v-if="occupancyCaption !== ''">
+																<p class="title">Is this a single-occupancy bathroom?</p>
+																<p class="subtitle-1 black--text">{{occupancyCaption}}</p>
+															</div>
+															<div v-if="stallNumberCaption !== '' && occupancyCaption !== 'Single occupancy'">
+																<p class="title" >How many stalls does this bathroom have?</p>
+																<p class="subtitle-1 black--text">{{stallNumberCaption}}</p>
+															</div>
+															<div v-if="handDryingCaption !== ''">
+																<p class="title">What kind of hand-drying does this bathroom have?</p>
+																<p class="subtitle-1 black--text">{{handDryingCaption}}</p>
+															</div>
+															<div v-if="bathroomViewed.notes !== null">
+																<p class="title">Additional Notes:</p>
+																<p class="subtitle-1 black--text">{{bathroomViewed.notes}}</p>
+															</div>
 
 															<v-layout justify-center>
 																<v-card-actions>
