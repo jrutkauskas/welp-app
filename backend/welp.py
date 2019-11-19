@@ -378,8 +378,9 @@ class WelpApp:
 		bathroom.time_availability = dic["time_availability"]
 		bathroom.notes = dic["notes"]
 
-		bathroom.latitude = dic["latitude"]
-		bathroom.longitude = dic["longitude"]
+
+		bathroom.latitude = float(dic["latitude"])
+		bathroom.longitude = float(dic["longitude"])
 
 		bathroom.occupancy_type = dic["occupancy_type"]
 		bathroom.hand_drying_type = dic["hand_drying_type"]
