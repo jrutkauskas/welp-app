@@ -42,66 +42,14 @@ new Vue({
       accessibilityToDisplay: null,
       atmosphereToDisplay: null,
 
-    }),
-    computed: {
-      genderCaption: function () {
-        switch(this.bathroomViewed.gender_type) {
-          case 0:
-            return "Gender Agnostic";
-          case 1:
-            return "Men";
-          case 2:
-            return "Women";
-          case 3:
-            return "Other";
-          default:
-            return "";  
-        }
-      },
-      occupancyCaption: function () {
-        switch(this.bathroomViewed.occupancy_type) {
-          case 0:
-            return "Single Occupancy";
-          case 1:
-            return "Multiple Occupancy";
-          case 2:
-            return "Other";
-          default:
-              return "";  
-        }
-      },
-      stallNumberCaption: function () {
-        switch(this.bathroomViewed.stall_range_type) {
-          case 0:
-            return "One Stall";
-          case 1:
-            return "2-3 Stalls";
-          case 2:
-            return "4-7 Stalls";
-          case 3:
-            return "8+ Stalls";
-          default:
-            return "";  
-        }
-      },
-      handDryingCaption: function () {
-        switch(this.bathroomViewed.hand_drying_type) {
-          case 0:
-            return "Paper Towels";
-          case 1:
-            return "Electric Hand Dryer";
-          case 2:
-            return "Electric Hand Dryer AND Paper Towels";
-          case 3:
-            return "None Available";
-          case 4:
-            return "Other";
-          default:
-              return "";  
-        }
-      }
-    },
+      //String versions of the values to display. 
+      occupancyToDisplay: null,
+      genderToDisplay: null,
+      stallNumberToDisplay: null,
+      handDryingToDisplay: null,
 
+    }),
+  
     methods: {
 
       //Determine whether to show a user's personal ratings or the average rating for a bathroom's features.
@@ -129,6 +77,12 @@ new Vue({
           this.atmosphereToDisplay = this.bathroomViewed.user_ratings.atmosphere;
         else
           this.atmosphereToDisplay = this.bathroomViewed.avg_ratings.atmosphere;
+
+
+        this.convertHandDryingToString();
+        this.convertGenderToString();
+        this.convertOccupancyToString();
+        this.convertStallNumberToString();
       },
       loadBathrooms : function() {
           var min_lat, max_lat, min_lon, max_lon, o_type, hd_type, sr_type, g_type;
@@ -195,34 +149,6 @@ new Vue({
               console.log("Failed to load bathrooms from server.");
            })
           
-           //Test bathrooms
-          // var bathArray = [{bathroom_name: "no", longitude: 40.445, latitude: -79.957, avg_overall_rating: 3,
-          //   user_ratings: {
-          //     cleanliness: null,
-          //     privacy: null,
-          //     atmosphere: null,
-          //     location_accessibility: null,
-          //   },
-          //   avg_ratings: {
-          //     cleanliness: null, 
-          //     privacy: null, 
-          //     atmosphere: null,
-          //     location_accessibility: null, 
-          //   }
-          // }, {bathroom_name: "2", id: 1, longitude: 40.449, latitude: -79.951, avg_overall_rating: 5,
-          //   user_ratings: {
-          //     cleanliness: null,
-          //     privacy: null,
-          //     atmosphere: null,
-          //     location_accessibility: null,
-          //   },
-          //   avg_ratings: {
-          //     cleanliness: null, 
-          //     privacy: null, 
-          //     atmosphere: null,
-          //     location_accessibility: null, 
-          //   }
-          // }];
           
       },
       displayBathroomFromMap : function(latitude, longitude) {
@@ -231,7 +157,7 @@ new Vue({
 
         //Find bathroom to display from its coordinates.
         while(this.bathroomsToDisplay[i] !== undefined) {
-          console.log(this.bathroomsToDisplay[i].latitude + ", " + this.bathroomsToDisplay[i].longitude);
+          
           if(this.bathroomsToDisplay[i].latitude === latitude && this.bathroomsToDisplay[i].longitude === longitude) {
             bathroom = this.bathroomsToDisplay[i];
             break;
@@ -267,6 +193,8 @@ new Vue({
         if(this.logInUsername === "" || this.logInPass === "")
           this.loginCaption = "Make sure you enter both a username and password.";
         else {
+          var self = this;
+
           //Make request to backend via POST. 
           axios.post('/api/authenticate', {
 
@@ -277,16 +205,18 @@ new Vue({
           .then(function (response) {
             var json = response.data;
 
-            this.loggedIn = true;
-            this.loginCaption = "";
-            this.logInUsername = "";
-            this.registerUsername = "";
-            this.logInPass = "";
-            this.registerPass = "";
-            this.registerPassAgain = "";
+            self.loggedIn = true;
+            self.userID = json.id;
+            self.loginCaption = "";
+            self.logInUsername = "";
+            self.registerUsername = "";
+            self.logInPass = "";
+            self.registerPass = "";
+            self.registerPassAgain = "";
 
-            this.loginDialog = false;
-            this.userID = json.id;
+            self.setCookie();
+            self.exitLogin();
+
             return;
           })
           .catch(function (error) {
@@ -298,10 +228,10 @@ new Vue({
             }
             else
               console.log(error);
+
+            self.loginCaption = "Login Failed- Check your password and try again";
           
           });
-
-          this.loginCaption = "Login Failed- Check your password and try again";
         }
       
       },
@@ -314,6 +244,8 @@ new Vue({
         }).addTo(this.map);
         
         this.pinOnMap = true;
+
+        this.clearDisplayValues();
       },
 
       addBathroom : function() {
@@ -332,8 +264,8 @@ new Vue({
           time_availability: "",
           notes: "",
 
-          latitude: latlon.lat,
-          longitude: latlon.lng,
+          latitude: latlon.lng,
+          longitude: latlon.lat,
 
 	        occupancy_type: null,
           hand_drying_type: null,
@@ -349,6 +281,7 @@ new Vue({
           }
         };
 
+        this.bathroomViewed = null;
         this.bathroomEdited = newBathroom;
 
         //Remove pin from map. 
@@ -370,6 +303,8 @@ new Vue({
 
         //Try to register this user.
         else {
+          var self = this;
+
           axios.post('/api/users', {
             username: this.registerUsername,
             password: this.registerPass
@@ -378,29 +313,36 @@ new Vue({
             var json = response.data
 
             //Clear out all the login/registration info.
-            this.loginCaption = "";
-            this.logInUsername = "";
-            this.registerUsername = "";
-            this.logInPass = "";
-            this.registerPass = "";
-            this.registerPassAgain = "";
+            self.loginCaption = "";
+            self.logInUsername = "";
+            self.registerUsername = "";
+            self.logInPass = "";
+            self.registerPass = "";
+            self.registerPassAgain = "";
 
-            this.loggedIn = true;
-            this.loginDialog = false;
-            this.userID = json.id;
+            self.userID = json.id;
+            
+            self.loggedIn = true;
+
+            self.setCookie();
+            self.exitLogin();
             return;
           })
           .catch(function (error) {
-            console.log(error.response);
-
             if(error.response) {
-              console.log(error.response.data);
-              console.log(error.response.status);
+              console.log(error.response);
+
+              if(error.response.data === "user already exists") {
+                self.loginCaption = "A user with this name already exists.";
+              }
+            }
+            else {
+              console.log(error);
+
+              //Show error message on screen.
+              self.loginCaption = "User registration failed";
             }
           });
-
-          //Show error message on screen.
-          this.loginCaption = "User registration failed";
         }
         
       },
@@ -417,14 +359,28 @@ new Vue({
         this.bathroomDialog = false;
       },
 
+      exitLogin: function() {
+        this.loginDialog = false;
+      },
+
+      //Set a cookie with the user ID.
+      setCookie: function() {
+        document.cookie = "id=" + this.userID;
+      },
+
       //Save either an edited bathroom or a newly created bathroom.
       saveBathroom : function() {
 
         //Convert features from strings to numbers amenable to the DB.
-        this.bathroomEdited.hand_drying_type = this.convertHandDrying(this.bathroomEdited.hand_drying_type);
-        this.bathroomEdited.occupancy_type = this.convertOccupancy(this.bathroomEdited.occupancy_type);
-        this.bathroomEdited.stall_range_type = this.convertStallRange(this.bathroomEdited.stall_range_type);
-        this.bathroomEdited.gender_type = this.convertGender(this.bathroomEdited.gender_type);
+         this.bathroomEdited.hand_drying_type = this.convertHandDrying(this.handDryingToDisplay);
+         this.bathroomEdited.occupancy_type = this.convertOccupancy(this.occupancyToDisplay);
+         this.bathroomEdited.stall_range_type = this.convertStallRange(this.stallNumberToDisplay);
+         this.bathroomEdited.gender_type = this.convertGender(this.genderToDisplay);
+
+        console.log(this.bathroomEdited.hand_drying_type + ", " + this.bathroomEdited.occupancy_type + ", " +
+        this.bathroomEdited.stall_range_type + ", " + this.bathroomEdited.gender_type);
+
+        var self = this;
 
         //If we're editing an existing bathroom....
         if(this.bathroomEdited.id !== -1) {
@@ -433,7 +389,7 @@ new Vue({
             id: this.bathroomEdited.id,
             bathroom_name: this.bathroomEdited.bathroom_name,
             description: this.bathroomEdited.description,
-            time_availability: this.bathroomEdited,
+            time_availability: this.bathroomEdited.time_availability,
             notes: this.bathroomEdited.notes,
 
             latitude: this.bathroomEdited.latitude,
@@ -447,21 +403,20 @@ new Vue({
           .then(response => {
 
             //Update the displayed bathroom for when we return to the 'view bathroom' view.
-            this.bathroomViewed = this.bathroomEdited;
-            this.editingBathroom = false;
+            self.bathroomViewed = self.bathroomEdited;
+            self.editingBathroom = false;
 
-            
             //Find the bathroom as it's stored locally and update its ratings. 
-            for(let i = 0; i < this.bathroomsToDisplay.length; i++) {
-              if(this.bathroomsToDisplay[i].id === this.bathroomEdited.id) {
-                this.bathroomsToDisplay.$set(i, this.bathroomEdited);
+            for(let i = 0; i < self.bathroomsToDisplay.length; i++) {
+              if(self.bathroomsToDisplay[i].id === self.bathroomEdited.id) {
+                self.$set(self.bathroomsToDisplay, i, self.bathroomEdited);
                 break;
               }
             }
 
           })
-          .catch(e => {
-            this.errors.push(e)
+          .catch(function (error)  {
+            console.log(error);
           });
         }
         //If we're creating a new bathroom...
@@ -470,7 +425,7 @@ new Vue({
           axios.post('api/bathrooms', {
             bathroom_name: this.bathroomEdited.bathroom_name,
             description: this.bathroomEdited.description,
-            time_availability: this.bathroomEdited,
+            time_availability: this.bathroomEdited.time_availability,
             notes: this.bathroomEdited.notes,
 
             latitude: this.bathroomEdited.latitude,
@@ -497,19 +452,27 @@ new Vue({
 
             //Add the newly created bathroom to the map. 
             L.marker([newlyCreatedBathroom.longitude, newlyCreatedBathroom.latitude], {title: newlyCreatedBathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
-              //If possible, open dialog directly.
+              displayBathroomFromMap(this.getLatLng().lng, this.getLatLng().lat);
             });
 
             //Update the displayed bathroom for when we return to the 'view bathroom' view.
-            this.bathroomViewed = newlyCreatedBathroom;
-            this.editingBathroom = false;
+            self.bathroomViewed = newlyCreatedBathroom;
+            self.editingBathroom = false;
 
           })
-          .catch(e => {
-            this.errors.push(e)
+          .catch(function (error)  {
+            console.log(error);
           });
         }
         
+      },
+
+      clearDisplayValues: function() {
+        //Clear the selection values.
+        this.genderToDisplay = '';
+        this.occupancyToDisplay = '';
+        this.stallNumberToDisplay = '';
+        this.handDryingToDisplay = '';
       },
 
       rateBathroom : function(featureRated) {
@@ -557,8 +520,8 @@ new Vue({
                 }
               }
           })
-          .catch(e => {
-            this.errors.push(e)
+          .catch(function (error)  {
+            console.log(error);
           });
         
       },
@@ -571,13 +534,38 @@ new Vue({
             return 1;
           case "Electric Hand Dryer AND Paper Towels":
             return 2;
-          case "None Available":
+          case "None available":
             return 3;
           case "Other":
             return 4;
           default:
             return null;  
         }
+      },
+
+      convertHandDryingToString : function() {
+        
+        switch(this.bathroomViewed.hand_drying_type) {
+          case 0:
+            this.handDryingToDisplay = 'Paper Towels';
+            break;
+          case 1:
+            this.handDryingToDisplay = 'Electric Hand Dryer';
+            break;
+          case 2:
+            this.handDryingToDisplay = 'Electric Hand Dryer AND Paper Towels';
+            break;
+          case 3:
+            this.handDryingToDisplay = 'None available';
+            break;
+          case 4:
+            this.handDryingToDisplay = 'Other';
+            break;
+          default:
+            this.handDryingToDisplay = '';  
+
+        }
+        
       },
 
       convertOccupancy : function(o_string) {
@@ -593,6 +581,22 @@ new Vue({
         }
       },
 
+      convertOccupancyToString : function() {
+
+        switch(this.bathroomViewed.occupancy_type) {
+          case 0:
+            this.occupancyToDisplay = 'Single Occupancy';
+            break;
+          case 1:
+            this.occupancyToDisplay = 'Multiple Occupancy';
+            break;
+          case 2:
+            this.occupancyToDisplay = 'Other';
+            break;
+          default:
+            this.occupancyToDisplay = '';  
+        }
+      },
       convertStallRange : function(sr_string) {
         switch(sr_string) {
           case "One Stall":
@@ -605,6 +609,25 @@ new Vue({
             return 3;
           default:
             return null;  
+        }
+      },
+      convertStallNumberToString : function() {
+
+        switch(this.bathroomViewed.stall_range_type) {
+          case 0:
+            this.stallNumberToDisplay = 'One Stall';
+            break;
+          case 1:
+            this.stallNumberToDisplay = '2-3 Stalls';
+            break;
+          case 2:
+            this.stallNumberToDisplay = '4-7 Stalls';
+            break;
+          case 3:
+            this.stallNumberToDisplay = '8+ Stalls';
+            break;
+          default:
+            this.stallNumberToDisplay = '';  
         }
       },
 
@@ -620,6 +643,26 @@ new Vue({
             return 3;
           default:
             return null;   
+        }
+      },
+
+      convertGenderToString : function() {
+
+        switch(this.bathroomViewed.gender_type) {
+          case 0:
+            this.genderToDisplay = 'Gender Agnostic';
+            break;
+          case 1:
+            this.genderToDisplay = 'Men';
+            break;
+          case 2:
+            this.genderToDisplay = 'Women';
+            break;
+          case 3:
+            this.genderToDisplay = 'Other';
+            break;
+          default:
+            return '';  
         }
       },
     },
@@ -658,6 +701,18 @@ new Vue({
 
       // add location control so the user can lock on to their own location. 
       L.control.locate().addTo(this.map);
+
+
+      var x = document.cookie;
+      var cookieTokens = x.split('=');
+
+      //Check if the user is already logged in.
+      for(let i = 0; i < cookieTokens.length; i++) {
+        if(cookieTokens[i] === 'id') {
+          this.userID = cookieTokens[i + 1];
+          this.loggedIn = true;
+        }
+      }
 
       this.layerGroup = L.layerGroup().addTo(this.map);
 

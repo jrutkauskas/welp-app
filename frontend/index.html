@@ -38,7 +38,7 @@
 								<v-card-title>
 									<span class="headline">Login</span>
 									<v-spacer></v-spacer>
-									<v-btn color="red" text @click="loginDialog = false"><v-icon>mdi-close</v-icon></v-btn>
+									<v-btn color="red" text @click="exitLogin()"><v-icon>mdi-close</v-icon></v-btn>
 								</v-card-title>
 								<v-card-text>
 									<v-container>
@@ -119,21 +119,21 @@
 											<v-select
 												:items="['Single Occupancy', 'Multiple Occupancy', 'Other']"
 												label="Occupancy Type"
-												model="filterOccupancy"
+												v-model="filterOccupancy"
 												clearable
 											></v-select>
 															
 											<v-select
 												:items="['One Stall / Single Occupancy', '2-3 Stalls', '4-7 Stalls', '8+ Stalls']"
 												label="Number of Stalls"
-												model="filterStallRange"
+												v-model="filterStallRange"
 												clearable
 											></v-select>
 															
 											<v-select
 												:items="['Men', 'Women', 'Other']"
 												label="Gender Designation"
-												model="filterGender"
+												v-model="filterGender"
 												clearable
 											></v-select>
 															
@@ -141,7 +141,7 @@
 												:items="['Paper Towels', 'Electric Hand Dryer', 'Electric Hand Dryer AND Paper Towels',
 												'None available', 'Other']"
 												label="Hand Drying"
-												model="filterHandDrying"
+												v-model="filterHandDrying"
 												clearable
 											></v-select>
 
@@ -174,26 +174,40 @@
 												</v-list>
 											</template>
 											<v-card >
-												<v-card-title v-if="bathroomViewed !== null">
+												<v-card-title >
 													
 													<v-row>
-														<span class="headline">{{bathroomViewed.bathroom_name}}</span>
+														<div v-if="bathroomViewed !== null">
+															<span  class="headline">{{bathroomViewed.bathroom_name}}</span>
+														</div>
+														<div v-else-if="bathroomEdited !== null" class="pa-0 ma-0">
+															<span v-if="bathroomEdited.bathroom_name !== ''" class="headline">{{bathroomEdited.bathroom_name}}</span>
+															<span v-else class="headline">New Bathroom</span>
+														</div>
+														
+
 														<v-spacer></v-spacer>
 														<v-btn color="red" text @click="exitBathroom"><v-icon>mdi-close</v-icon></v-btn>
 													</v-row>
 
 													<v-row>
 														<span class="title">Average Rating: </span>
-														<v-rating 
+														<v-rating v-if="bathroomViewed !== null"
 														half-increments
 														readonly dense
 														v-model="bathroomViewed.avg_overall_rating">
 														</v-rating>
+
+														<v-rating v-else-if="bathroomEdited !== null"
+														half-increments
+														readonly dense
+														v-model="bathroomEdited.avg_overall_rating">
+														</v-rating>
 													</v-row>
 													
-													
 												</v-card-title>
-												<v-card-text v-if="bathroomViewed !== null">
+												
+												<v-card-text>
 													<v-container>
 				
 														<div v-if="editingBathroom && bathroomEdited !== null">
@@ -223,26 +237,26 @@
 															<v-select
 																	:items="['Single Occupancy', 'Multiple Occupancy', 'Other']"
 																label="Occupancy Type"
-																model="bathroomEdited.occupancy_type"
+																v-model="occupancyToDisplay"
 															></v-select>
 															
 															<v-select
 																:items="['One Stall / Single Occupancy', '2-3 Stalls', '4-7 Stalls', '8+ Stalls']"
 																label="Number of Stalls"
-																model="bathroomEdited.stall_range_type"
+																v-model="stallNumberToDisplay"
 															></v-select>
 															
 															<v-select
-																	:items="['Men', 'Women', 'Other']"
+																	:items="['Gender Agnostic', 'Men', 'Women', 'Other']"
 																label="Gender Designation"
-																model="bathroomEdited.gender_type"
+																v-model="genderToDisplay"
 															></v-select>
 															
 															<v-select
 																	:items="['Paper Towels', 'Electric Hand Dryer', 'Electric Hand Dryer AND Paper Towels',
 																	'None available', 'Other']"
 																label="Hand Drying"
-																model="bathroomEdited.hand_drying_type"
+																v-model="handDryingToDisplay"
 															></v-select>
 															
 															<v-textarea v-model="bathroomEdited.notes" :maxlength="600">
@@ -267,64 +281,82 @@
 															<v-row>
 																<v-col cols="12" sm="6" >
 																	<span class="title">Cleanliness: 
-																			<v-rating v-if="loggedIn"
+
+																		<div v-if="loggedIn">
+																			<v-rating
 																			half-increments
 																			medium dense
 																			@click="rateBathroom('cleanliness')"
 																			v-model="cleanlinessToDisplay">
 																			</v-rating>
-																			<v-rating v-else
+																		</div>
+																		<div v-else>
+																			<v-rating 
 																			half-increments
 																			readonly medium dense
 																			v-model="bathroomViewed.avg_ratings.cleanliness">
 																			</v-rating>
+																		</div>
+										
 																	</span>
 																</v-col>
 																<v-col cols="12" sm="6">
 																	<span class="title">Privacy: 
-																			<v-rating v-if="loggedIn"
+																		<div v-if="loggedIn">
+																			<v-rating 
 																			half-increments
 																			medium dense
 																			@click="rateBathroom('privacy')"
 																			v-model="privacyToDisplay">
 																			</v-rating>
-																			<v-rating 
+																		</div>
+																		<div v-else>
+																			<v-rating
 																			half-increments
 																			readonly medium dense
 																			v-model="bathroomViewed.avg_ratings.privacy">
 																			</v-rating>
+																		</div>
 																	</span>
 																</v-col>
 															</v-row>
 															<v-row>
 																<v-col cols="12" sm="6" >
 																	<span class="title">Atmosphere: 
-																			<v-rating v-if="loggedIn"
+																		<div v-if="loggedIn">
+																			<v-rating
 																			half-increments
 																			medium dense
 																			@click="rateBathroom('atmosphere')"
 																			v-model="atmosphereToDisplay">
 																			</v-rating>
+																		</div>
+																		<div v-else>
 																			<v-rating 
 																			half-increments
 																			readonly medium dense
 																			v-model="bathroomViewed.avg_ratings.atmosphere">
 																			</v-rating>
+																		</div>
 																	</span>
 																</v-col>
 																<v-col cols="12" sm="6">
 																	<span class="title">Accessibility: 
-																			<v-rating v-if="loggedIn"
+																		<div v-if="loggedIn">
+																			<v-rating 
 																			half-increments
 																			medium dense
 																			@click="rateBathroom('accessibility')"
 																			v-model="accessibilityToDisplay">
 																			</v-rating>
-																			<v-rating 
+																		</div>
+																		<div v-else>
+																			<v-rating
 																			half-increments
 																			readonly medium dense
 																			v-model="bathroomViewed.avg_ratings.accessibility">
 																			</v-rating>
+																		</div>
 																	</span>
 																</v-col>
 															</v-row>
@@ -332,21 +364,21 @@
 																<p class="title">When is this bathroom available for use?</p>
 																<p class="subtitle-1 black--text">{{bathroomViewed.time_availability}}</p>
 															</div>
-															<div v-if="genderCaption !== ''">
+															<div v-if="genderToDisplay !== ''">
 																<p class="title">Is this bathroom for a certain gender?</p>
-																<p class="subtitle-1 black--text">{{genderCaption}}</p>
+																<p class="subtitle-1 black--text">{{genderToDisplay}}</p>
 															</div>
-															<div v-if="occupancyCaption !== ''">
+															<div v-if="occupancyToDisplay !== ''">
 																<p class="title">Is this a single-occupancy bathroom?</p>
-																<p class="subtitle-1 black--text">{{occupancyCaption}}</p>
+																<p class="subtitle-1 black--text">{{occupancyToDisplay}}</p>
 															</div>
-															<div v-if="stallNumberCaption !== '' && occupancyCaption !== 'Single occupancy'">
+															<div v-if="stallNumberToDisplay !== '' && occupancyToDisplay !== 'Single occupancy'">
 																<p class="title" >How many stalls does this bathroom have?</p>
-																<p class="subtitle-1 black--text">{{stallNumberCaption}}</p>
+																<p class="subtitle-1 black--text">{{stallNumberToDisplay}}</p>
 															</div>
-															<div v-if="handDryingCaption !== ''">
+															<div v-if="handDryingToDisplay !== ''">
 																<p class="title">What kind of hand-drying does this bathroom have?</p>
-																<p class="subtitle-1 black--text">{{handDryingCaption}}</p>
+																<p class="subtitle-1 black--text">{{handDryingToDisplay}}</p>
 															</div>
 															<div v-if="bathroomViewed.notes !== null">
 																<p class="title">Additional Notes:</p>
