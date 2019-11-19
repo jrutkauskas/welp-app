@@ -65,6 +65,7 @@ class WelpTester(unittest.TestCase):
 	# also, the tests should have a good name describing what they test because the name of the function is what
 	# gets printed out if the test fails
 	
+	
 	def test_user_00(self):
 		self.bootstrapDB() #tests often will require setting up the database in some way to ensure the data in there is as expected
 		u = User.query.filter_by(username="user1").first() # this test is bad because it actually just tests the database
@@ -550,8 +551,8 @@ class WelpTester(unittest.TestCase):
 		w=WelpApp()
 		bathroom=w.create_bathroom(CreateBathroomRequest, u)
 		self.assertEqual(bathroom[0], False)
-	"""
 	
+	"""
 	def test_bathroom_11(self):	
 		db.drop_all()
 		db.create_all()
@@ -614,8 +615,8 @@ class WelpTester(unittest.TestCase):
 		w=WelpApp()
 		bathroom=w.create_bathroom(CreateBathroomRequest, u)
 		self.assertEqual(bathroom[0], False)
-	"""
 	
+	"""
 	def test_bathroom_13(self):	
 		db.drop_all()
 		db.create_all()
@@ -2260,6 +2261,159 @@ class WelpTester(unittest.TestCase):
 		self.assertEqual(b1[1].get("avg_ratings").get("privacy"), 1.5)
 		self.assertEqual(b1[1].get("avg_ratings").get("atmosphere"), 2.5)
 		self.assertEqual(b1[1].get("avg_ratings").get("location_accessibility"), 3)
+
+	def test_Ratings_04(self):	
+		#self.bootstrapDB()
+		db.drop_all()
+		db.create_all()
+		u = User("user1","password")
+		db.session.add(u)
+		u2 = User("user2","password2")
+		db.session.add(u2)
+		CreateBathroomRequest={
+				"bathroom_name": "Name",
+				"description": "A bathroom for CS champions",
+				"time_availability": "M-F 9am-5pm",
+				"how_to_find_it": "6th Floor Sennott Sq.",
+				"notes": "It's gross",
+				"latitude": 50.5,
+				"longitude":  170,
+				"occupancy_type": 2,
+				"hand_drying_type": 3,
+				"stall_range_type": 4,
+				"gender_type": 0,
+				"user_ratings":{
+					"cleanliness": 1,
+					"privacy": 1,
+					"atmosphere": 1,
+					"location_accessibility": 1
+				}
+		}
+
+		w=WelpApp()
+		bathroom=w.create_bathroom(CreateBathroomRequest, u)
+	
+		RatingRequestResponse={
+			"rating_type": 0,
+			"rating": NULL,
+			"bathroom_id": bathroom[2].id
+		}
+
+		test1 = w.set_user_bathroom_rating(u2, RatingRequestResponse)
+		RatingRequestResponse2={
+			"rating_type": 1,
+			"rating": NULL,
+			"bathroom_id": bathroom[2].id
+		}
+
+		test2 = w.set_user_bathroom_rating(u2, RatingRequestResponse2)
+		RatingRequestResponse3={
+			"rating_type": 2,
+			"rating": NULL,
+			"bathroom_id": bathroom[2].id
+		}
+
+		test3 = w.set_user_bathroom_rating(u2, RatingRequestResponse3)
+		RatingRequestResponse4={
+			"rating_type": 3,
+			"rating": NULL,
+			"bathroom_id": bathroom[2].id
+		}
+
+		test4 = w.set_user_bathroom_rating(u2, RatingRequestResponse4)
+
+		r0=Rating.query.filter_by(user_id=u2.id, bathroom_id=bathroom[2].id, rating_type=0).first().rating
+		r1=Rating.query.filter_by(user_id=u2.id, bathroom_id=bathroom[2].id, rating_type=1).first().rating
+		r2=Rating.query.filter_by(user_id=u2.id, bathroom_id=bathroom[2].id, rating_type=2).first().rating
+		r3=Rating.query.filter_by(user_id=u2.id, bathroom_id=bathroom[2].id, rating_type=3).first().rating
+
+
+
+		#b1= bathroom[2].query.fi
+		b1=w.get_bathroom_by_id(bathroom[2].id, u)
+		
+		self.assertEqual(b1[1].get("avg_ratings").get("cleanliness"), 1)
+		self.assertEqual(b1[1].get("avg_ratings").get("privacy"), 1)
+		self.assertEqual(b1[1].get("avg_ratings").get("atmosphere"), 1)
+		self.assertEqual(b1[1].get("avg_ratings").get("location_accessibility"), 1)
+
+	
+	def test_Ratings_05(self):	
+		#self.bootstrapDB()
+		db.drop_all()
+		db.create_all()
+		u = User("user1","password")
+		db.session.add(u)
+		u2 = User("user2","password2")
+		db.session.add(u2)
+		CreateBathroomRequest={
+				"bathroom_name": "Name",
+				"description": "A bathroom for CS champions",
+				"time_availability": "M-F 9am-5pm",
+				"how_to_find_it": "6th Floor Sennott Sq.",
+				"notes": "It's gross",
+				"latitude": 50.5,
+				"longitude":  170,
+				"occupancy_type": 2,
+				"hand_drying_type": 3,
+				"stall_range_type": 4,
+				"gender_type": 0,
+				"user_ratings":{
+					"cleanliness": 1,
+					"privacy": 1,
+					"atmosphere": 1,
+					"location_accessibility": 1
+				}
+		}
+
+		w=WelpApp()
+		bathroom=w.create_bathroom(CreateBathroomRequest, u)
+	
+		RatingRequestResponse={
+			"rating_type": 0,
+			"rating": 10,
+			"bathroom_id": bathroom[2].id
+		}
+
+		test1 = w.set_user_bathroom_rating(u2, RatingRequestResponse)
+		RatingRequestResponse2={
+			"rating_type": 1,
+			"rating": -5,
+			"bathroom_id": bathroom[2].id
+		}
+
+		test2 = w.set_user_bathroom_rating(u2, RatingRequestResponse2)
+		RatingRequestResponse3={
+			"rating_type": 2,
+			"rating": 0,
+			"bathroom_id": bathroom[2].id
+		}
+
+		test3 = w.set_user_bathroom_rating(u2, RatingRequestResponse3)
+		RatingRequestResponse4={
+			"rating_type": 3,
+			"rating": 6.5,
+			"bathroom_id": bathroom[2].id
+		}
+
+		test4 = w.set_user_bathroom_rating(u2, RatingRequestResponse4)
+
+		r0=Rating.query.filter_by(user_id=u2.id, bathroom_id=bathroom[2].id, rating_type=0).first().rating
+		r1=Rating.query.filter_by(user_id=u2.id, bathroom_id=bathroom[2].id, rating_type=1).first().rating
+		r2=Rating.query.filter_by(user_id=u2.id, bathroom_id=bathroom[2].id, rating_type=2).first().rating
+		r3=Rating.query.filter_by(user_id=u2.id, bathroom_id=bathroom[2].id, rating_type=3).first().rating
+
+
+
+		#b1= bathroom[2].query.fi
+		b1=w.get_bathroom_by_id(bathroom[2].id, u)
+		
+		self.assertNotEqual(b1[1].get("avg_ratings").get("cleanliness"), 5.5)
+		self.assertNotEqual(b1[1].get("avg_ratings").get("privacy"), -2)
+		self.assertNotEqual(b1[1].get("avg_ratings").get("atmosphere"), .5)
+		self.assertNotEqual(b1[1].get("avg_ratings").get("location_accessibility"), 3.75)
+
+	
 	
 	
 	
