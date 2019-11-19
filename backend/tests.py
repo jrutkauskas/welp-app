@@ -552,7 +552,7 @@ class WelpTester(unittest.TestCase):
 		bathroom=w.create_bathroom(CreateBathroomRequest, u)
 		self.assertEqual(bathroom[0], False)
 	
-	"""
+	
 	def test_bathroom_11(self):	
 		db.drop_all()
 		db.create_all()
@@ -616,7 +616,7 @@ class WelpTester(unittest.TestCase):
 		bathroom=w.create_bathroom(CreateBathroomRequest, u)
 		self.assertEqual(bathroom[0], False)
 	
-	"""
+	
 	def test_bathroom_13(self):	
 		db.drop_all()
 		db.create_all()
