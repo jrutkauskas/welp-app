@@ -1,0 +1,1529 @@
+test_Ratings_01 (tests.WelpTester) ... ok
+test_Ratings_02 (tests.WelpTester) ... ok
+test_Ratings_03 (tests.WelpTester) ... FAIL
+test_Ratings_04 (tests.WelpTester) ... ERROR
+test_Ratings_05 (tests.WelpTester) ... FAIL
+test_bathroom_01 (tests.WelpTester) ... ok
+test_bathroom_02 (tests.WelpTester) ... FAIL
+test_bathroom_03 (tests.WelpTester) ... FAIL
+test_bathroom_04 (tests.WelpTester) ... ok
+test_bathroom_05 (tests.WelpTester) ... FAIL
+test_bathroom_06 (tests.WelpTester) ... ok
+test_bathroom_07 (tests.WelpTester) ... FAIL
+test_bathroom_08 (tests.WelpTester) ... ok
+test_bathroom_09 (tests.WelpTester) ... FAIL
+test_bathroom_10 (tests.WelpTester) ... FAIL
+test_bathroom_11 (tests.WelpTester) ... ERROR
+test_bathroom_12 (tests.WelpTester) ... ERROR
+test_bathroom_13 (tests.WelpTester) ... ERROR
+test_bathroom_14 (tests.WelpTester) ... ERROR
+test_bathroom_15 (tests.WelpTester) ... ERROR
+test_bathroom_15b (tests.WelpTester) ... ERROR
+test_bathroom_16 (tests.WelpTester) ... ERROR
+test_bathroom_17 (tests.WelpTester) ... ERROR
+test_bathroom_18 (tests.WelpTester) ... ERROR
+test_bathroom_19 (tests.WelpTester) ... ERROR
+test_bathroom_20 (tests.WelpTester) ... ERROR
+test_bathroom_21 (tests.WelpTester) ... ERROR
+test_bathroom_22 (tests.WelpTester) ... ERROR
+test_bathroom_23 (tests.WelpTester) ... ERROR
+test_bathroom_24 (tests.WelpTester) ... ERROR
+test_bathroom_25 (tests.WelpTester) ... ERROR
+test_bathroom_26 (tests.WelpTester) ... ERROR
+test_bathroom_27 (tests.WelpTester) ... ERROR
+test_bathroom_28 (tests.WelpTester) ... ERROR
+test_bathroom_29 (tests.WelpTester) ... ERROR
+test_bathroom_30 (tests.WelpTester) ... ERROR
+test_bathroom_31 (tests.WelpTester) ... ERROR
+test_bathroom_32 (tests.WelpTester) ... ERROR
+test_bathroom_33 (tests.WelpTester) ... ERROR
+test_bathroom_34 (tests.WelpTester) ... ERROR
+test_bathroom_35 (tests.WelpTester) ... ERROR
+test_bathroom_36 (tests.WelpTester) ... ERROR
+test_bathroom_37 (tests.WelpTester) ... ERROR
+test_bathroom_38 (tests.WelpTester) ... ERROR
+test_bathroom_39 (tests.WelpTester) ... ERROR
+test_bathroom_40 (tests.WelpTester) ... ERROR
+test_bathroom_41 (tests.WelpTester) ... ERROR
+test_bathroom_42 (tests.WelpTester) ... ERROR
+test_bathroom_43 (tests.WelpTester) ... ERROR
+test_bathroom_44 (tests.WelpTester) ... ERROR
+test_bathroom_45 (tests.WelpTester) ... ERROR
+test_bathroom_46 (tests.WelpTester) ... ERROR
+test_search_01 (tests.WelpTester) ... ERROR
+test_search_02 (tests.WelpTester) ... ERROR
+test_search_03 (tests.WelpTester) ... ERROR
+test_search_04 (tests.WelpTester) ... ERROR
+test_search_05 (tests.WelpTester) ... ERROR
+test_search_06 (tests.WelpTester) ... ERROR
+test_search_07 (tests.WelpTester) ... ERROR
+test_search_08 (tests.WelpTester) ... ERROR
+test_search_10 (tests.WelpTester) ... ERROR
+test_search_9 (tests.WelpTester) ... ERROR
+test_user_00 (tests.WelpTester) ... ERROR
+test_user_01 (tests.WelpTester) ... ERROR
+test_user_02 (tests.WelpTester) ... ERROR
+test_user_03 (tests.WelpTester) ... ERROR
+test_user_04 (tests.WelpTester) ... ok
+test_user_05 (tests.WelpTester) ... ERROR
+test_user_06 (tests.WelpTester) ... ERROR
+test_user_07 (tests.WelpTester) ... ok
+test_user_08 (tests.WelpTester) ... ERROR
+test_user_09 (tests.WelpTester) ... ERROR
+test_user_10 (tests.WelpTester) ... ERROR
+test_user_11 (tests.WelpTester) ... ERROR
+test_user_12 (tests.WelpTester) ... ERROR
+test_user_13 (tests.WelpTester) ... ERROR
+test_user_14 (tests.WelpTester) ... ERROR
+
+======================================================================
+ERROR: test_Ratings_04 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 2298, in test_Ratings_04
+    "rating": NULL,
+NameError: name 'NULL' is not defined
+
+======================================================================
+ERROR: test_bathroom_11 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\engine\base.py", line 1179, in _execute_context
+    context = constructor(dialect, self, conn, *args)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\engine\default.py", line 747, in _init_compiled
+    param.append(processors[key](compiled_params[key]))
+ValueError: could not convert string to float: 'South Pole'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 584, in test_bathroom_11
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 494, in commit
+    self._prepare_impl()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 473, in _prepare_impl
+    self.session.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2608, in _flush
+    transaction.rollback(_capture_exception=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\util\langhelpers.py", line 68, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\util\compat.py", line 153, in reraise
+    raise value
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2568, in _flush
+    flush_context.execute()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\unitofwork.py", line 422, in execute
+    rec.execute(self)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\unitofwork.py", line 586, in execute
+    persistence.save_obj(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\persistence.py", line 239, in save_obj
+    _emit_insert_statements(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\persistence.py", line 1136, in _emit_insert_statements
+    result = cached_connections[connection].execute(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\engine\base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\sql\elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\engine\base.py", line 1101, in _execute_clauseelement
+    ret = self._execute_context(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\engine\base.py", line 1181, in _execute_context
+    self._handle_dbapi_exception(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\engine\base.py", line 1473, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\util\compat.py", line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\util\compat.py", line 152, in reraise
+    raise value.with_traceback(tb)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\engine\base.py", line 1179, in _execute_context
+    context = constructor(dialect, self, conn, *args)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\engine\default.py", line 747, in _init_compiled
+    param.append(processors[key](compiled_params[key]))
+sqlalchemy.exc.StatementError: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]]
+
+======================================================================
+ERROR: test_bathroom_12 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 616, in test_bathroom_12
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_13 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 648, in test_bathroom_13
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_14 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 679, in test_bathroom_14
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_15 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 697, in test_bathroom_15
+    "occupancy_type": NULL,
+NameError: name 'NULL' is not defined
+
+======================================================================
+ERROR: test_bathroom_15b (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 738, in test_bathroom_15b
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_16 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 767, in test_bathroom_16
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_17 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 797, in test_bathroom_17
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_18 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 827, in test_bathroom_18
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_19 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 855, in test_bathroom_19
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_20 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 883, in test_bathroom_20
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_21 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 900, in test_bathroom_21
+    "hand_drying_type": NULL,
+NameError: name 'NULL' is not defined
+
+======================================================================
+ERROR: test_bathroom_22 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 939, in test_bathroom_22
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_23 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 967, in test_bathroom_23
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_24 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 995, in test_bathroom_24
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_25 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1023, in test_bathroom_25
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_26 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1051, in test_bathroom_26
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_27 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1079, in test_bathroom_27
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_28 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1107, in test_bathroom_28
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_29 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1135, in test_bathroom_29
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_30 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1153, in test_bathroom_30
+    "stall_range_type": NULL,
+NameError: name 'NULL' is not defined
+
+======================================================================
+ERROR: test_bathroom_31 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1191, in test_bathroom_31
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_32 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1219, in test_bathroom_32
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_33 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1247, in test_bathroom_33
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_34 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1275, in test_bathroom_34
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_35 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1303, in test_bathroom_35
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_36 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1331, in test_bathroom_36
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_37 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1359, in test_bathroom_37
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_38 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1378, in test_bathroom_38
+    "gender_type": NULL,
+NameError: name 'NULL' is not defined
+
+======================================================================
+ERROR: test_bathroom_39 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1415, in test_bathroom_39
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_40 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1443, in test_bathroom_40
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_41 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1471, in test_bathroom_41
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_42 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1499, in test_bathroom_42
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_43 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1527, in test_bathroom_43
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_44 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1555, in test_bathroom_44
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_45 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1583, in test_bathroom_45
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_bathroom_46 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1615, in test_bathroom_46
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_search_01 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1663, in test_search_01
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_search_02 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1693, in test_search_02
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_search_03 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1736, in test_search_03
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_search_04 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1775, in test_search_04
+    "stall_range_type": NULL,
+NameError: name 'NULL' is not defined
+
+======================================================================
+ERROR: test_search_05 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1824, in test_search_05
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_search_06 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1870, in test_search_06
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_search_07 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1902, in test_search_07
+    "min_latitude": NULL,
+NameError: name 'NULL' is not defined
+
+======================================================================
+ERROR: test_search_08 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 1963, in test_search_08
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_search_10 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 2032, in test_search_10
+    bathroom=w.create_bathroom(CreateBathroomRequest, u2)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_search_9 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 2000, in test_search_9
+    bathroom=w.create_bathroom(CreateBathroomRequest, u)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 100, in create_bathroom
+    if not self.perform_ratings_from_dictionary(b, user, bathroom):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 327, in perform_ratings_from_dictionary
+    db.session.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_00 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 70, in test_user_00
+    self.bootstrapDB() #tests often will require setting up the database in some way to ensure the data in there is as expected
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 49, in bootstrapDB
+    db.session.commit() # always run this at the end
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\scoping.py", line 162, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1027, in commit
+    self.transaction.commit()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 492, in commit
+    self._assert_active(prepared_ok=True)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_01 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 84, in test_user_01
+    user=w.authenticate_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 163, in authenticate_user
+    u = User.query.filter_by(username=auth["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_02 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 97, in test_user_02
+    user=w.authenticate_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 163, in authenticate_user
+    u = User.query.filter_by(username=auth["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_03 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 109, in test_user_03
+    user=w.authenticate_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 163, in authenticate_user
+    u = User.query.filter_by(username=auth["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_05 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 134, in test_user_05
+    user=w.authenticate_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 163, in authenticate_user
+    u = User.query.filter_by(username=auth["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_06 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 146, in test_user_06
+    user=w.authenticate_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 163, in authenticate_user
+    u = User.query.filter_by(username=auth["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_08 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 170, in test_user_08
+    user=w.authenticate_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 163, in authenticate_user
+    u = User.query.filter_by(username=auth["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_09 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 182, in test_user_09
+    user=w.authenticate_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 163, in authenticate_user
+    u = User.query.filter_by(username=auth["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_10 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 197, in test_user_10
+    user=w.create_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 117, in create_user
+    exists = User.query.filter_by(username=user["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_11 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 211, in test_user_11
+    user=w.create_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 117, in create_user
+    exists = User.query.filter_by(username=user["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_12 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 223, in test_user_12
+    user=w.authenticate_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 163, in authenticate_user
+    u = User.query.filter_by(username=auth["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_13 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 236, in test_user_13
+    user=w.authenticate_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 163, in authenticate_user
+    u = User.query.filter_by(username=auth["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+ERROR: test_user_14 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 249, in test_user_14
+    user=w.authenticate_user(AuthenticationRequest)
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\welp.py", line 163, in authenticate_user
+    u = User.query.filter_by(username=auth["username"]).first()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3240, in first
+    ret = list(self[0:1])
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3018, in __getitem__
+    return list(res)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\query.py", line 3341, in __iter__
+    self.session._autoflush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 1577, in _autoflush
+    self.flush()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2470, in flush
+    self._flush(objects)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 2562, in _flush
+    flush_context.transaction = transaction = self.begin(
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 938, in begin
+    self.transaction = self.transaction._begin(nested=nested)
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 316, in _begin
+    self._assert_active()
+  File "c:\users\joeyb\appdata\local\programs\python\python38\lib\site-packages\sqlalchemy\orm\session.py", line 288, in _assert_active
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.ValueError) could not convert string to float: 'South Pole'
+[SQL: INSERT INTO bathroom (bathroom_name, description, time_availability, how_to_find_it, notes, latitude, longitude, occupancy_type, hand_drying_type, stall_range_type, gender_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: [{'notes': "It's gross", 'stall_range_type': 1, 'gender_type': 0, 'longitude': 'South Pole', 'latitude': 50.5, 'hand_drying_type': 3, 'description': 'A bathroom for CS champions', 'bathroom_name': 'Name', 'occupancy_type': 1, 'time_availability': 'M-F 9am-5pm', 'how_to_find_it': None}]] (Background on this error at: http://sqlalche.me/e/7s2a)
+
+======================================================================
+FAIL: test_Ratings_03 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 2262, in test_Ratings_03
+    self.assertEqual(b1[1].get("avg_ratings").get("atmosphere"), 2.5)
+AssertionError: 4.0 != 2.5
+
+======================================================================
+FAIL: test_Ratings_05 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 2411, in test_Ratings_05
+    self.assertNotEqual(b1[1].get("avg_ratings").get("cleanliness"), 5.5)
+AssertionError: 5.5 == 5.5
+
+======================================================================
+FAIL: test_bathroom_02 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 312, in test_bathroom_02
+    self.assertEqual(bathroom[0], False)
+AssertionError: True != False
+
+======================================================================
+FAIL: test_bathroom_03 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 342, in test_bathroom_03
+    self.assertEqual(bathroom[0], False)
+AssertionError: True != False
+
+======================================================================
+FAIL: test_bathroom_05 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 401, in test_bathroom_05
+    self.assertEqual(bathroom[0], False)
+AssertionError: True != False
+
+======================================================================
+FAIL: test_bathroom_07 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 462, in test_bathroom_07
+    self.assertEqual(bathroom[0], False)
+AssertionError: True != False
+
+======================================================================
+FAIL: test_bathroom_09 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 523, in test_bathroom_09
+    self.assertEqual(bathroom[0], False)
+AssertionError: True != False
+
+======================================================================
+FAIL: test_bathroom_10 (tests.WelpTester)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\joeyb\OneDrive\Documents\GitHub\welp-app\backend\tests.py", line 553, in test_bathroom_10
+    self.assertEqual(bathroom[0], False)
+AssertionError: True != False
+
+----------------------------------------------------------------------
+Ran 77 tests in 62.945s
+
+FAILED (failures=8, errors=61)
