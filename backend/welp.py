@@ -139,6 +139,8 @@ class WelpApp:
 		if not b:
 			return (False, "bathroom with id %d not found" % rating["bathroom_id"])
 		
+		if not (rating["rating"] > 0 and rating["rating"] <= 5):
+			return (False, "invalid rating")
 		# need to check if rating already exists
 		existing_rating = Rating.query.filter_by(user_id=user.id).filter_by(bathroom_id=b.id).filter_by(rating_type=int(rating["rating_type"])).first()
 		if existing_rating:
