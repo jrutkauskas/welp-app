@@ -147,12 +147,16 @@ def authenticate():
 	res = server.convert_user_to_dict(ret)
 	return json.dumps(res)
 
-
+@app.route("/api/logout")
+def logout():
+	if "user_id" in session:
+		del session["user_id"]
+	return redirect("/")
 
 
 
 if __name__ == "__main__":
-	app.run(threaded=True)
+	app.run(threaded=True, host='0.0.0.0')
 
 
 
