@@ -48,6 +48,7 @@ new Vue({
       stallNumberToDisplay: null,
       handDryingToDisplay: null,
 
+
     }),
   
     methods: {
@@ -55,8 +56,9 @@ new Vue({
       //Determine whether to show a user's personal ratings or the average rating for a bathroom's features.
       setRatingsToDisplay : function() {
         //If this user has rated cleanliness, display this user's rating. 
-        if(this.bathroomViewed.user_ratings.cleanliness !== null)
+        if(this.bathroomViewed.user_ratings.cleanliness !== null) {
           this.cleanlinessToDisplay = this.bathroomViewed.user_ratings.cleanliness;
+        }
         else
           this.cleanlinessToDisplay = this.bathroomViewed.avg_ratings.cleanliness;
         
@@ -138,12 +140,17 @@ new Vue({
                 //Clear all the old markers.
                 this.layerGroup.clearLayers();
 
-                //Then add markers on the map for each bathroom. 
+                //Add a new layer group for the new markers.
+                this.layerGroup = L.layerGroup().addTo(this.map);
+
+                //Then add markers to the map for each bathroom. 
                 for(bathroom of this.bathroomsToDisplay) {
-                  L.marker([bathroom.longitude, bathroom.latitude], {title: bathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
+                  L.marker([bathroom.latitude, bathroom.longitude], {title: bathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
                     displayBathroomFromMap(this.getLatLng().lng, this.getLatLng().lat);
                   });
                 }
+
+
             })
            .catch(e => {
               console.log("Failed to load bathrooms from server.");
@@ -185,6 +192,7 @@ new Vue({
           this.pin = null;
           this.pinOnMap = false;
         }
+
 
         this.bathroomDialog = true;
       },
@@ -264,8 +272,8 @@ new Vue({
           time_availability: "",
           notes: "",
 
-          latitude: latlon.lng,
-          longitude: latlon.lat,
+          latitude: latlon.lat,
+          longitude: latlon.lng,
 
 	        occupancy_type: null,
           hand_drying_type: null,
@@ -377,8 +385,7 @@ new Vue({
          this.bathroomEdited.stall_range_type = this.convertStallRange(this.stallNumberToDisplay);
          this.bathroomEdited.gender_type = this.convertGender(this.genderToDisplay);
 
-        console.log(this.bathroomEdited.hand_drying_type + ", " + this.bathroomEdited.occupancy_type + ", " +
-        this.bathroomEdited.stall_range_type + ", " + this.bathroomEdited.gender_type);
+       
 
         var self = this;
 
@@ -451,7 +458,7 @@ new Vue({
             this.bathroomsToDisplay.push(newlyCreatedBathroom);
 
             //Add the newly created bathroom to the map. 
-            L.marker([newlyCreatedBathroom.longitude, newlyCreatedBathroom.latitude], {title: newlyCreatedBathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
+            L.marker([newlyCreatedBathroom.longitude, newlyCreatedBathroom.latitude], {title: newlyCreatedBathroom.bathroom_name}).addTo(self.layerGroup).on('click', function(e) {
               displayBathroomFromMap(this.getLatLng().lng, this.getLatLng().lat);
             });
 
@@ -481,30 +488,31 @@ new Vue({
 
         //Store the information of the feature that was rated.
         switch(featureRated) {
-          case "privacy":
+          case 'privacy':
             feature = 1;
             this.bathroomViewed.user_ratings.privacy = this.privacyToDisplay;
             value = this.privacyToDisplay;
             break;
-          case "accessibility":
+          case 'accessibility':
             feature = 3;
             this.bathroomViewed.user_ratings.accessibility = this.accessibilityToDisplay;
             value = this.accessibilityToDisplay;
             break;
-          case "atmosphere":
+          case 'atmosphere':
             feature = 2;
             this.bathroomViewed.user_ratings.atmosphere = this.atmosphereToDisplay;
             value = this.atmosphereToDisplay;
             break;
-          case "cleanliness":
+          case 'cleanliness':
             feature = 0;
             this.bathroomViewed.user_ratings.cleanliness = this.cleanlinessToDisplay;
             value = this.cleanlinessToDisplay;
             break;
         }
 
+        var self = this;
         //Send rating to backend.
-        axios.post('/api/users/' + this.userID + '/ratings', {
+        axios.post('/api/users/' + this.userID + '/ratings/', {
             rating_type: feature,
         
             rating: value,
@@ -513,9 +521,9 @@ new Vue({
           })
           .then(response => {
               //Find the bathroom as it's stored locally and update its ratings. 
-              for(let i = 0; i < this.bathroomsToDisplay.length; i++) {
-                if(this.bathroomsToDisplay[i].id === this.bathroomViewed.id) {
-                  this.bathroomsToDisplay.$set(i, this.bathroomViewed);
+              for(let i = 0; i < self.bathroomsToDisplay.length; i++) {
+                if(self.bathroomsToDisplay[i].id === self.bathroomViewed.id) {
+                  self.$set(self.bathroomsToDisplay, i, self.bathroomViewed);
                   break;
                 }
               }
