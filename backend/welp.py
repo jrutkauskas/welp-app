@@ -22,22 +22,22 @@ class WelpApp:
 		if not params:
 			return False, "must send parameters"
 		options =  Bathroom.query
-		if params["min_latitude"]:
+		if params["min_latitude"] is not None:
 			options = options.filter(Bathroom.latitude >=params["min_latitude"])
-		if params["max_latitude"]:
+		if params["max_latitude"] is not None:
 			options = options.filter(Bathroom.latitude <= params["max_latitude"])
-		if params["min_longitude"]:
+		if params["min_longitude"] is not None:
 			options = options.filter(Bathroom.longitude >=params["min_longitude"])
-		if params["max_longitude"]:
+		if params["max_longitude"] is not None:
 			options = options.filter(Bathroom.longitude <= params["max_longitude"])
 		
-		if params["occupancy_type"]:
+		if params["occupancy_type"] is not None:
 			options = options.filter(Bathroom.occupancy_type == params["occupancy_type"])
-		if params["hand_drying_type"]:
+		if params["hand_drying_type"] is not None:
 			options = options.filter(Bathroom.hand_drying_type == params["hand_drying_type"])
-		if params["stall_range_type"]:
+		if params["stall_range_type"] is not None:
 			options = options.filter(Bathroom.stall_range_type == params["stall_range_type"])
-		if params["gender_type"]:
+		if params["gender_type"] is not None:
 			options = options.filter(Bathroom.gender_type == params["gender_type"])
 		
 		bathrooms = options.all()
