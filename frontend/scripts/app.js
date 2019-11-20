@@ -15,6 +15,7 @@ new Vue({
       loginDialog: false,
       bathroomDialog: false,
       filterPopup: false,
+      helpModeDialog : false,
 
       pinOnMap: false, 
       pin: null, //This is the pin that the user uses to select the area of the new bathroom. 
@@ -69,10 +70,10 @@ new Vue({
           this.privacyToDisplay = this.bathroomViewed.avg_ratings.privacy;
 
           //If this user has rated accessibility, display this user's rating. 
-        if(this.bathroomViewed.user_ratings.accessibility !== null)
-          this.accessibilityToDisplay = this.bathroomViewed.user_ratings.accessibility;
+        if(this.bathroomViewed.user_ratings.location_accessibility !== null)
+          this.accessibilityToDisplay = this.bathroomViewed.user_ratings.location_accessibility;
         else
-          this.acessibilityToDisplay = this.bathroomViewed.avg_ratings.accessibility;
+          this.acessibilityToDisplay = this.bathroomViewed.avg_ratings.location_accessibility;
 
         //If this user has rated atmosphere, display this user's rating. 
         if(this.bathroomViewed.user_ratings.atmosphere !== null)
@@ -113,6 +114,7 @@ new Vue({
           //Clear the list of bathrooms before repopulating it.
           this.bathroomsToDisplay = [];
           
+          var self = this;
 
           //Make the POST call to the backend.
            axios.post('/api/getbathrooms', {
@@ -145,7 +147,8 @@ new Vue({
 
                 //Then add markers to the map for each bathroom. 
                 for(bathroom of this.bathroomsToDisplay) {
-                  L.marker([bathroom.latitude, bathroom.longitude], {title: bathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
+                  L.marker([bathroom.latitude, bathroom.longitude], {title: bathroom.bathroom_name}).addTo(self.layerGroup).on('click', function(e) {
+
                     displayBathroomFromMap(this.getLatLng().lng, this.getLatLng().lat);
                   });
                 }
@@ -158,13 +161,15 @@ new Vue({
           
           
       },
-      displayBathroomFromMap : function(latitude, longitude) {
+      displayBathroomFromMap : function(longitude, latitude) {
+
+
         let bathroom = null;
         let i = 0;
 
         //Find bathroom to display from its coordinates.
         while(this.bathroomsToDisplay[i] !== undefined) {
-          
+          console.log(this.bathroomsToDisplay[i].bathroom_name);
           if(this.bathroomsToDisplay[i].latitude === latitude && this.bathroomsToDisplay[i].longitude === longitude) {
             bathroom = this.bathroomsToDisplay[i];
             break;
@@ -178,6 +183,7 @@ new Vue({
       },
 
       displayBathroomFromList : function(bathroom) {
+
 
         this.bathroomViewed = bathroom;
 
@@ -371,6 +377,10 @@ new Vue({
         this.loginDialog = false;
       },
 
+      exitHelpMode: function() {
+        this.helpModeDialog = false;
+      },
+
       //Set a cookie with the user ID.
       setCookie: function() {
         document.cookie = "id=" + this.userID;
@@ -458,7 +468,7 @@ new Vue({
             this.bathroomsToDisplay.push(newlyCreatedBathroom);
 
             //Add the newly created bathroom to the map. 
-            L.marker([newlyCreatedBathroom.longitude, newlyCreatedBathroom.latitude], {title: newlyCreatedBathroom.bathroom_name}).addTo(self.layerGroup).on('click', function(e) {
+            L.marker([newlyCreatedBathroom.latitude, newlyCreatedBathroom.longitude], {title: newlyCreatedBathroom.bathroom_name}).addTo(self.layerGroup).on('click', function(e) {
               displayBathroomFromMap(this.getLatLng().lng, this.getLatLng().lat);
             });
 
@@ -482,6 +492,16 @@ new Vue({
         this.handDryingToDisplay = '';
       },
 
+      logout: function() {
+        //Clear the id cookie by setting all cookies to expire.
+        document.cookie.split(";").forEach(function(c) { 
+            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+        });
+
+        //Navigate to /api/logout to clear the session cookie.
+        window.location.replace("/api/logout");
+      },
+
       rateBathroom : function(featureRated) {
 
         var feature, value;
@@ -494,9 +514,11 @@ new Vue({
             value = this.privacyToDisplay;
             break;
           case 'accessibility':
+            console.log("Made it");
             feature = 3;
-            this.bathroomViewed.user_ratings.accessibility = this.accessibilityToDisplay;
+            this.bathroomViewed.user_ratings.location_accessibility = this.accessibilityToDisplay;
             value = this.accessibilityToDisplay;
+            console.log(feature + ", " + value);
             break;
           case 'atmosphere':
             feature = 2;
@@ -520,13 +542,16 @@ new Vue({
 
           })
           .then(response => {
-              //Find the bathroom as it's stored locally and update its ratings. 
-              for(let i = 0; i < self.bathroomsToDisplay.length; i++) {
-                if(self.bathroomsToDisplay[i].id === self.bathroomViewed.id) {
-                  self.$set(self.bathroomsToDisplay, i, self.bathroomViewed);
-                  break;
-                }
+            //Find the bathroom as it's stored locally and update its ratings. 
+            for(let i = 0; i < self.bathroomsToDisplay.length; i++) {
+              if(self.bathroomsToDisplay[i].id === self.bathroomViewed.id) {
+                self.$set(self.bathroomsToDisplay, i, self.bathroomViewed);
+                break;
               }
+            }
+
+            console.log("Make it");
+
           })
           .catch(function (error)  {
             console.log(error);

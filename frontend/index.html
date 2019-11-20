@@ -79,10 +79,62 @@
 								</v-card-actions>
 							</v-card>
 						</v-dialog>
+
+						<v-btn v-if="loggedIn" dark @click="logout()">Logout</v-btn>
 			
-						<v-btn icon color="black">
-							<v-icon>fa-question-circle</v-icon>
-						</v-btn>
+						<v-dialog v-model="helpModeDialog" persistent max-width="600px">
+								<template v-slot:activator="{ on }">
+									<v-btn icon color="black" v-on="on">
+										<v-icon>fa-question-circle</v-icon>
+									</v-btn>
+								</template>
+								<v-card>
+									<v-card-title>
+										<span class="headline">Help Mode</span>
+										<v-spacer></v-spacer>
+										<v-btn color="red" text @click="exitHelpMode()"><v-icon>mdi-close</v-icon></v-btn>
+									</v-card-title>
+									<v-card-text>
+										<v-container>
+											
+											<p>
+
+												<p class="headline"> 
+													Welcome to Welp! Below you'll find some tips on using our bathroom locator.
+												</p>
+
+												<p class="subtitle-1 font-weight-black mb-1 mt-3">Viewing Bathrooms</p>
+												You can search for a bathroom by selecting the filter (<v-icon>mdi-filter</v-icon>) icon 
+												on the search toolbar and filtering by bathroom attributes. You'll search based on the part of
+												the map you're currently centered on. By moving the map, you refresh your search. You can 
+												hone in on your location by selecting the marker (<v-icon>mdi-map-marker</v-icon>) button on the lefthand side
+												of the map.
+
+												By clicking on a bathroom entry in the list or on a pin on the map, you can pull up the information
+												page of the associated bathroom. 
+
+												<p class="subtitle-1 font-weight-black mb-1 mt-3">Rating Bathrooms</p>
+												If you are logged in, you can pull up a bathroom's information page and rate it on privacy, 
+												cleanliness, accessibility, and atmosphere by clicking the stars under each attribute. Ratings
+												are in increments of .5.
+
+												<p class="subtitle-1 font-weight-black mb-1 mt-3">Editing Bathrooms</p>
+												If you are logged in, you can edit a bathroom's information. Scroll to the bottom of the information
+												page and select 'Edit Bathroom'. After editing its information, scroll to the bottom of the page and
+												select 'Save Bathroom' to save your changes.
+
+												<p class="subtitle-1 font-weight-black mb-1 mt-3">Adding Bathrooms</p>
+												If you are logged in, you can add a new bathroom to Welp. Select 'Add a Bathroom' beneath the map 
+												and drop the pin that appears in the center of the map where the new bathroom is going to be.
+												Once it's in place, select 'Enter Details' just below the map to enter the bathroom's information.
+												Scroll to the bottom of the page and hit 'Save Bathroom' to finalize your new bathroom.
+											</p>
+										</v-container>
+				
+									</v-card-text>
+								</v-card>
+							</v-dialog>
+						
 					</v-app-bar>
 			
 				<v-content>
@@ -90,7 +142,7 @@
 						<v-row justify="center">
 							<v-col cols="12" sm="8" class="text-center">
 							
-								<div id="map" class="pa-2" style="width: 100%;height: 400px;" v-show="!loginDialog && !bathroomDialog"></div>
+								<div id="map" class="pa-2" style="width: 100%;height: 400px;" v-show="!loginDialog && !bathroomDialog && !helpModeDialog"></div>
 
 								<div v-if="loggedIn">
 									<v-btn v-if="!pinOnMap"  class="mt-4 white--text" color="indigo" @click="dropPin">
@@ -174,41 +226,40 @@
 												</v-list>
 											</template>
 											<v-card >
-												<v-card-title >
-													
-													<v-row>
-														<div v-if="bathroomViewed !== null">
-															<span  class="headline">{{bathroomViewed.bathroom_name}}</span>
-														</div>
-														<div v-else-if="bathroomEdited !== null" class="pa-0 ma-0">
-															<span v-if="bathroomEdited.bathroom_name !== ''" class="headline">{{bathroomEdited.bathroom_name}}</span>
-															<span v-else class="headline">New Bathroom</span>
-														</div>
-														
-
-														<v-spacer></v-spacer>
-														<v-btn color="red" text @click="exitBathroom"><v-icon>mdi-close</v-icon></v-btn>
-													</v-row>
-
-													<v-row>
-														<span class="title">Average Rating: </span>
-														<v-rating v-if="bathroomViewed !== null"
-														half-increments
-														readonly dense
-														v-model="bathroomViewed.avg_overall_rating">
-														</v-rating>
-
-														<v-rating v-else-if="bathroomEdited !== null"
-														half-increments
-														readonly dense
-														v-model="bathroomEdited.avg_overall_rating">
-														</v-rating>
-													</v-row>
-													
-												</v-card-title>
-												
 												<v-card-text>
 													<v-container>
+														<v-row class="width:100%">
+															<v-col cols="12" sm="10">
+																<div v-if="bathroomViewed !== null">
+																	<span  class="headline">{{bathroomViewed.bathroom_name}}</span>
+																</div>
+																<div v-else-if="bathroomEdited !== null" class="pa-0 ma-0">
+																	<span v-if="bathroomEdited.bathroom_name !== ''" class="headline">{{bathroomEdited.bathroom_name}}</span>
+																	<span v-else class="headline">New Bathroom</span>
+																</div>
+															</v-col>
+															
+															<v-col cols="12" sm="2">
+																<v-btn color="red" text @click="exitBathroom"><v-icon>mdi-close</v-icon></v-btn>
+															</v-col>
+														</v-row>
+														<div class="width:100%" style="text-align:center">
+															
+																<span class="title">Average Rating: </span>
+																<v-rating v-if="bathroomViewed !== null"
+																half-increments
+																readonly dense
+																v-model="bathroomViewed.avg_overall_rating">
+																</v-rating>
+	
+																<v-rating v-else-if="bathroomEdited !== null"
+																half-increments
+																readonly dense
+																v-model="bathroomEdited.avg_overall_rating">
+																</v-rating>
+
+																	
+															</div>
 				
 														<div v-if="editingBathroom && bathroomEdited !== null">
 				
@@ -276,7 +327,7 @@
 														</div>
 														<div v-else-if="bathroomViewed !== null">
 
-															<p class="subtitle-1 black--text">{{bathroomViewed.description}}</p>
+															<p v-if="bathroomViewed.description !== ''" class="subtitle-1 black--text">{{bathroomViewed.description}}</p>
 
 															<v-row>
 																<v-col cols="12" sm="6" >
