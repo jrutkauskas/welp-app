@@ -22,22 +22,22 @@ class WelpApp:
 		if not params:
 			return False, "must send parameters"
 		options =  Bathroom.query
-		if params["min_latitude"]:
+		if params["min_latitude"] is not None:
 			options = options.filter(Bathroom.latitude >=params["min_latitude"])
-		if params["max_latitude"]:
+		if params["max_latitude"] is not None:
 			options = options.filter(Bathroom.latitude <= params["max_latitude"])
-		if params["min_longitude"]:
+		if params["min_longitude"] is not None:
 			options = options.filter(Bathroom.longitude >=params["min_longitude"])
-		if params["max_longitude"]:
+		if params["max_longitude"] is not None:
 			options = options.filter(Bathroom.longitude <= params["max_longitude"])
 		
-		if params["occupancy_type"]:
+		if params["occupancy_type"] is not None:
 			options = options.filter(Bathroom.occupancy_type == params["occupancy_type"])
-		if params["hand_drying_type"]:
+		if params["hand_drying_type"] is not None:
 			options = options.filter(Bathroom.hand_drying_type == params["hand_drying_type"])
-		if params["stall_range_type"]:
+		if params["stall_range_type"] is not None:
 			options = options.filter(Bathroom.stall_range_type == params["stall_range_type"])
-		if params["gender_type"]:
+		if params["gender_type"] is not None:
 			options = options.filter(Bathroom.gender_type == params["gender_type"])
 		
 		bathrooms = options.all()
@@ -139,6 +139,8 @@ class WelpApp:
 		if not b:
 			return (False, "bathroom with id %d not found" % rating["bathroom_id"])
 		
+		if not (rating["rating"] > 0 and rating["rating"] <= 5):
+			return (False, "invalid rating")
 		# need to check if rating already exists
 		existing_rating = Rating.query.filter_by(user_id=user.id).filter_by(bathroom_id=b.id).filter_by(rating_type=int(rating["rating_type"])).first()
 		if existing_rating:
@@ -376,8 +378,9 @@ class WelpApp:
 		bathroom.time_availability = dic["time_availability"]
 		bathroom.notes = dic["notes"]
 
-		bathroom.latitude = dic["latitude"]
-		bathroom.longitude = dic["longitude"]
+
+		bathroom.latitude = float(dic["latitude"])
+		bathroom.longitude = float(dic["longitude"])
 
 		bathroom.occupancy_type = dic["occupancy_type"]
 		bathroom.hand_drying_type = dic["hand_drying_type"]

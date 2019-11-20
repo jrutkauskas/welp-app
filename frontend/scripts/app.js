@@ -15,6 +15,7 @@ new Vue({
       loginDialog: false,
       bathroomDialog: false,
       filterPopup: false,
+      helpModeDialog : false,
 
       pinOnMap: false, 
       pin: null, //This is the pin that the user uses to select the area of the new bathroom. 
@@ -55,37 +56,49 @@ new Vue({
 
       //Determine whether to show a user's personal ratings or the average rating for a bathroom's features.
       setRatingsToDisplay : function() {
+
+
         //If this user has rated cleanliness, display this user's rating. 
-        if(this.bathroomViewed.user_ratings.cleanliness !== null) {
+        if(this.bathroomViewed.user_ratings.cleanliness !== null) 
           this.cleanlinessToDisplay = this.bathroomViewed.user_ratings.cleanliness;
-        }
-        else
+        else if (this.bathroomViewed.avg_ratings.cleanliness !== null)
           this.cleanlinessToDisplay = this.bathroomViewed.avg_ratings.cleanliness;
-        
+        else
+          this.cleanlinessToDisplay = 0;
+
         //If this user has rated privacy, display this user's rating. 
         if(this.bathroomViewed.user_ratings.privacy !== null)
           this.privacyToDisplay = this.bathroomViewed.user_ratings.privacy;
-        else
+        else if(this.bathroomViewed.avg_ratings.privacy !== null)
           this.privacyToDisplay = this.bathroomViewed.avg_ratings.privacy;
+        else
+          this.privacyToDisplay = 0;
+
 
           //If this user has rated accessibility, display this user's rating. 
-        if(this.bathroomViewed.user_ratings.accessibility !== null)
-          this.accessibilityToDisplay = this.bathroomViewed.user_ratings.accessibility;
+        if(this.bathroomViewed.user_ratings.location_accessibility !== null)
+          this.accessibilityToDisplay = this.bathroomViewed.user_ratings.location_accessibility;
+        else if(this.bathroomViewed.avg_ratings.location_accessibility !== null) 
+          this.accessibilityToDisplay = this.bathroomViewed.avg_ratings.location_accessibility;
         else
-          this.acessibilityToDisplay = this.bathroomViewed.avg_ratings.accessibility;
+          this.accessibilityToDisplay = 0;
 
         //If this user has rated atmosphere, display this user's rating. 
         if(this.bathroomViewed.user_ratings.atmosphere !== null)
           this.atmosphereToDisplay = this.bathroomViewed.user_ratings.atmosphere;
-        else
+        else if(this.bathroomViewed.avg_ratings.atmosphere !== null)
           this.atmosphereToDisplay = this.bathroomViewed.avg_ratings.atmosphere;
+        else
+        this.atmosphereToDisplay = 0;
+      },
 
-
+      convertCategoricalValues : function() {
         this.convertHandDryingToString();
         this.convertGenderToString();
         this.convertOccupancyToString();
         this.convertStallNumberToString();
       },
+
       loadBathrooms : function() {
           var min_lat, max_lat, min_lon, max_lon, o_type, hd_type, sr_type, g_type;
 
@@ -113,6 +126,7 @@ new Vue({
           //Clear the list of bathrooms before repopulating it.
           this.bathroomsToDisplay = [];
           
+          var self = this;
 
           //Make the POST call to the backend.
            axios.post('/api/getbathrooms', {
@@ -145,7 +159,8 @@ new Vue({
 
                 //Then add markers to the map for each bathroom. 
                 for(bathroom of this.bathroomsToDisplay) {
-                  L.marker([bathroom.latitude, bathroom.longitude], {title: bathroom.bathroom_name}).addTo(this.layerGroup).on('click', function(e) {
+                  L.marker([bathroom.latitude, bathroom.longitude], {title: bathroom.bathroom_name}).addTo(self.layerGroup).on('click', function(e) {
+
                     displayBathroomFromMap(this.getLatLng().lng, this.getLatLng().lat);
                   });
                 }
@@ -158,13 +173,14 @@ new Vue({
           
           
       },
-      displayBathroomFromMap : function(latitude, longitude) {
+      displayBathroomFromMap : function(longitude, latitude) {
+
+
         let bathroom = null;
         let i = 0;
 
         //Find bathroom to display from its coordinates.
         while(this.bathroomsToDisplay[i] !== undefined) {
-          
           if(this.bathroomsToDisplay[i].latitude === latitude && this.bathroomsToDisplay[i].longitude === longitude) {
             bathroom = this.bathroomsToDisplay[i];
             break;
@@ -192,6 +208,9 @@ new Vue({
           this.pin = null;
           this.pinOnMap = false;
         }
+
+        //Convert categorical values from numbers to strings to display.
+        this.convertCategoricalValues();
 
 
         this.bathroomDialog = true;
@@ -371,6 +390,10 @@ new Vue({
         this.loginDialog = false;
       },
 
+      exitHelpMode: function() {
+        this.helpModeDialog = false;
+      },
+
       //Set a cookie with the user ID.
       setCookie: function() {
         document.cookie = "id=" + this.userID;
@@ -454,16 +477,26 @@ new Vue({
 
             var newlyCreatedBathroom = response.data;
 
+
             //Add the newly created bathroom to the local list.
             this.bathroomsToDisplay.push(newlyCreatedBathroom);
 
             //Add the newly created bathroom to the map. 
-            L.marker([newlyCreatedBathroom.longitude, newlyCreatedBathroom.latitude], {title: newlyCreatedBathroom.bathroom_name}).addTo(self.layerGroup).on('click', function(e) {
+            L.marker([newlyCreatedBathroom.latitude, newlyCreatedBathroom.longitude], {title: newlyCreatedBathroom.bathroom_name}).addTo(self.layerGroup).on('click', function(e) {
               displayBathroomFromMap(this.getLatLng().lng, this.getLatLng().lat);
             });
 
+
             //Update the displayed bathroom for when we return to the 'view bathroom' view.
             self.bathroomViewed = newlyCreatedBathroom;
+
+
+            //Show the correct ratings based on the bathroom to display. 
+            self.setRatingsToDisplay();
+
+            //Update the categorical valaues based on the bathroom to display. 
+            self.convertCategoricalValues();
+
             self.editingBathroom = false;
 
           })
@@ -482,6 +515,16 @@ new Vue({
         this.handDryingToDisplay = '';
       },
 
+      logout: function() {
+        //Clear the id cookie by setting all cookies to expire.
+        document.cookie.split(";").forEach(function(c) { 
+            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+        });
+
+        //Navigate to /api/logout to clear the session cookie.
+        window.location.replace("/api/logout");
+      },
+
       rateBathroom : function(featureRated) {
 
         var feature, value;
@@ -495,7 +538,7 @@ new Vue({
             break;
           case 'accessibility':
             feature = 3;
-            this.bathroomViewed.user_ratings.accessibility = this.accessibilityToDisplay;
+            this.bathroomViewed.user_ratings.location_accessibility = this.accessibilityToDisplay;
             value = this.accessibilityToDisplay;
             break;
           case 'atmosphere':
@@ -520,13 +563,15 @@ new Vue({
 
           })
           .then(response => {
-              //Find the bathroom as it's stored locally and update its ratings. 
-              for(let i = 0; i < self.bathroomsToDisplay.length; i++) {
-                if(self.bathroomsToDisplay[i].id === self.bathroomViewed.id) {
-                  self.$set(self.bathroomsToDisplay, i, self.bathroomViewed);
-                  break;
-                }
+            //Find the bathroom as it's stored locally and update its ratings. 
+            for(let i = 0; i < self.bathroomsToDisplay.length; i++) {
+              if(self.bathroomsToDisplay[i].id === self.bathroomViewed.id) {
+                self.$set(self.bathroomsToDisplay, i, self.bathroomViewed);
+                break;
               }
+            }
+
+
           })
           .catch(function (error)  {
             console.log(error);
@@ -607,7 +652,7 @@ new Vue({
       },
       convertStallRange : function(sr_string) {
         switch(sr_string) {
-          case "One Stall":
+          case "One Stall / Single Occupancy":
               return 0;
           case "2-3 Stalls":
             return 1;
@@ -670,7 +715,7 @@ new Vue({
             this.genderToDisplay = 'Other';
             break;
           default:
-            return '';  
+            this.genderToDisplay = ''; 
         }
       },
     },
