@@ -59,37 +59,37 @@ new Vue({
 
 
         //If this user has rated cleanliness, display this user's rating. 
-        if(this.bathroomViewed.user_ratings.cleanliness !== null) 
+        if(this.bathroomViewed.user_ratings !== undefined && this.bathroomViewed.user_ratings.cleanliness !== null) 
           this.cleanlinessToDisplay = this.bathroomViewed.user_ratings.cleanliness;
         else if (this.bathroomViewed.avg_ratings.cleanliness !== null)
           this.cleanlinessToDisplay = this.bathroomViewed.avg_ratings.cleanliness;
         else
-          this.cleanlinessToDisplay = 0;
+          this.cleanlinessToDisplay = null;
 
         //If this user has rated privacy, display this user's rating. 
-        if(this.bathroomViewed.user_ratings.privacy !== null)
+        if(this.bathroomViewed.user_ratings !== undefined && this.bathroomViewed.user_ratings.privacy !== null)
           this.privacyToDisplay = this.bathroomViewed.user_ratings.privacy;
         else if(this.bathroomViewed.avg_ratings.privacy !== null)
           this.privacyToDisplay = this.bathroomViewed.avg_ratings.privacy;
         else
-          this.privacyToDisplay = 0;
+          this.privacyToDisplay = null;
 
 
           //If this user has rated accessibility, display this user's rating. 
-        if(this.bathroomViewed.user_ratings.location_accessibility !== null)
+        if(this.bathroomViewed.user_ratings !== undefined && this.bathroomViewed.user_ratings.location_accessibility !== null)
           this.accessibilityToDisplay = this.bathroomViewed.user_ratings.location_accessibility;
         else if(this.bathroomViewed.avg_ratings.location_accessibility !== null) 
           this.accessibilityToDisplay = this.bathroomViewed.avg_ratings.location_accessibility;
         else
-          this.accessibilityToDisplay = 0;
+          this.accessibilityToDisplay = null;
 
         //If this user has rated atmosphere, display this user's rating. 
-        if(this.bathroomViewed.user_ratings.atmosphere !== null)
+        if(this.bathroomViewed.user_ratings !== undefined && this.bathroomViewed.user_ratings.atmosphere !== null)
           this.atmosphereToDisplay = this.bathroomViewed.user_ratings.atmosphere;
         else if(this.bathroomViewed.avg_ratings.atmosphere !== null)
           this.atmosphereToDisplay = this.bathroomViewed.avg_ratings.atmosphere;
         else
-        this.atmosphereToDisplay = 0;
+          this.atmosphereToDisplay = null;
       },
 
       convertCategoricalValues : function() {
@@ -199,8 +199,9 @@ new Vue({
 
         //If this is a logged in user, determine which cleanliness, privacy, etc ratings to display-
         //their own or the average for all users.
-        if(this.loggedIn)
+        
           this.setRatingsToDisplay();
+
 
         //Make sure that the pin used for adding a new bathroom is removed from the map. 
         if(this.pin !== null) {
@@ -528,6 +529,11 @@ new Vue({
       rateBathroom : function(featureRated) {
 
         var feature, value;
+
+        if(this.bathroomViewed.user_ratings === undefined) {
+          console.log("No user ratings object was found.");
+          this.bathroomViewed.user_ratings = {};
+        }
 
         //Store the information of the feature that was rated.
         switch(featureRated) {
