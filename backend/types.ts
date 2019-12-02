@@ -206,6 +206,7 @@ export class DeleteReportRequest {
 
 //GET /api/reports as admin to get an array of these
 export class BathroomReport {
+	id: Number;
 	bathroom_id: Number;
 	description: String;
 }
