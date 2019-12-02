@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 import time
 
-from model import db, User, Bathroom, Rating
+from model import db, User, Bathroom, Rating, Report
 from welp import WelpApp
 import tests
 from tests import WelpTester
@@ -152,7 +152,50 @@ def logout():
 		del session["user_id"]
 	return redirect("/")
 
+@app.route("/api/reports", methods=["GET", "POST"])
+def get_all_reports():
+	if "user_id" in session:
+		if request.method == "GET":
+			user = server.get_user_by_id(session["user_id"])
+			if user and user.isAdmin:
+				reports = server.get_reports()
+				return json.dumps(reports)
+		else:
+			data = request.get_json()
+			if server.report_bathroom_by_id(data["bathroom_id"], data["description"]):
+				return "Successfully reported"
+			else:
+				return "Could not report this bathroom", 400
+	else:
+		return "not allowed", 400
 
+@app.route("/api/delete/report", methods=["POST"])
+def delete_report():
+	if "user_id" in session:
+		if request.method == "POST":
+			user = server.get_user_by_id(session["user_id"])
+			if user and user.isAdmin:
+				data = request.get_json()
+				if server.delete_report_by_id(data["id"]):
+					return "Deleted Successfully"
+				else:
+					return "Could not delete this report", 400
+	else:
+		return "not allowed", 400
+
+@app.route("/api/delete/bathroom", methods=["POST"])
+def delete_bathroom():
+	if "user_id" in session:
+		if request.method == "POST":
+			user = server.get_user_by_id(session["user_id"])
+			if user and user.isAdmin:
+				data = request.get_json()
+				if server.delete_bathroom_by_id(data["id"]):
+					return "Deleted Successfully"
+				else:
+					return "Could not delete this bathroom", 400
+	else:
+		return "not allowed", 400
 
 if __name__ == "__main__":
 	app.run(threaded=True, host='0.0.0.0')

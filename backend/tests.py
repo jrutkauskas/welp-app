@@ -361,7 +361,15 @@ class WelpTester(unittest.TestCase):
 
 		#################
 
+		report = Report()
+		report.bathroom = b3
+		report.description = "This bathroom has been permanently closed; It should be deleted, please."
+		db.session.add(report)
 
+		admin = User("admin", "chang")
+		admin.isAdmin = True
+		db.session.add(admin)
+		
 
 
 		#add the new objects to the database

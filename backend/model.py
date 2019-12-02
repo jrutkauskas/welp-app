@@ -11,10 +11,12 @@ class User(db.Model):
 	
 	ratings = db.relationship("Rating", backref="user", lazy="joined")
 
+	isAdmin = db.Column(db.Boolean)
 
 	def __init__(self, username, password):
 		self.username = username
 		self.password = generate_password_hash(password)
+		self.isAdmin = False
 
 class Bathroom(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -74,6 +76,9 @@ class Bathroom(db.Model):
 	# Note! This is Dynamic!  It will require you to treat it like a Query object!
 	ratings = db.relationship("Rating", backref="bathroom", lazy="dynamic")
 
+	# relationship for reports
+	reports = db.relationship("Report", backref="bathroom", lazy="select")
+
 	def get_cleanliness_ratings(self):
 		return self.ratings.filter_by(rating_type=0)
 	cleanliness_ratings = property(fget=get_cleanliness_ratings)
@@ -117,3 +122,8 @@ class Rating(db.Model):
 		self.rating_type = rating_type
 		self.rating = rating
 
+class Report(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	description = db.Column(db.String(500), nullable=False)
+
+	bathroom_id = db.Column(db.Integer, db.ForeignKey("bathroom.id"))

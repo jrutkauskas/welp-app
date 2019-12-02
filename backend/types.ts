@@ -133,6 +133,7 @@ export class CreateBathroomRequest {
 export class UserResponse {
 	id: Number; //The id of the user
 	username: String; // Max 50 Characters
+	isAdmin?: Boolean
 }
 
 
@@ -187,4 +188,24 @@ export class BathroomQuery {
 
 }
 
+// POST this to /api/reports to report the bathroom, will return 200 OK on success or a 400 error (Must be logged in)
+export class ReportBathroomRequest {
+	bathroom_id: Number;
+	description: String; // max 500 characters
+}
 
+// POST to /api/delete/bathroom as a logged-in admin user to delete a bathroom
+export class DeleteBathroomRequest {
+	bathroom_id: Number;
+}
+
+// POST to /api/delete/report as a logged-in admin user to delete a report
+export class DeleteReportRequest {
+	bathroom_id: Number;
+}
+
+//GET /api/reports as admin to get an array of these
+export class BathroomReport {
+	bathroom_id: Number;
+	description: String;
+}

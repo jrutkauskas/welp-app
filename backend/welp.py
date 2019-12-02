@@ -1,4 +1,4 @@
-from model import db, User, Bathroom, Rating
+from model import db, User, Bathroom, Rating, Report
 from werkzeug.security import generate_password_hash, check_password_hash
 #from app import db
 
@@ -362,6 +362,8 @@ class WelpApp:
 		dic = {}
 		dic["id"] = user.id
 		dic["username"] = user.username
+		if user.isAdmin:
+			dic["isAdmin"] = user.isAdmin
 		return dic
 
 	# takes in a CreateBathroomRequest dictionary and a bathroom (database) object, and copies the data 
@@ -388,3 +390,58 @@ class WelpApp:
 		bathroom.gender_type = dic["gender_type"]
 		
 		return bathroom
+
+	### ITERATION CODE
+
+	# Returns true or false whether it was able to find and delete the bathroom
+	def delete_bathroom_by_id(self,id):
+		if id is None:
+			return False
+		if Bathroom.query.filter_by(id=id).first() is not None:
+			Bathroom.query.filter_by(id=id).delete()
+			return True
+		else: 
+			return False
+	
+	# Returns true or false whether it was able to find and delete the report
+	def delete_report_by_id(self,id):
+		if id is None:
+			return False
+		if Report.query.filter_by(id=id).first() is not None:
+			Report.query.filter_by(id=id).delete()
+			return True
+		else: 
+			return False
+	
+	
+	def report_bathroom_by_id(self, id, description):
+		if id is None or not description:
+			return False
+		b = Bathroom.query.filter_by(id=id).first()
+		if b is None:
+			return False
+		rep = Report()
+		rep.bathroom = b
+		rep.description = description
+
+		db.session.add(rep)
+		db.session.commit()
+		return True
+	
+	def get_reports(self):
+		reps = Report.query.all()
+		resp  = self.convert_report_to_dict(reps)
+		return resp
+	
+	def convert_report_to_dict(self, reps):
+		if not reps:
+			return None
+		response = []
+		for rep in reps:
+			dic = {}
+			dic["bathroom_id"] = rep.bathroom_id
+			dic["description"] = rep.description
+			dic["id"] = rep.id
+			response.append(dic)
+		return response
+
