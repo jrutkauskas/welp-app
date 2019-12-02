@@ -196,12 +196,12 @@ export class ReportBathroomRequest {
 
 // POST to /api/delete/bathroom as a logged-in admin user to delete a bathroom
 export class DeleteBathroomRequest {
-	bathroom_id: Number;
+	id: Number;
 }
 
 // POST to /api/delete/report as a logged-in admin user to delete a report
 export class DeleteReportRequest {
-	bathroom_id: Number;
+	id: Number;
 }
 
 //GET /api/reports as admin to get an array of these
