@@ -70,10 +70,11 @@ new Vue({
   
     methods: {
 
+      editUsers : function() {
+        window.location.replace("/admin/usermanagement");
+      },
       //Determine whether to show a user's personal ratings or the average rating for a bathroom's features.
       setRatingsToDisplay : function() {
-
-
         //If this user has rated cleanliness, display this user's rating. 
         if(this.bathroomViewed.user_ratings !== undefined && this.bathroomViewed.user_ratings.cleanliness !== null) 
           this.cleanlinessToDisplay = this.bathroomViewed.user_ratings.cleanliness;
@@ -916,13 +917,18 @@ new Vue({
       //Check if the user is already logged in.
       for(let i = 0; i < cookieTokens.length; i++) {
 
+        
         if(cookieTokens[i] === 'id') {
           this.userID = cookieTokens[i + 1];
           this.loggedIn = true;
         }
         else if (cookieTokens[i] === 'admin'){
-          this.admin = cookieTokens[i + 1];
-          this.loadReports();
+          this.admin = (cookieTokens[i + 1] === 'true');
+
+          if(this.admin) {
+            this.loadReports();
+          }
+            
         }
       }
     },
