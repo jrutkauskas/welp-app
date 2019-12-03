@@ -653,7 +653,7 @@ new Vue({
       resolveReport: function() {
 
         let self = this;
-        
+
         //Resolve report HTTP call.
         axios.post('/api/delete/report', {
           id: this.reportViewed.id
@@ -917,21 +917,20 @@ new Vue({
 
 
       var x = document.cookie;
-      var cookieTokens = x.split('=');
+      var cookieTokens = x.split(/[\s;=]+/);
 
       //Check if the user is already logged in.
       for(let i = 0; i < cookieTokens.length; i++) {
+
         if(cookieTokens[i] === 'id') {
           this.userID = cookieTokens[i + 1];
           this.loggedIn = true;
         }
-        // else if (cookieTokens[i] === 'admin'){
-        //   this.admin = cookieTokens[i + 1];
-        //   this.loadReports();
-        // }
+        else if (cookieTokens[i] === 'admin'){
+          this.admin = cookieTokens[i + 1];
+          this.loadReports();
+        }
       }
-
-      this.loadReports();
 
       this.layerGroup = L.layerGroup().addTo(this.map);
 

@@ -143,7 +143,7 @@
 				<v-content>
 					<v-container class="fill-height" fluid>
 						<v-row justify="center">
-							<v-col cols="12" sm="2" v-if="loggedIn && !admin">
+							<v-col cols="12" sm="2" v-if="loggedIn && admin">
 								<v-toolbar>
 									<v-toolbar-title>Reports</v-toolbar-title>
 								</v-toolbar>
@@ -567,7 +567,7 @@
 																<v-card-actions>
 																	<div v-if="loggedIn">
 																		<v-btn  @click="editBathroom">Edit Bathroom</v-btn>
-																		<v-btn  v-if="!admin" @click="deleteBathroom">Delete Bathroom</v-btn>
+																		<v-btn  v-if="admin" @click="deleteBathroom">Delete Bathroom</v-btn>
 																	</div>
 																</v-card-actions>
 															</v-layout>
