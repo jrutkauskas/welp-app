@@ -1,4 +1,5 @@
 
+
 new Vue({
     el: '#app',
     vuetify: new Vuetify(),
@@ -19,6 +20,9 @@ new Vue({
       filterPopup: false,
       reportPopup: false,
       helpModeDialog : false,
+
+      successSnackbar: false,
+      snackbarText: "",
 
       pinOnMap: false, 
       pin: null, //This is the pin that the user uses to select the area of the new bathroom. 
@@ -56,8 +60,13 @@ new Vue({
       stallNumberToDisplay: null,
       handDryingToDisplay: null,
 
+      bathroomListWidth : null,
+      reportListWidth : null,
+
 
     }),
+
+  
   
     methods: {
 
@@ -255,6 +264,7 @@ new Vue({
             if(self.admin) {
               self.loadReports();
             }
+
             self.exitLogin();
 
             return;
@@ -543,6 +553,8 @@ new Vue({
             document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
         });
 
+        this.admin = false;
+
         //Navigate to /api/logout to clear the session cookie.
         window.location.replace("/api/logout");
       },
@@ -587,6 +599,10 @@ new Vue({
 
           //Close view dialog.
           self.bathroomDialog = false;
+
+          self.snackbarText = "Bathroom Deleted Successfully";
+          self.successSnackbar = true;
+          
         })
         .catch(e => {
           console.log("Failed to delete bathroom.");
@@ -605,6 +621,9 @@ new Vue({
         .then(response => {
           //Close report popup.
           self.reportPopup = false;
+
+          self.snackbarText = "Bathroom Reported";
+          self.successSnackbar = true;
         })
         .catch(e => {
           console.log("Failed to report bathroom.");
@@ -669,6 +688,9 @@ new Vue({
 
           //Close report view.
           self.reportDialog = false;
+
+          self.snackbarText = "Report Resolved";
+          self.successSnackbar = true;
         })
         .catch(e => {
             console.log("Failed to resolve report.");
@@ -887,6 +909,22 @@ new Vue({
       window.loadBathrooms = this.loadBathrooms;
       window.displayBathroomFromMap = this.displayBathroomFromMap;
       window.loadReports = this.loadReports;
+
+      var x = document.cookie;
+      var cookieTokens = x.split(/[\s;=]+/);
+
+      //Check if the user is already logged in.
+      for(let i = 0; i < cookieTokens.length; i++) {
+
+        if(cookieTokens[i] === 'id') {
+          this.userID = cookieTokens[i + 1];
+          this.loggedIn = true;
+        }
+        else if (cookieTokens[i] === 'admin'){
+          this.admin = cookieTokens[i + 1];
+          this.loadReports();
+        }
+      }
     },
     mounted: function () {
 
@@ -915,22 +953,6 @@ new Vue({
       // add location control so the user can lock on to their own location. 
       L.control.locate().addTo(this.map);
 
-
-      var x = document.cookie;
-      var cookieTokens = x.split(/[\s;=]+/);
-
-      //Check if the user is already logged in.
-      for(let i = 0; i < cookieTokens.length; i++) {
-
-        if(cookieTokens[i] === 'id') {
-          this.userID = cookieTokens[i + 1];
-          this.loggedIn = true;
-        }
-        else if (cookieTokens[i] === 'admin'){
-          this.admin = cookieTokens[i + 1];
-          this.loadReports();
-        }
-      }
 
       this.layerGroup = L.layerGroup().addTo(this.map);
 

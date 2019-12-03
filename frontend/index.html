@@ -28,6 +28,21 @@
   <div v-cloak id="app">
     <v-app>
         <v-container>
+				<v-snackbar
+				v-model="successSnackbar"	
+				:timeout=3000
+				:top=true>
+
+					{{snackbarText}}
+
+					<v-btn
+					dark
+					text
+					icon
+					@click="successSnackbar = false">
+						<v-icon>mdi-close</v-icon>
+					</v-btn>
+    			</v-snackbar>
 				<v-app-bar app color="indigo" dark>
 
 						<v-toolbar-title>Welp</v-toolbar-title>
@@ -131,6 +146,11 @@
 												and drop the pin that appears in the center of the map where the new bathroom is going to be.
 												Once it's in place, select 'Enter Details' just below the map to enter the bathroom's information.
 												Scroll to the bottom of the page and hit 'Save Bathroom' to finalize your new bathroom.
+
+												<p class="subtitle-1 font-weight-black mb-1 mt-3">Reporting Bathrooms</p>
+												If you are logged in, you can report a bathroom that doesn't seem quite right. Select a bathroom from
+												the sidebar or from the map, and select the report (<v-icon>mdi-flag</v-icon>) icon in the top right.
+												From there, provide a reason for why you reported the bathroom and select "Report Bathroom".
 											</p>
 										</v-container>
 				
@@ -143,13 +163,13 @@
 				<v-content>
 					<v-container class="fill-height" fluid>
 						<v-row justify="center">
-							<v-col cols="12" sm="2" v-if="loggedIn && admin">
+							<v-col style="max-width: 200px" v-if="loggedIn && admin" >
 								<v-toolbar>
 									<v-toolbar-title>Reports</v-toolbar-title>
 								</v-toolbar>
 									<v-dialog v-model="reportDialog" scrollable  persistent max-width="500px">
 										<template v-slot:activator="{ on }">
-											<v-list one-line  style="overflow-y: auto; height:70vh">
+											<v-list one-line  style=" height:70vh">
 													<v-list-item  v-for="report in reportsToDisplay" two-line
 													@click="displayReport(report)" v-on="on"
 													>
@@ -243,7 +263,7 @@
 										</v-card>
 									</v-dialog>
 							</v-col>
-							<v-col cols="12" sm="8" class="text-center" style="z-index:0;">
+							<v-col :cols="7" class="text-center" style="z-index:0;">
 							
 								<div id="map" class="pa-2" style="width: 100%;height: 400px;" v-show="!loginDialog && !bathroomDialog && !helpModeDialog"></div>
 
@@ -257,7 +277,7 @@
 								</div>
 
 							</v-col>
-							<v-col cols="12" sm="2" style="width: 100%;">
+							<v-col style="max-width:300px">
 								<v-toolbar>
 									<v-toolbar-title>Bathrooms</v-toolbar-title>
 									<v-spacer></v-spacer>
@@ -307,7 +327,7 @@
 									</v-menu>
 								</v-toolbar>
 								<template>
-									<v-card class="mx-auto" max-width="400"  tile>
+									<v-card class="mx-auto"  tile>
 										<v-dialog v-model="bathroomDialog" scrollable  persistent max-width="500px">
 											<template v-slot:activator="{ on }">
 												<v-list two-line  style="overflow-y: auto; height:70vh">
@@ -367,7 +387,9 @@
 																		</v-card>
 																	</v-menu>
 
-																	<v-btn color="red" text @click="exitBathroom"><v-icon>mdi-close</v-icon></v-btn>
+																	<v-btn color="red" text @click="exitBathroom" style="float:right">
+																		<v-icon>mdi-close</v-icon>
+																	</v-btn>
 															</v-col>
 														</v-row>
 														<div class="width:100%" style="text-align:center">
