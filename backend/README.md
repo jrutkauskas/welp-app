@@ -1,9 +1,11 @@
 # How to Install, Run, and Test
 
+
 ## Installing
 
+Install python and pip however you usually install software on your computer.
 
-Install python and pip however you usually install software on your computer
+Acquire the source code by downloading from https://github.com/jrutkauskas/welp-app/
 
 After that you can run `install.bat` on a Windows machine or complete the following steps manually
 
