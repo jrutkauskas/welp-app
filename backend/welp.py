@@ -399,6 +399,7 @@ class WelpApp:
 			return False
 		if Bathroom.query.filter_by(id=id).first() is not None:
 			Bathroom.query.filter_by(id=id).delete()
+			db.session.commit()
 			return True
 		else: 
 			return False
@@ -409,6 +410,7 @@ class WelpApp:
 			return False
 		if Report.query.filter_by(id=id).first() is not None:
 			Report.query.filter_by(id=id).delete()
+			db.session.commit()
 			return True
 		else: 
 			return False

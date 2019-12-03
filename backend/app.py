@@ -194,8 +194,7 @@ def delete_bathroom():
 					return "Deleted Successfully"
 				else:
 					return "Could not delete this bathroom", 400
-	else:
-		return "not allowed", 400
+	return "not allowed", 400
 
 if __name__ == "__main__":
 	app.run(threaded=True, host='0.0.0.0')
