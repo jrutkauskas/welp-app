@@ -27,7 +27,7 @@
 <body>
   <div v-cloak id="app">
     <v-app>
-        <v-container>
+        <v-container class="ml-1 mr-1" style="max-width:100%">
 				<v-snackbar
 				v-model="successSnackbar"	
 				:timeout=3000
@@ -161,8 +161,8 @@
 					</v-app-bar>
 			
 				<v-content>
-					<v-container class="fill-height" fluid>
-						<v-row justify="center">
+					<v-container class="fill-height pr-0 pl-0" fluid>
+						<v-row justify="space-around">
 							<v-col style="max-width: 200px" v-if="loggedIn && admin" >
 								<v-toolbar>
 									<v-toolbar-title>Reports</v-toolbar-title>
