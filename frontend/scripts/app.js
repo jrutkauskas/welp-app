@@ -11,10 +11,13 @@ new Vue({
 
       loggedIn: false,
       userID: -1,
+      admin: false,
 
       loginDialog: false,
       bathroomDialog: false,
+      reportDialog: false,
       filterPopup: false,
+      reportPopup: false,
       helpModeDialog : false,
 
       pinOnMap: false, 
@@ -27,6 +30,10 @@ new Vue({
 
       bathroomViewed: null,
       bathroomsToDisplay: [],
+
+      reportViewed: null,
+      reportsToDisplay: [],
+      reportText: "",
 
       filterOccupancy: null,
       filterGender: null, 
@@ -235,6 +242,7 @@ new Vue({
 
             self.loggedIn = true;
             self.userID = json.id;
+            self.admin = json.isAdmin;
             self.loginCaption = "";
             self.logInUsername = "";
             self.registerUsername = "";
@@ -243,6 +251,10 @@ new Vue({
             self.registerPassAgain = "";
 
             self.setCookie();
+
+            if(self.admin) {
+              self.loadReports();
+            }
             self.exitLogin();
 
             return;
@@ -340,6 +352,8 @@ new Vue({
           .then(function (response) {
             var json = response.data
 
+            console.log("Register");
+
             //Clear out all the login/registration info.
             self.loginCaption = "";
             self.logInUsername = "";
@@ -349,6 +363,7 @@ new Vue({
             self.registerPassAgain = "";
 
             self.userID = json.id;
+
             
             self.loggedIn = true;
 
@@ -387,6 +402,10 @@ new Vue({
         this.bathroomDialog = false;
       },
 
+      exitReportView : function() {
+        this.reportDialog = false;
+      },
+
       exitLogin: function() {
         this.loginDialog = false;
       },
@@ -398,6 +417,8 @@ new Vue({
       //Set a cookie with the user ID.
       setCookie: function() {
         document.cookie = "id=" + this.userID;
+
+        document.cookie = "admin=" + this.admin;
       },
 
       //Save either an edited bathroom or a newly created bathroom.
@@ -524,6 +545,135 @@ new Vue({
 
         //Navigate to /api/logout to clear the session cookie.
         window.location.replace("/api/logout");
+      },
+
+      deleteFromReport: function () {
+        //Delete bathroom from DB.
+        this.deleteBathroom();
+
+        //Resolve report.
+        this.resolveReport();
+      },
+
+      editFromReport: function() {
+        //Save bathroom changes.
+        this.saveBathroom();
+
+        //Resolve report.
+        this.resolveReport();
+      },
+
+      deleteBathroom: function() {
+
+        let self = this;
+
+        //Delete the bathroom viewed from the database. 
+        axios.post('/api/delete/bathroom', {
+          id: this.bathroomViewed.id
+        })
+        .then(response => {
+
+          //Delete the bathroom from the local list, if it's there.
+          for(let i = 0; i < self.bathroomsToDisplay.length; i++) {
+            if(self.bathroomsToDisplay[i].id === self.bathroomViewed.id) {
+              //Splice out bathroom.
+              self.bathroomsToDisplay.splice(i, 1);
+              break;
+            }
+          }
+
+          //Replace bathroomViewed, now that it's deleted.
+          self.bathroomViewed = null;
+
+          //Close view dialog.
+          self.bathroomDialog = false;
+        })
+        .catch(e => {
+          console.log("Failed to delete bathroom.");
+        });
+
+      },
+
+      reportBathroom: function() {
+        //Generate a report for the bathroom viewed. 
+
+        let self = this;
+        axios.post('/api/reports', {
+          bathroom_id: this.bathroomViewed.id,
+          description: this.reportText
+        })
+        .then(response => {
+          //Close report popup.
+          self.reportPopup = false;
+        })
+        .catch(e => {
+          console.log("Failed to report bathroom.");
+        });
+
+      },
+
+      loadReports: function() {
+        //Make axios HTTP call to get reports.
+
+        let self = this;
+
+        //Get the bathroom associated with the report.
+        axios.get('/api/reports')
+        .then(response => {
+            //Store list of reports.
+            self.reportsToDisplay = response.data;
+          })
+        .catch(e => {
+            console.log("Failed to load reports from server.");
+        });
+
+      },
+
+      displayReport: function(report) {
+        
+        this.reportViewed = report;
+        this.reportText = report.description;
+        let self = this;
+
+        //Get the bathroom associated with the report.
+        axios.get('/api/bathrooms/' + report.bathroom_id)
+        .then(response => {
+          self.bathroomViewed = response.data;
+          self.bathroomEdited = response.data;
+
+          //Open up the Report Dialog
+          self.reportDialog = true;
+
+        })
+        .catch(function (error)  {
+          console.log(error);
+        });
+      },
+
+      resolveReport: function() {
+
+        let self = this;
+
+        //Resolve report HTTP call.
+        axios.post('/api/delete/report', {
+          id: this.reportViewed.id
+        })
+        .then(response => {
+          //Delete report from local list.
+          for(let i = 0; i < self.reportsToDisplay.length; i++) {
+            if(self.reportsToDisplay[i].id === self.reportViewed.id) {
+              self.reportsToDisplay.splice(i, 1);
+              break;
+            }
+          }
+
+          //Close report view.
+          self.reportDialog = false;
+        })
+        .catch(e => {
+            console.log("Failed to resolve report.");
+        });
+        
       },
 
       rateBathroom : function(featureRated) {
@@ -731,8 +881,12 @@ new Vue({
       this.bathroomsToDisplay = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
       {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
 
+      this.reportsToDisplay = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+
       window.loadBathrooms = this.loadBathrooms;
       window.displayBathroomFromMap = this.displayBathroomFromMap;
+      window.loadReports = this.loadReports;
     },
     mounted: function () {
 
@@ -763,13 +917,18 @@ new Vue({
 
 
       var x = document.cookie;
-      var cookieTokens = x.split('=');
+      var cookieTokens = x.split(/[\s;=]+/);
 
       //Check if the user is already logged in.
       for(let i = 0; i < cookieTokens.length; i++) {
+
         if(cookieTokens[i] === 'id') {
           this.userID = cookieTokens[i + 1];
           this.loggedIn = true;
+        }
+        else if (cookieTokens[i] === 'admin'){
+          this.admin = cookieTokens[i + 1];
+          this.loadReports();
         }
       }
 
