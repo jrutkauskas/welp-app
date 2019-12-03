@@ -230,7 +230,6 @@ new Vue({
         //Convert categorical values from numbers to strings to display.
         this.convertCategoricalValues();
 
-
         this.bathroomDialog = true;
       },
 
@@ -252,7 +251,6 @@ new Vue({
 
             self.loggedIn = true;
             self.userID = json.id;
-            self.admin = json.isAdmin;
             self.loginCaption = "";
             self.logInUsername = "";
             self.registerUsername = "";
@@ -261,6 +259,11 @@ new Vue({
             self.registerPassAgain = "";
 
             self.setCookie();
+
+            if(json.isAdmin === 'true')
+              self.admin = true;
+            else 
+              self.admin = false;
 
             if(self.admin) {
               self.loadReports();
@@ -923,8 +926,11 @@ new Vue({
           this.loggedIn = true;
         }
         else if (cookieTokens[i] === 'admin'){
-          this.admin = (cookieTokens[i + 1] === 'true');
-
+          if (cookieTokens[i + 1] === 'true')
+            this.admin = true;
+          else 
+            this.admin = false;
+          
           if(this.admin) {
             this.loadReports();
           }

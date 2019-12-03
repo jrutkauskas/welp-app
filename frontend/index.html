@@ -368,7 +368,7 @@
 															<v-col cols="12" sm="4">
 																<v-menu v-model="reportPopup" :close-on-content-click="false" bottom left>
 																		<template v-slot:activator="{ on }">
-																			<v-btn icon  v-on="on" v-if="loggedIn && !admin" color="red" text >
+																			<v-btn icon  v-on="on" v-show="loggedIn && !admin" color="red" text >
 																				<v-icon>mdi-flag</v-icon>
 																			</v-btn>
 																		</template>
