@@ -415,6 +415,16 @@ class WelpApp:
 		else: 
 			return False
 	
+	# Returns true or false whether it was able to find and delete the user
+	def delete_user_by_id(self,id):
+		if id is None:
+			return False
+		if User.query.filter_by(id=id).first() is not None:
+			User.query.filter_by(id=id).delete()
+			db.session.commit()
+			return True
+		else: 
+			return False
 	
 	def report_bathroom_by_id(self, id, description):
 		if id is None or not description:

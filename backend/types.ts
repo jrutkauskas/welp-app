@@ -204,6 +204,10 @@ export class DeleteReportRequest {
 	id: Number;
 }
 
+// POST to /api/delete/user as a logged-in admin user to delete a user
+export class DeleteUserRequest {
+	id: Number;
+}
 //GET /api/reports as admin to get an array of these
 export class BathroomReport {
 	id: Number;

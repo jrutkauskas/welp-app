@@ -166,8 +166,8 @@ def get_all_reports():
 				return "Successfully reported"
 			else:
 				return "Could not report this bathroom", 400
-	else:
-		return "not allowed", 400
+	
+	return "not allowed", 400
 
 @app.route("/api/delete/report", methods=["POST"])
 def delete_report():
@@ -180,8 +180,8 @@ def delete_report():
 					return "Deleted Successfully"
 				else:
 					return "Could not delete this report", 400
-	else:
-		return "not allowed", 400
+
+	return "not allowed", 400
 
 @app.route("/api/delete/bathroom", methods=["POST"])
 def delete_bathroom():
@@ -194,6 +194,19 @@ def delete_bathroom():
 					return "Deleted Successfully"
 				else:
 					return "Could not delete this bathroom", 400
+	return "not allowed", 400
+
+@app.route("/api/delete/user", methods=["POST"])
+def delete_user():
+	if "user_id" in session:
+		if request.method == "POST":
+			user = server.get_user_by_id(session["user_id"])
+			if user and user.isAdmin:
+				data = request.get_json()
+				if server.delete_user_by_id(data["id"]):
+					return "Deleted Successfully"
+				else:
+					return "Could not delete this user", 400
 	return "not allowed", 400
 
 @app.route("/api/admin/setuseradmin", methods=["POST"])
@@ -212,6 +225,24 @@ def make_user_admin():
 					return "Updated admin status successfully"
 	return "not allowed", 400
 
+@app.route("/api/admin/getusers", methods=["GET"])
+def admin_get_users():
+	if "user_id" in session:
+			user = server.get_user_by_id(session["user_id"])
+			if user and user.isAdmin:
+				users = User.query.all()
+				l = [server.convert_user_to_dict(u) for u in users]
+				return json.dumps(l)
+	return "not allowed", 400
+
+@app.route("/admin/usermanagement", methods=["GET"])
+def admin_user_mgmt():
+	if "user_id" in session:
+			user = server.get_user_by_id(session["user_id"])
+			if user and user.isAdmin:
+				return app.send_static_file('admin_user.html')
+	return redirect("/")
+
 if __name__ == "__main__":
 	app.run(threaded=True, host='0.0.0.0')
 
@@ -223,6 +254,12 @@ def init_db():
 	"""Initializes database and any model objects necessary"""
 	db.drop_all()
 	db.create_all()
+
+	print("creating default admin user with username 'admin' and password 'chang'")
+	u = User("admin","chang")
+	u.isAdmin = True
+	db.session.add(u)
+	db.session.commit()
 
 	print("Initialized Database.")
 	return
