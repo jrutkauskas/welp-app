@@ -2,7 +2,11 @@
 
 ## Installing
 
+
 Install python and pip however you usually install software on your computer
+
+After that you can run `install.bat` on a Windows machine or complete the following steps manually
+
 
 First, run `pip install pyOpenSSL==17.5.0`
 
