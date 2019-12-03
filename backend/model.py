@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
+# Implements User of Sec 2.3 of Req Spec
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(50), nullable=False)
@@ -18,6 +19,7 @@ class User(db.Model):
 		self.password = generate_password_hash(password)
 		self.isAdmin = False
 
+# Implements Bathroom of Sec 2.3 of Req Spec
 class Bathroom(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 
@@ -104,6 +106,7 @@ class Bathroom(db.Model):
 
 
 
+# Implements Rating of Sec 2.3 of Req Spec
 class Rating(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	rating_type = db.Column(db.Integer, nullable=False)

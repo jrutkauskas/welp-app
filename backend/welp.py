@@ -18,6 +18,7 @@ class WelpApp:
 	# Takes in a BathroomQuery dictionary and User (database) object (for calculating user ratings)
 	# on success, will return the pair (True, <arr>) where arr is an array of BathroomResponse dictionaries (may be an empty array if no bathrooms are found matching those parameters)
 	# on failure, will return the pair (False, msg), where msg describes what the problem is.
+	# Implements R3 of Functional Spec in Sec 1.1 of Software Plan
 	def get_bathrooms_based_on_params(self, params, user):
 		if not params:
 			return False, "must send parameters"
@@ -55,6 +56,7 @@ class WelpApp:
 	# which is required for getting the user's ratings and including them
 	# On success, will return a pair (True, <bathroom>) where bathroom is a BathroomResponse dictionary
 	# on failure, will return a pair (False, msg) where msg is a message describing the problem
+	# Implements R2 of Functional Spec in Sec 1.1 of Software Plan
 	def get_bathroom_by_id(self, id, user):
 		if not id:
 			return False, "must send valid id"
@@ -71,6 +73,7 @@ class WelpApp:
 	# On success, will return the pair (True, <bathroom>) where bathroom is the Bathroom object connected to the database that represents
 	# the bathroom that was updated (containing its new values)
 	# on failure, returns pair False, msg where msg is a string message explaining what went wrong
+	# Implements R6 of Functional Spec in Sec 1.1 of Software Plan
 	def set_bathroom_by_id(self, id, bathroom):
 		if not id or not bathroom:
 			return False, "id or dictionary missing"
@@ -92,6 +95,7 @@ class WelpApp:
 	# On success, will return the triple (True, <bathroom_response>, <bathroom>) where bathroom_response is a BathroomResponse dictionary
 	# and bathroom is the newly-created Bathroom (database) object.
 	# On failure, will return the triple (False, msg, None) where msg is a message describing what went wrong.
+	# Implements R5 of Functional Spec in Sec 1.1 of Software Plan
 	def create_bathroom(self, bathroom, user):
 		if not bathroom or not user:
 			return False, "Invalid bathroom or user access", None
@@ -111,6 +115,7 @@ class WelpApp:
 	# On success, will return the pair (True, <user>) where User is the newly created User object
 	# On failure (e.g., username already exists), will return the pair (False, msg) where msg is a string message 
 	# describing the problem
+	# Implements R4 of Functional Spec in Sec 1.1 of Software Plan
 	def create_user(self, user):
 		if not user or not user["username"] or not user["password"]:
 			return False, "invalid AuthenticationRequest sent"
@@ -133,6 +138,7 @@ class WelpApp:
 		
 	# rating is a RatingRequestResponse from types.ts as a dictionary
 	# returns a pair (result <boolean>, msg <string>) where result is true with success, false with failure, and msg is a string describing the error
+	# Implements Ratings from R5 of Functional Spec in Sec 1.1 of Software Plan
 	def set_user_bathroom_rating(self, user, rating):
 		
 		b = Bathroom.query.filter_by(id=rating["bathroom_id"]).first()
@@ -156,6 +162,7 @@ class WelpApp:
 	#takes AuthenticationRequest dictionary as a request to authenticate a user
 	# on success, returns pair (True, <User>) where User is an actual User object linked to the database of the authenticated user
 	# on failure, returns pair (False, msg) where msg is a message describing the reason the user isn't able to be authenticated.
+	# Implements R4 of Functional Spec in Sec 1.1 of Software Plan
 	def authenticate_user(self, authentication_request):
 		if not authentication_request:
 			return (False, "authentication_request is not found")

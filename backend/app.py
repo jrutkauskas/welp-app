@@ -32,12 +32,15 @@ server = WelpApp()
 db.init_app(app)
 
 """ Routes """
+
+# For R1 of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/")
 def home():
 	session["started"] = True
 	#return "Server Works!"
 	return app.send_static_file('index.html')
 
+# For R5 of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/bathrooms", methods=["POST"])
 def create_a_bathroom():
 	user = None
@@ -55,6 +58,7 @@ def create_a_bathroom():
 	
 	#return "Not implemented, would return bathrooms based on POSTed params", 404
 
+# For R3 of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/getbathrooms", methods=["POST"])
 def find_bathroom():
 	user = None
@@ -67,6 +71,7 @@ def find_bathroom():
 		return bathrooms, 400
 	return json.dumps(bathrooms)
 
+# For R5 and R6 of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/bathrooms/<id>", methods=["GET","POST"])
 def get_or_set_specific_bathroom(id):
 	user = None
@@ -88,10 +93,6 @@ def get_or_set_specific_bathroom(id):
 			return bathroom, 400
 		return json.dumps(bathroom)
 
-	
-
-	#""" NEEDS to also do all the ratings averaging AND return whether a user rated a bathroom or not"""
-	#return "Not implemented, would return bathroom with id or allow modification", 404
 
 
 
@@ -99,6 +100,7 @@ def get_or_set_specific_bathroom(id):
 def get_specific_user(id):
 	return f"Not implemented; id is {id}", 404
 
+# For Ratings of R5 of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/users/<user_id>/ratings/", methods=["POST"])
 def set_user_bathroom_ratings(user_id):
 	if not "user_id" in session:
@@ -114,6 +116,7 @@ def set_user_bathroom_ratings(user_id):
 
 	return "rating updated successfully"
 
+# For R4 Creating a User of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/users", methods=["POST"])
 def add_user():
 	if "user_id" in session:
@@ -129,6 +132,7 @@ def add_user():
 	return json.dumps(res)
 	#return "Not implemented.  Would return user id of new user or errors for why they can't sign up", 404
 
+# For R4 (Authentication) of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/authenticate", methods=["POST"])
 def authenticate():
 	if "user_id" in session:
@@ -151,6 +155,10 @@ def logout():
 	if "user_id" in session:
 		del session["user_id"]
 	return redirect("/")
+
+###
+### Functions used in Sprint #1 Admin features, See Final Sprint Report
+###
 
 @app.route("/api/reports", methods=["GET", "POST"])
 def get_all_reports():
@@ -249,6 +257,9 @@ if __name__ == "__main__":
 
 
 # CLI Commands
+## Used for Maintenance and Setup -- See Maintenance section of User Manual and Guide on "How to install and test"
+
+
 @app.cli.command("initdb")
 def init_db():
 	"""Initializes database and any model objects necessary"""
