@@ -143,6 +143,106 @@
 				<v-content>
 					<v-container class="fill-height" fluid>
 						<v-row justify="center">
+							<v-col cols="12" sm="2" v-if="loggedIn && !admin">
+								<v-toolbar>
+									<v-toolbar-title>Reports</v-toolbar-title>
+								</v-toolbar>
+									<v-dialog v-model="reportDialog" scrollable  persistent max-width="500px">
+										<template v-slot:activator="{ on }">
+											<v-list one-line  style="overflow-y: auto; height:70vh">
+													<v-list-item  v-for="report in reportsToDisplay" two-line
+													@click="displayReport(report)" v-on="on"
+													>
+														<v-list-item-content>
+															<v-list-item-title>
+																Report #{{report.id}}
+															</v-list-item-title>
+														</v-list-item-content>
+													</v-list-item>
+											</v-list>
+										</template>
+										<v-card >
+											<v-card-title v-if="reportViewed !== null" primary-title>
+												Report #{{reportViewed.id}}
+												<v-spacer></v-spacer>
+
+												<v-btn color="red" text @click="exitReportView"><v-icon>mdi-close</v-icon></v-btn>
+											</v-card-title>
+											<v-card-text>
+												<v-container v-if="bathroomEdited !==  null">
+
+													
+													<!-- Text box for description of reportViewed -->
+													<h3>Report Reasoning: </h3>
+													<p>{{reportText}}</p>
+
+													<!-- Editing options for all bathroom fields-->
+													<v-text-field
+														v-model="bathroomEdited.bathroom_name"
+														label="Bathroom Title" :maxlength="120"
+														>
+													</v-text-field>
+				
+													<v-textarea v-model="bathroomEdited.description" :maxlength="600">
+														<template v-slot:label>
+															<div>
+																How do I get there?
+															</div>
+														</template>
+													</v-textarea>
+				
+													<v-textarea v-model="bathroomEdited.time_availability" :maxlength="300">
+														<template v-slot:label>
+															<div>
+																At what times can I use it?
+															</div>
+														</template>
+													</v-textarea>
+				
+													<v-select
+															:items="['Single Occupancy', 'Multiple Occupancy', 'Other']"
+														label="Occupancy Type"
+														v-model="occupancyToDisplay"
+													></v-select>
+															
+													<v-select
+														:items="['One Stall / Single Occupancy', '2-3 Stalls', '4-7 Stalls', '8+ Stalls']"
+														label="Number of Stalls"
+														v-model="stallNumberToDisplay"
+													></v-select>
+															
+													<v-select
+															:items="['Gender Agnostic', 'Men', 'Women', 'Other']"
+														label="Gender Designation"
+														v-model="genderToDisplay"
+													></v-select>
+															
+													<v-select
+															:items="['Paper Towels', 'Electric Hand Dryer', 'Electric Hand Dryer AND Paper Towels',
+															'None available', 'Other']"
+														label="Hand Drying"
+														v-model="handDryingToDisplay"
+													></v-select>
+															
+													<v-textarea v-model="bathroomEdited.notes" :maxlength="600">
+														<template v-slot:label>
+															<div>
+																Additional Notes
+															</div>
+														</template>
+													</v-textarea>
+
+													<v-layout justify-center>
+														<v-card-actions>
+															<v-btn  @click="editFromReport">Save Changes & Resolve</v-btn>
+															<v-btn  @click="deleteFromReport">Delete </v-btn>
+														</v-card-actions>
+													</v-layout>
+												</v-container>
+											</v-card-text>
+										</v-card>
+									</v-dialog>
+							</v-col>
 							<v-col cols="12" sm="8" class="text-center" style="z-index:0;">
 							
 								<div id="map" class="pa-2" style="width: 100%;height: 400px;" v-show="!loginDialog && !bathroomDialog && !helpModeDialog"></div>
@@ -157,7 +257,7 @@
 								</div>
 
 							</v-col>
-							<v-col cols="12" sm="4" style="width: 100%;">
+							<v-col cols="12" sm="2" style="width: 100%;">
 								<v-toolbar>
 									<v-toolbar-title>Bathrooms</v-toolbar-title>
 									<v-spacer></v-spacer>
@@ -232,7 +332,7 @@
 												<v-card-text>
 													<v-container>
 														<v-row class="width:100%">
-															<v-col cols="12" sm="10">
+															<v-col cols="12" sm="8">
 																<div v-if="bathroomViewed !== null">
 																	<span  class="headline">{{bathroomViewed.bathroom_name}}</span>
 																</div>
@@ -242,8 +342,32 @@
 																</div>
 															</v-col>
 															
-															<v-col cols="12" sm="2">
-																<v-btn color="red" text @click="exitBathroom"><v-icon>mdi-close</v-icon></v-btn>
+															<v-col cols="12" sm="4">
+																<v-menu v-model="reportPopup" :close-on-content-click="false" bottom left>
+																		<template v-slot:activator="{ on }">
+																			<v-btn icon  v-on="on" v-if="loggedIn && !admin" color="red" text >
+																				<v-icon>mdi-flag</v-icon>
+																			</v-btn>
+																		</template>
+															
+																		<v-card class="pa-2">
+																			<span class="title"> Report Bathroom</span>
+								
+																			<v-textarea v-model="reportText" :maxlength="300">
+																				<template v-slot:label>
+																					<div>
+																						What's wrong?
+																					</div>
+																				</template>
+																			</v-textarea>
+
+																			<v-btn @click="reportBathroom">
+																				Report
+																			</v-btn>
+																		</v-card>
+																	</v-menu>
+
+																	<v-btn color="red" text @click="exitBathroom"><v-icon>mdi-close</v-icon></v-btn>
 															</v-col>
 														</v-row>
 														<div class="width:100%" style="text-align:center">
@@ -330,7 +454,7 @@
 														</div>
 														<div v-else-if="bathroomViewed !== null">
 
-															<p v-if="bathroomViewed.description !== ''" class="subtitle-1 black--text">{{bathroomViewed.description}}</p>
+															<p class="pt-3" v-if="bathroomViewed.description !== ''" class="subtitle-1 black--text">{{bathroomViewed.description}}</p>
 
 															<v-row>
 																<v-col cols="12" sm="6" >
@@ -441,10 +565,12 @@
 
 															<v-layout justify-center>
 																<v-card-actions>
-																	<v-btn  v-if="loggedIn" @click="editBathroom">Edit Bathroom</v-btn>
+																	<div v-if="loggedIn">
+																		<v-btn  @click="editBathroom">Edit Bathroom</v-btn>
+																		<v-btn  v-if="!admin" @click="deleteBathroom">Delete Bathroom</v-btn>
+																	</div>
 																</v-card-actions>
 															</v-layout>
-
 														</div>
 													</v-container>
 												</v-card-text>
