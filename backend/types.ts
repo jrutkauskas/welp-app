@@ -210,3 +210,9 @@ export class BathroomReport {
 	bathroom_id: Number;
 	description: String;
 }
+
+// to set a user as being admin or not, from an admin account, POST to /api/admin/setuseradmin
+export class SetUserAdminRequest {
+	username: String;
+	isAdmin: Boolean;
+}

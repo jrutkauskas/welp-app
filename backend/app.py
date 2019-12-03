@@ -196,6 +196,22 @@ def delete_bathroom():
 					return "Could not delete this bathroom", 400
 	return "not allowed", 400
 
+@app.route("/api/admin/setuseradmin", methods=["POST"])
+def make_user_admin():
+	if "user_id" in session:
+		if request.method == "POST":
+			user = server.get_user_by_id(session["user_id"])
+			if user and user.isAdmin:
+				data = request.get_json()
+				u = User.query.filter_by(username=data["username"]).first()
+				if not u:
+					return "cannot find user", 400
+				else:
+					u.isAdmin = data["isAdmin"]
+					db.session.commit()
+					return "Updated admin status successfully"
+	return "not allowed", 400
+
 if __name__ == "__main__":
 	app.run(threaded=True, host='0.0.0.0')
 
@@ -209,6 +225,21 @@ def init_db():
 	db.create_all()
 
 	print("Initialized Database.")
+	return
+
+
+def remove_instance_state(dic):
+	del dic["_sa_instance_state"]
+	return dic
+@app.cli.command("dumpdb")
+def dump_db():
+	"""Prints database"""
+	print([remove_instance_state(u.__dict__) for u in User.query.all()])
+	print("###############\n")
+	print([remove_instance_state(u.__dict__) for u in Bathroom.query.all()])
+	print("###############\n")
+	print([remove_instance_state(u.__dict__) for u in Report.query.all()])
+
 	return
 
 @app.cli.command("test")
