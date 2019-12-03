@@ -30,3 +30,7 @@ To run tests with code coverage, it is important to note a few key steps:
 1. run the command `coverage run -m flask test` to run your tests and collect coverage data.  Your test results will print in your console.  To output them to a file (which you will want to do for final reporting), run `coverage run -m flask test > test_results.txt` to write your results to a file called test_results.txt.
 
 2. run the command `coverage html` to generate a beautiful html report to view the coverage data after you ran your tests.
+
+## Other admin commands
+
+To dump the contents of the db (for manual reading), run `flask dumpdb > output_file.txt` 
