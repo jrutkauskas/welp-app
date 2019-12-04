@@ -433,7 +433,7 @@ new Vue({
         if(this.admin)
           document.cookie = "admin=true;";
         else
-        document.cookie = "admin=false;";
+          document.cookie = "admin=false;";
       },
 
       //Save either an edited bathroom or a newly created bathroom.
