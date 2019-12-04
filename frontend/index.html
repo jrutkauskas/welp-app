@@ -22,9 +22,23 @@
 		 integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
 		 crossorigin=""></script>
 
+	<style>
+		#noie { display:none; }
+		@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {  
+			#noie  { display:block !important; }
+		}
+	</style>
 
 </head>
 <body>
+		<div id="noie" style="display:none">
+		You are not using a compatible, up to date browser, you MUST use chrome, firefox, opera, or any other modern browser that is NOT internet explorer
+		</div>
+		<!--[if lte IE 9]>
+			<div>
+				You are not using a compatible, up to date browser, you MUST use chrome, firefox, opera, or any other modern browser that is NOT internet explorer
+			</div>
+		<![endif]-->
   <div v-cloak id="app" style="display:none;">
     <v-app>
         <v-container class="ml-1 mr-1" style="max-width:100%">
