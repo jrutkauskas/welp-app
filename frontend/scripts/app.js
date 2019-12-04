@@ -626,6 +626,7 @@ new Vue({
         .then(response => {
           //Close report popup.
           self.reportPopup = false;
+          self.reportText = "";
 
           self.snackbarText = "Bathroom Reported";
           self.successSnackbar = true;
