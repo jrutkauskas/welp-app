@@ -25,7 +25,7 @@
 
 </head>
 <body>
-  <div v-cloak id="app">
+  <div v-cloak id="app" style="display:none;">
     <v-app>
         <v-container class="ml-1 mr-1" style="max-width:100%">
 				<v-snackbar
@@ -166,7 +166,7 @@
 				<v-content>
 					<v-container class="fill-height pr-0 pl-0" fluid>
 						<v-row justify="space-around">
-							<v-col style="max-width: 200px" v-if="loggedIn && admin" >
+							<v-col style="max-width: 200px" v-show="loggedIn && admin" >
 								<v-toolbar>
 									<v-toolbar-title>Reports</v-toolbar-title>
 								</v-toolbar>
@@ -368,7 +368,7 @@
 															<v-col cols="12" sm="4">
 																<v-menu v-model="reportPopup" :close-on-content-click="false" bottom left>
 																		<template v-slot:activator="{ on }">
-																			<v-btn icon  v-on="on" v-show="loggedIn && !admin" color="red" text >
+																			<v-btn icon  v-on="on" v-show="loggedIn && !admin && !editingBathroom" color="red" text >
 																				<v-icon>mdi-flag</v-icon>
 																			</v-btn>
 																		</template>

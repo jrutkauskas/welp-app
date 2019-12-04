@@ -258,12 +258,10 @@ new Vue({
             self.registerPass = "";
             self.registerPassAgain = "";
 
+            
+            self.admin = json.isAdmin;
             self.setCookie();
-
-            if(json.isAdmin === 'true')
-              self.admin = true;
-            else 
-              self.admin = false;
+            
 
             if(self.admin) {
               self.loadReports();
@@ -430,9 +428,12 @@ new Vue({
 
       //Set a cookie with the user ID.
       setCookie: function() {
-        document.cookie = "id=" + this.userID;
+        document.cookie = "id=" + this.userID + ";";
 
-        document.cookie = "admin=" + this.admin;
+        if(this.admin)
+          document.cookie = "admin=true;";
+        else
+        document.cookie = "admin=false;";
       },
 
       //Save either an edited bathroom or a newly created bathroom.
@@ -936,6 +937,7 @@ new Vue({
           }
             
         }
+        document.getElementById("app").setAttribute("style", "");
       }
     },
     mounted: function () {
