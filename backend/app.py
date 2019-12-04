@@ -300,6 +300,16 @@ def test_app():
 	unittest.TextTestRunner(verbosity=2).run(suite)
 	return
 
+@app.cli.command("regressionTest")
+def test_app2():
+	"""Runs test commands here"""
+	print("Doing regression testing!")
+	#t = WelpTester()
+	#t.runTests()
+	suite = unittest.TestLoader().loadTestsFromModule(regressionTests)
+	unittest.TextTestRunner(verbosity=2).run(suite)
+	return
+
 @app.cli.command("bootstrapdb")
 def bootstrap_db():
 	"""Fills Database with Sample data (WARNING! THIS CLEARS OUT ALL OTHER DB DATA)"""
