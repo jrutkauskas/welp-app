@@ -1,0 +1,110 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="https://unpkg.com/wingcss"/>
+		<style>
+			#main {
+				width:100%;
+				height:100%;
+			}
+			#left {
+				width:50%;
+				float:left;
+			}
+			#right {
+				width:50%;
+				float:right;
+				
+			}
+		</style>
+	</head>
+	<div id="main" class="full-screen">
+		<div id="left">
+			
+			<h1>Administrative User Management</h1>
+			<a href="/" style="float:left;">&LT; Back</a>
+			<p style="text-align:right">
+				<button id="getusers">Get Users</button>
+			</p>
+			<div style="width:100%; height:60%">
+			<pre id="users" style="width:100%; height:100%; border:1px  solid #333; overflow-y:auto; word-wrap: break-word;"> </pre>
+			</div>
+		</div>
+		<div id="right">
+			<div style="padding:10px;">
+			<div>
+				<label>Delete User By ID</label>
+				<input id="id" type="text" placeholder="id of user to delete">
+				<button id="submitdelete">Delete User</button>
+			</div>
+			<pre id="deleteresult"></pre>
+
+			<div>
+					<label>Set User Admin By Username</label>
+					<input id="username" type="text" placeholder="username of user to modify">
+					<button id="makeadminbutton">Make User Admin</button>
+					
+					<button id="removeadminbutton">Remove User Admin</button>
+			</div>
+				<pre id="adminresult"></pre>
+			</div>
+		</div>
+	</div>
+
+	
+	<script>
+		makeRequest = function(url, method, callback, body)
+{
+        //console.log("REquest: ", url, method, body)
+        var httpRequest = new XMLHttpRequest();
+        if (!httpRequest) {
+            alert('Giving up :( Cannot create an XMLHTTP instance');
+            return false;
+        }
+        
+        httpRequest.onreadystatechange = function(){callback(httpRequest)};
+        //console.log(httpRequest)
+        httpRequest.open(method, url);
+        //console.log("body: ", body)
+        if(!body)
+        {
+           // console.log("should be no body")
+            httpRequest.send();
+        }
+        else
+        {
+           // console.log("should be body")
+            httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            httpRequest.send(body)
+        }
+    
+}
+
+		document.querySelector("#getusers").addEventListener("click", () => {
+			var oReq = new XMLHttpRequest();
+			oReq.addEventListener("load", () => {
+				document.querySelector("#users").textContent = JSON.stringify(JSON.parse(oReq.responseText), null, 2);
+			});
+			oReq.open("GET", "/api/admin/getusers");
+			oReq.send();
+			//makeRequest("/api/admin/getusers", "GET", (req) => { document.querySelector("#users").textContent = JSON.stringify(JSON.parse(req.responseText), null, 2)  | "failed"})
+		});
+
+		document.querySelector("#submitdelete").addEventListener("click", () => {
+			id = document.querySelector("#id").value;
+
+			makeRequest("/api/delete/user", "POST", (req) => { document.querySelector("#deleteresult").textContent = req.responseText }, JSON.stringify({"id":id}));
+		});
+
+		document.querySelector("#makeadminbutton").addEventListener("click", () => {
+			id = document.querySelector("#username").value;
+
+			makeRequest("/api/admin/setuseradmin", "POST", (req) => { document.querySelector("#adminresult").textContent = req.responseText }, JSON.stringify({"username":id, "isAdmin":true}));
+		});
+
+		document.querySelector("#removeadminbutton").addEventListener("click", () => {
+			id = document.querySelector("#username").value;
+
+			makeRequest("/api/admin/setuseradmin", "POST", (req) => { document.querySelector("#adminresult").textContent = req.responseText }, JSON.stringify({"username":id, "isAdmin":false}));
+		});
+	</script>
+</html>

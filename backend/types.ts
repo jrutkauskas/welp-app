@@ -204,9 +204,19 @@ export class DeleteReportRequest {
 	id: Number;
 }
 
+// POST to /api/delete/user as a logged-in admin user to delete a user
+export class DeleteUserRequest {
+	id: Number;
+}
 //GET /api/reports as admin to get an array of these
 export class BathroomReport {
 	id: Number;
 	bathroom_id: Number;
 	description: String;
+}
+
+// to set a user as being admin or not, from an admin account, POST to /api/admin/setuseradmin
+export class SetUserAdminRequest {
+	username: String;
+	isAdmin: Boolean;
 }

@@ -1,4 +1,5 @@
 
+
 new Vue({
     el: '#app',
     vuetify: new Vuetify(),
@@ -19,6 +20,9 @@ new Vue({
       filterPopup: false,
       reportPopup: false,
       helpModeDialog : false,
+
+      successSnackbar: false,
+      snackbarText: "",
 
       pinOnMap: false, 
       pin: null, //This is the pin that the user uses to select the area of the new bathroom. 
@@ -56,15 +60,21 @@ new Vue({
       stallNumberToDisplay: null,
       handDryingToDisplay: null,
 
+      bathroomListWidth : null,
+      reportListWidth : null,
+
 
     }),
+
+  
   
     methods: {
 
+      editUsers : function() {
+        window.location.replace("/admin/usermanagement");
+      },
       //Determine whether to show a user's personal ratings or the average rating for a bathroom's features.
       setRatingsToDisplay : function() {
-
-
         //If this user has rated cleanliness, display this user's rating. 
         if(this.bathroomViewed.user_ratings !== undefined && this.bathroomViewed.user_ratings.cleanliness !== null) 
           this.cleanlinessToDisplay = this.bathroomViewed.user_ratings.cleanliness;
@@ -220,7 +230,6 @@ new Vue({
         //Convert categorical values from numbers to strings to display.
         this.convertCategoricalValues();
 
-
         this.bathroomDialog = true;
       },
 
@@ -242,7 +251,6 @@ new Vue({
 
             self.loggedIn = true;
             self.userID = json.id;
-            self.admin = json.isAdmin;
             self.loginCaption = "";
             self.logInUsername = "";
             self.registerUsername = "";
@@ -250,11 +258,15 @@ new Vue({
             self.registerPass = "";
             self.registerPassAgain = "";
 
+            
+            self.admin = json.isAdmin;
             self.setCookie();
+            
 
             if(self.admin) {
               self.loadReports();
             }
+
             self.exitLogin();
 
             return;
@@ -416,9 +428,12 @@ new Vue({
 
       //Set a cookie with the user ID.
       setCookie: function() {
-        document.cookie = "id=" + this.userID;
+        document.cookie = "id=" + this.userID + ";";
 
-        document.cookie = "admin=" + this.admin;
+        if(this.admin)
+          document.cookie = "admin=true;";
+        else
+          document.cookie = "admin=false;";
       },
 
       //Save either an edited bathroom or a newly created bathroom.
@@ -543,6 +558,8 @@ new Vue({
             document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
         });
 
+        this.admin = false;
+
         //Navigate to /api/logout to clear the session cookie.
         window.location.replace("/api/logout");
       },
@@ -587,6 +604,10 @@ new Vue({
 
           //Close view dialog.
           self.bathroomDialog = false;
+
+          self.snackbarText = "Bathroom Deleted Successfully";
+          self.successSnackbar = true;
+          
         })
         .catch(e => {
           console.log("Failed to delete bathroom.");
@@ -605,6 +626,10 @@ new Vue({
         .then(response => {
           //Close report popup.
           self.reportPopup = false;
+          self.reportText = "";
+
+          self.snackbarText = "Bathroom Reported";
+          self.successSnackbar = true;
         })
         .catch(e => {
           console.log("Failed to report bathroom.");
@@ -669,6 +694,9 @@ new Vue({
 
           //Close report view.
           self.reportDialog = false;
+
+          self.snackbarText = "Report Resolved";
+          self.successSnackbar = true;
         })
         .catch(e => {
             console.log("Failed to resolve report.");
@@ -887,6 +915,31 @@ new Vue({
       window.loadBathrooms = this.loadBathrooms;
       window.displayBathroomFromMap = this.displayBathroomFromMap;
       window.loadReports = this.loadReports;
+
+      var x = document.cookie;
+      var cookieTokens = x.split(/[\s;=]+/);
+
+      //Check if the user is already logged in.
+      for(let i = 0; i < cookieTokens.length; i++) {
+
+        
+        if(cookieTokens[i] === 'id') {
+          this.userID = cookieTokens[i + 1];
+          this.loggedIn = true;
+        }
+        else if (cookieTokens[i] === 'admin'){
+          if (cookieTokens[i + 1] === 'true')
+            this.admin = true;
+          else 
+            this.admin = false;
+          
+          if(this.admin) {
+            this.loadReports();
+          }
+            
+        }
+        document.getElementById("app").setAttribute("style", "");
+      }
     },
     mounted: function () {
 
@@ -915,22 +968,6 @@ new Vue({
       // add location control so the user can lock on to their own location. 
       L.control.locate().addTo(this.map);
 
-
-      var x = document.cookie;
-      var cookieTokens = x.split(/[\s;=]+/);
-
-      //Check if the user is already logged in.
-      for(let i = 0; i < cookieTokens.length; i++) {
-
-        if(cookieTokens[i] === 'id') {
-          this.userID = cookieTokens[i + 1];
-          this.loggedIn = true;
-        }
-        else if (cookieTokens[i] === 'admin'){
-          this.admin = cookieTokens[i + 1];
-          this.loadReports();
-        }
-      }
 
       this.layerGroup = L.layerGroup().addTo(this.map);
 

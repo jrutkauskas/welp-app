@@ -32,12 +32,15 @@ server = WelpApp()
 db.init_app(app)
 
 """ Routes """
+
+# For R1 of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/")
 def home():
 	session["started"] = True
 	#return "Server Works!"
 	return app.send_static_file('index.html')
 
+# For R5 of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/bathrooms", methods=["POST"])
 def create_a_bathroom():
 	user = None
@@ -55,6 +58,7 @@ def create_a_bathroom():
 	
 	#return "Not implemented, would return bathrooms based on POSTed params", 404
 
+# For R3 of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/getbathrooms", methods=["POST"])
 def find_bathroom():
 	user = None
@@ -67,6 +71,7 @@ def find_bathroom():
 		return bathrooms, 400
 	return json.dumps(bathrooms)
 
+# For R5 and R6 of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/bathrooms/<id>", methods=["GET","POST"])
 def get_or_set_specific_bathroom(id):
 	user = None
@@ -88,10 +93,6 @@ def get_or_set_specific_bathroom(id):
 			return bathroom, 400
 		return json.dumps(bathroom)
 
-	
-
-	#""" NEEDS to also do all the ratings averaging AND return whether a user rated a bathroom or not"""
-	#return "Not implemented, would return bathroom with id or allow modification", 404
 
 
 
@@ -99,6 +100,7 @@ def get_or_set_specific_bathroom(id):
 def get_specific_user(id):
 	return f"Not implemented; id is {id}", 404
 
+# For Ratings of R5 of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/users/<user_id>/ratings/", methods=["POST"])
 def set_user_bathroom_ratings(user_id):
 	if not "user_id" in session:
@@ -114,6 +116,7 @@ def set_user_bathroom_ratings(user_id):
 
 	return "rating updated successfully"
 
+# For R4 Creating a User of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/users", methods=["POST"])
 def add_user():
 	if "user_id" in session:
@@ -129,6 +132,7 @@ def add_user():
 	return json.dumps(res)
 	#return "Not implemented.  Would return user id of new user or errors for why they can't sign up", 404
 
+# For R4 (Authentication) of Functional Spec in Sec 1.1 of Software Plan
 @app.route("/api/authenticate", methods=["POST"])
 def authenticate():
 	if "user_id" in session:
@@ -152,6 +156,10 @@ def logout():
 		del session["user_id"]
 	return redirect("/")
 
+###
+### Functions used in Sprint #1 Admin features, See Final Sprint Report
+###
+
 @app.route("/api/reports", methods=["GET", "POST"])
 def get_all_reports():
 	if "user_id" in session:
@@ -166,8 +174,8 @@ def get_all_reports():
 				return "Successfully reported"
 			else:
 				return "Could not report this bathroom", 400
-	else:
-		return "not allowed", 400
+	
+	return "not allowed", 400
 
 @app.route("/api/delete/report", methods=["POST"])
 def delete_report():
@@ -180,8 +188,8 @@ def delete_report():
 					return "Deleted Successfully"
 				else:
 					return "Could not delete this report", 400
-	else:
-		return "not allowed", 400
+
+	return "not allowed", 400
 
 @app.route("/api/delete/bathroom", methods=["POST"])
 def delete_bathroom():
@@ -196,19 +204,90 @@ def delete_bathroom():
 					return "Could not delete this bathroom", 400
 	return "not allowed", 400
 
+@app.route("/api/delete/user", methods=["POST"])
+def delete_user():
+	if "user_id" in session:
+		if request.method == "POST":
+			user = server.get_user_by_id(session["user_id"])
+			if user and user.isAdmin:
+				data = request.get_json()
+				if server.delete_user_by_id(data["id"]):
+					return "Deleted Successfully"
+				else:
+					return "Could not delete this user", 400
+	return "not allowed", 400
+
+@app.route("/api/admin/setuseradmin", methods=["POST"])
+def make_user_admin():
+	if "user_id" in session:
+		if request.method == "POST":
+			user = server.get_user_by_id(session["user_id"])
+			if user and user.isAdmin:
+				data = request.get_json()
+				u = User.query.filter_by(username=data["username"]).first()
+				if not u:
+					return "cannot find user", 400
+				else:
+					u.isAdmin = data["isAdmin"]
+					db.session.commit()
+					return "Updated admin status successfully"
+	return "not allowed", 400
+
+@app.route("/api/admin/getusers", methods=["GET"])
+def admin_get_users():
+	if "user_id" in session:
+			user = server.get_user_by_id(session["user_id"])
+			if user and user.isAdmin:
+				users = User.query.all()
+				l = [server.convert_user_to_dict(u) for u in users]
+				return json.dumps(l)
+	return "not allowed", 400
+
+@app.route("/admin/usermanagement", methods=["GET"])
+def admin_user_mgmt():
+	if "user_id" in session:
+			user = server.get_user_by_id(session["user_id"])
+			if user and user.isAdmin:
+				return app.send_static_file('admin_user.html')
+	return redirect("/")
+
 if __name__ == "__main__":
 	app.run(threaded=True, host='0.0.0.0')
 
 
 
 # CLI Commands
+## Used for Maintenance and Setup -- See Maintenance section of User Manual and Guide on "How to install and test"
+
+
 @app.cli.command("initdb")
 def init_db():
 	"""Initializes database and any model objects necessary"""
 	db.drop_all()
 	db.create_all()
 
+	print("creating default admin user with username 'admin' and password 'chang'")
+	u = User("admin","chang")
+	u.isAdmin = True
+	db.session.add(u)
+	db.session.commit()
+
 	print("Initialized Database.")
+	return
+
+
+def remove_instance_state(dic):
+	del dic["_sa_instance_state"]
+	return dic
+@app.cli.command("dumpdb")
+def dump_db():
+	"""Prints database"""
+	print([remove_instance_state(u.__dict__) for u in User.query.all()])
+	print("###############\n")
+	print([remove_instance_state(u.__dict__) for u in Bathroom.query.all()])
+	print("###############\n")
+	print([remove_instance_state(u.__dict__) for u in Report.query.all()])
+
 	return
 
 @app.cli.command("test")
